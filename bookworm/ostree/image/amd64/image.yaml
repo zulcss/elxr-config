@@ -1,0 +1,32 @@
+---
+name: pablo-ostree-amd64
+description: "AMD64 ostree configuration."
+architecture: amd64
+version: 0.1
+schemaVersion: 1
+params:
+  version: $[version}
+  tarball: pablo-ostree-${version}-${architecture}.tar.gz
+  repository: /var/www/html/repo
+  branch: pablo/${architecture}
+stages:
+  install:
+    - name: "Unpack ${params.tarball}"
+      module: unpack.tarball
+      options:
+        compression: tgz
+        sources:
+          - ${params.tarball}
+
+    - name: "Create ostree repository"
+      module: installer.ostree.init
+      options:
+        repo: ${params.repo}
+        mode: archive-z2
+
+    - name: "Create an ostree branch."
+      module: installer.ostree.prep
+      options:
+        repo: ${params.repo}
+        branch: ${params.branch}
+        target: ${params.tarball}

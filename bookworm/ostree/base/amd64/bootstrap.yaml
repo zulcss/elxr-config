@@ -1,0 +1,28 @@
+---
+name: pablo-ostree-amd64
+description: "AMD64 ostree configuration."
+architecture: amd64
+version: 0.1
+schemaVersion: 1
+params:
+  version: $[version}
+  tarball: pablo-ostree-${version}-${architecture}.tar.gz
+  repository: ostree_repo
+  branch: pablo/${architecture}
+stages:
+  install:
+    - name: "Create rootfs"
+      module: bootstrap.mmdebestrap
+      options:
+        suite: bookworm
+        target: ${params.tarball}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/debian/ /'
+          - 'sync-in overlay/ostree/ /'
+        customize_hooks:
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - chroot $1 echo "localhost" > $1/etc/hostname
+          - mkdir -p $1/efi
+        packages: ${include:manifests/software.yaml}

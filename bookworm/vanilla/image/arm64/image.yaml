@@ -1,0 +1,44 @@
+name: debian-arm64
+description: "Install Debian on arm64."
+version: 0.1
+type: vanilla
+schemaVersion: 1
+architecture: arm64
+params:
+  disk: /dev/loop1
+  source: pablo-installer-${version}-${architecture}.tar.gz
+stages:
+  install:
+    - name: "Partitioning ${params.disk}."
+      module: installer.disk.parted
+      options:
+        slices:
+          - name: EFI
+            start: 0%
+            end: 256MB
+            flags: [boot, esp]
+          - name: ROOT
+            start: 256MB
+            end: 100%
+            flags: []
+
+    - name: "Formatting ${params.disk}."
+      module: installer.disk.fs
+      options:
+        filesystems:
+          - name: EFI
+            label: EFI
+            fs: vfat
+            options: []
+          - name: ROOT
+            label: ROOT
+            fs: ext4
+            options: []
+    - name: "Unpacking ${params.source}"
+      module: installer.unpack
+      options: []
+
+    - name: "Installing bootloader on ${params.disk}"
+      module: installer.bootloader
+      options:
+        kernel_args: "root=LABEL=ROOT console=tty0 console=ttyS0,115200"
