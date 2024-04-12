@@ -1,0 +1,22 @@
+Source: pablo-config
+Section: admin
+Priority: optional
+Maintainer: Chuck Short <charles.short@windriver.com>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+Standards-Version: 4.6.2
+Homepage: https://gitlab.com/wr-linux/tools/pablo-config
+
+Package: pablo-config
+Architecture: any
+Multi-Arch: foreign
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Pablo configuration manfiests
+ Pablo configuration manifests for ruck and tiler.
+ These are base configurations to generate images
+ using ruck.
+ .
+ These are for both amd64 and arm64.
