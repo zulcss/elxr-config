@@ -7,8 +7,6 @@ schemaVersion: 1
 params:
   version: $[version}
   tarball: pablo-ostree-${version}-${architecture}.tar.gz
-  repository: ostree_repo
-  branch: pablo/${architecture}
 stages:
   install:
     - name: "Create rootfs"
