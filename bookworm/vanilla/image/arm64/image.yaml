@@ -17,10 +17,12 @@ stages:
             start: 0%
             end: 256MB
             flags: [boot, esp]
+            id: ''
           - name: ROOT
             start: 256MB
             end: 100%
             flags: []
+            id: ''
 
     - name: "Formatting ${params.disk}."
       module: installer.disk.fs
@@ -34,6 +36,7 @@ stages:
             label: ROOT
             fs: ext4
             options: []
+
     - name: "Unpacking ${params.source}"
       module: installer.unpack
       options: []
@@ -42,3 +45,6 @@ stages:
       module: installer.bootloader
       options:
         kernel_args: "root=LABEL=ROOT console=tty0 console=ttyS0,115200"
+
+    - name: "Undeploy on ${params.disk}."
+      module: utils.undeploy
