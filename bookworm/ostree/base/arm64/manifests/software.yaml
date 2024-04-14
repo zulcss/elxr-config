@@ -34,7 +34,6 @@
 - mmdebstrap
 - gobject-introspection
 - gir1.2-ostree-1.0
-- software-properties-common
 - libnss-systemd
 - gir1.2-glib-2.0
 - libcairo2-dev
