@@ -15,11 +15,16 @@ stages:
         slices:
           - name: EFI
             start: 0%
-            end: 256MB
+            end: 128MB
             flags: [boot, esp]
-            id: ''
+            id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+          - name: BOOT
+            start: 128M
+            end: 640M
+            flags: []
+            id: bc13c2ff-59e6-4262-a352-b275fd6f7172
           - name: ROOT
-            start: 256MB
+            start: 640MB
             end: 100%
             flags: []
             id: ''
@@ -31,6 +36,10 @@ stages:
           - name: EFI
             label: EFI
             fs: vfat
+            options: []
+          - name: BOOT
+            label: BOOT
+            fs: ext4
             options: []
           - name: ROOT
             label: ROOT
@@ -45,6 +54,7 @@ stages:
       module: installer.bootloader
       options:
         kernel_args: "root=LABEL=ROOT console=tty0 console=ttyS0,115200"
+        uefi_driver: ext4
 
     - name: "Undeploy on ${params.disk}."
       module: utils.undeploy
