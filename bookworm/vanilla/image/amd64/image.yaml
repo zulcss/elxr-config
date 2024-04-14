@@ -6,7 +6,7 @@ schemaVersion: 1
 architecture: amd64
 params:
   disk: /dev/loop1
-  source: pablo-installer-${version}-${architecture}.tar.gz
+  source: ${oc.env:CURRENT_DIR}/pablo-installer-${version}-${architecture}.tar.gz
 stages:
   install:
     - name: "Partitioning ${params.disk}."

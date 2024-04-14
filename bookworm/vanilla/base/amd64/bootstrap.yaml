@@ -6,7 +6,7 @@ version: 0.1
 schemaVersion: 1
 params:
   version: ${version}
-  tarball: pablo-installer-${version}-${architecture}.tar.gz
+  tarball: ${oc.env:CURRENT_DIR}/pablo-installer-${version}-${architecture}.tar.gz
 stages:
   install:
     - name: "Creating installer."
