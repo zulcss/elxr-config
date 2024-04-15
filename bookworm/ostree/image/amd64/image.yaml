@@ -5,7 +5,7 @@ architecture: amd64
 version: 0.1
 schemaVersion: 1
 params:
-  version: $[version}
+  version: ${version}
   tarball: ${oc.env:CURRENT_DIR}/pablo-ostree-${version}-${architecture}.tar.gz
   repository: /var/www/html/repo
   branch: pablo/${architecture}
