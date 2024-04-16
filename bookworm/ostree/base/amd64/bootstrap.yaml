@@ -24,7 +24,8 @@ stages:
           - systemctl enable --root="$1" systemd-networkd
           - chroot $1 echo "localhost" > $1/etc/hostname
           - mkdir -p $1/efi
-        packages: ${include:manifests/software.yaml}
+        packages:
+          - ${include:manifests/software.yaml}
         mirrors:
           - deb http://deb.debian.org/debian bookworm main
           - deb http://deb.debian.org/debian bookworm-updates main
