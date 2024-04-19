@@ -17,11 +17,14 @@ stages:
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/debian/ /'
-          - 'sync-in overlay/edk2/ /'
+          - 'sync-in overlay/grub-efi/ /'
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
           - chroot $1 echo "localhost" > $1/etc/hostname
+          - mkdir -p $1/usr/lib/ostree-grub/EFI/BOOT/
+          - export GRUB_MKIMAGE_MODULES=$(find $1/usr/lib/grub/arm64-efi/ -type f -name "*.mod" -exec basename {} .mod \;);
+            chroot $1 grub-mkimage -p /EFI/debian -O arm64-efi -o /usr/lib/ostree-grub/EFI/BOOT/bootaa64.efi $GRUB_MKIMAGE_MODULES;
         packages:
           - ${include:manifests/software.yaml}
         mirrors:
