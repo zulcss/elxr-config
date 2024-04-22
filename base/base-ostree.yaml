@@ -1,0 +1,33 @@
+---
+name: pablo-ostree-amd64
+description: "AMD64 ostree configuration."
+architecture: amd64
+version: 0.1
+schemaVersion: 1
+params:
+  version: ${version}
+  tarball: ${oc.env:CURRENT_DIR}/pablo-ostree-${version}-${architecture}.tar.gz
+stages:
+  install:
+    - name: "Create rootfs"
+      module: bootstrap.mmdebestrap
+      options:
+        suite: bookworm
+        target: ${params.tarball}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/debian/ /'
+          - 'sync-in overlay/ostree/ /'
+          - 'sync-in overlay/edk2/ /'
+        customize_hooks:
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - chroot $1 echo "localhost" > $1/etc/hostname
+          - mkdir -p $1/efi
+        packages:
+          - ${include:manifests/packages-ostree.yaml}
+        mirrors:
+          - deb http://deb.debian.org/debian bookworm main
+          - deb http://deb.debian.org/debian bookworm-updates main
+          - deb http://security.debian.org/debian-security bookworm-security main
+          - deb [trusted=yes] http://10.249.254.4 wr main

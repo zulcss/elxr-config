@@ -1,0 +1,31 @@
+---
+name: pablo-uefi-amd64
+description: "AMD64 example configuration."
+architecture: amd64
+version: 0.1
+schemaVersion: 1
+params:
+  version: ${version}
+  tarball: ${oc.env:CURRENT_DIR}/pablo-installer-${version}-${architecture}.tar.gz
+stages:
+  install:
+    - name: "Creating installer."
+      module: bootstrap.mmdebestrap
+      options:
+        suite: bookworm
+        target: ${params.tarball}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/debian/ /'
+          - 'sync-in overlay/edk2/ /'
+        customize_hooks:
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - chroot $1 echo "localhost" > $1/etc/hostname
+        packages:
+          - ${include:manifests/packages-base.yaml}
+        mirrors:
+          - deb http://deb.debian.org/debian bookworm main
+          - deb http://deb.debian.org/debian bookworm-updates main
+          - deb http://security.debian.org/debian-security bookworm-security main
+          - deb [trusted=yes] http://10.249.254.4 wr main

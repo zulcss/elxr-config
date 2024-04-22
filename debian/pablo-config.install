@@ -1,3 +1,7 @@
-bookworm usr/share/pablo-config
+base usr/share/pablo-config
+baords usr/share/pablo-config
+manifests usr/share/pablo-config
+overlay usr/share/pablo-config
+vm usr/share/pablo-config
 LICENSE usr/share/pablo-config
 README.rst usr/share/pablo-config
