@@ -51,6 +51,9 @@ stages:
       options:
         mode: archive-z2
 
+    - name: "Create an ostree branch."
+      module: installer.ostree.prep
+
     - name: "Partitioning ${params.disk}."
       module: installer.disk.parted
       options:
