@@ -17,3 +17,4 @@ wget
 ca-certificates
 ostree
 ostree-boot
+python3-apt-ostree
