@@ -1,6 +1,6 @@
 ---
-name: pablo-qemu-arm64
-description: "ARM64 QMEU configuration."
+name: pablo-minimal-imx8
+description: "IMX8 minimal configuration."
 architecture: arm64
 version: 0.1
 schemaVersion: 1
@@ -28,7 +28,7 @@ stages:
           - export GRUB_MKIMAGE_MODULES=$(find $1/usr/lib/grub/arm64-efi/ -type f -name "*.mod" -exec basename {} .mod \;);
             chroot $1 grub-mkimage -p /EFI/debian -O arm64-efi -o /usr/lib/ostree-grub/EFI/BOOT/bootaa64.efi $GRUB_MKIMAGE_MODULES;
         packages:
-          - ${include:manifests/software.yaml}
+          - ${include:manifests/packages-arm64.yaml}
           - systemd-timesyncd
         mirrors:
           - deb http://deb.debian.org/debian bookworm main

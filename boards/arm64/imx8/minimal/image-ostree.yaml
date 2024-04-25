@@ -1,6 +1,6 @@
 ---
-name: pablo-qemu-ostree-arm64
-description: "ARM64 ostree configuration."
+name: pablo-minimal-ostree-imx8
+description: "IMX8 minimal ostree configuration."
 architecture: arm64
 version: 0.1
 schemaVersion: 1
