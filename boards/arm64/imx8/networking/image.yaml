@@ -1,0 +1,87 @@
+---
+name: pablo-networking-imx8
+description: "i.MX8 networking configuration."
+architecture: arm64
+version: 0.1
+schemaVersion: 1
+params:
+  version: ${version}
+  tarball: ${oc.env:CURRENT_DIR}/pablo-installer-${version}-${architecture}.tar.gz
+  source: ${oc.env:CURRENT_DIR}/pablo-installer-${version}-${architecture}.tar.gz
+  disk: /dev/loop1
+stages:
+  install:
+    - name: "Creating installer."
+      module: bootstrap.mmdebestrap
+      options:
+        suite: bookworm
+        target: ${params.tarball}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/debian/ /'
+          - 'sync-in overlay/grub-efi/ /'
+        customize_hooks:
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - chroot $1 echo "localhost" > $1/etc/hostname
+          - mkdir -p $1/usr/lib/ostree-grub/EFI/BOOT/
+          - export GRUB_MKIMAGE_MODULES=$(find $1/usr/lib/grub/arm64-efi/ -type f -name "*.mod" -exec basename {} .mod \;);
+            chroot $1 grub-mkimage -p /EFI/debian -O arm64-efi -o /usr/lib/ostree-grub/EFI/BOOT/bootaa64.efi $GRUB_MKIMAGE_MODULES;
+        packages:
+          - ${include:manifests/packages-arm64.yaml}
+          - ${include:manifests/packages-networking.yaml}
+        mirrors:
+          - deb http://deb.debian.org/debian bookworm main
+          - deb http://deb.debian.org/debian bookworm-updates main
+          - deb http://security.debian.org/debian-security bookworm-security main
+          - deb [trusted=yes] http://10.249.254.4 wr main
+
+    - name: "Partitioning ${params.disk}."
+      module: installer.disk.parted
+      options:
+        slices:
+          - name: EFI
+            start: 0%
+            end: 128MB
+            flags: [boot, esp]
+            id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+          - name: BOOT
+            start: 128M
+            end: 640M
+            flags: []
+            id: bc13c2ff-59e6-4262-a352-b275fd6f7172
+          - name: ROOT
+            start: 640MB
+            end: 100%
+            flags: []
+            id: ''
+
+    - name: "Formatting ${params.disk}."
+      module: installer.disk.fs
+      options:
+        filesystems:
+          - name: EFI
+            label: EFI
+            fs: vfat
+            options: []
+          - name: BOOT
+            label: BOOT
+            fs: ext4
+            options: []
+          - name: ROOT
+            label: ROOT
+            fs: ext4
+            options: []
+
+    - name: "Unpacking ${params.source}"
+      module: installer.unpack
+      options: []
+
+    - name: "Installing bootloader on ${params.disk}"
+      module: installer.bootloader
+      options:
+        kernel_args: "root=LABEL=ROOT console=tty0 console=ttyS0,115200"
+        uefi: grub-efi
+
+    - name: "Undeploy on ${params.disk}."
+      module: utils.undeploy
