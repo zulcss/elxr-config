@@ -113,6 +113,10 @@ install -m 0644 "$KERNEL_IMAGE" "$ENTRY_DIR_ABS/linux" || {
 }
 chown root:root "$ENTRY_DIR_ABS/linux" || :
 
+if [ -d "/lib/modules/$KERNEL_VERSION/dtb" ]; then
+    cp -arf /lib/modules/$KERNEL_VERSION/dtb $ENTRY_DIR_ABS/dtb
+fi
+
 shift "$INITRD_OPTIONS_SHIFT"
 # All files listed as arguments, and staged files starting with "initrd" are installed as initrds.
 for initrd in "$@" "${KERNEL_INSTALL_STAGING_AREA}"/initrd*; do
@@ -147,6 +151,7 @@ mkdir -p "${LOADER_ENTRY%/*}" || {
     [ -n "$SORT_KEY" ] && echo "sort-key   $SORT_KEY"
     echo "options    $BOOT_OPTIONS"
     echo "linux      $ENTRY_DIR/linux"
+    [ -d "/lib/modules/$KERNEL_VERSION/dtb" ] && echo "fdtdir     $ENTRY_DIR/dtb"
 
     have_initrd=
     for initrd in "${@}" "${KERNEL_INSTALL_STAGING_AREA}"/initrd*; do

@@ -1,3 +1,10 @@
+pablo-config (0.1.20241204-1.1) bookworm; urgency=medium
+
+  * Make vanilla (non-ostree) and ostree image work for
+    imx8 bsp which supports devicetree directory for imx8
+
+ -- Hongxu Jia <hongxu.jia@windriver.com>  Tue, 30 Apr 2024 09:31:12 -0400
+
 pablo-config (0.1.20241204-1) bookworm; urgency=medium
 
   * New upstream release.
