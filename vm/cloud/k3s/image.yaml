@@ -1,0 +1,123 @@
+---
+name: pablo-k3s-amd64
+description: "AMD64 k3s configuration."
+architecture: amd64
+version: 1.0
+schemaVersion: 1
+params:
+  disk: /dev/loop0
+  version: ${version}
+  tarball: ${oc.env:CURRENT_DIR}/pablo-cloud-${version}-${architecture}.tar.gz
+  source: ${oc.env:CURRENT_DIR}/pablo-cloud-${version}-${architecture}.tar.gz
+  hooks: ${oc.env:CURRENT_DIR}/hooks
+stages:
+  install:
+    - name: "Creating installer."
+      module: bootstrap.mmdebestrap
+      options:
+        suite: bookworm
+        target: ${params.tarball}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/debian/ /'
+          - 'sync-in overlay/edk2/ /'
+          - 'sync-in overlay/cloud/ /'
+        customize_hooks:
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - chroot $1 echo "localhost" > $1/etc/hostname
+        # Speed up dpkg and optimize for space a bit
+        dpkgots:
+          - force-unsafe-io
+          - path-exclude=/usr/share/doc/*
+          - path-exclude=/usr/share/info/*
+          - path-exclude=/usr/share/man/*
+          - path-exclude=/usr/share/omf/*
+          - path-exclude=/usr/share/help/*
+        hooks:
+          # Download and install k3s script
+          - ${params.hooks}/k3s
+          # Download and install helm script.
+          - ${params.hooks}/helm
+        packages:
+          - ${include:manifests/packages-base.yaml}
+          - ${include:manifests/packages-cloud.yaml}
+        mirrors:
+          - deb http://deb.debian.org/debian bookworm main contrib non-free 
+          - deb http://deb.debian.org/debian bookworm-updates main contrib non-free
+          - deb http://security.debian.org/debian-security bookworm-security main contrib non-free
+
+    - name: "Creating cloud-disk.img"
+      module: image.raw
+      options:
+        name: cloud-disk.img
+        size: 20G
+
+    - name: "Partitioning ${params.disk}."
+      module: installer.disk.parted
+      options:
+        slices:
+          - name: EFI
+            start: 0%
+            end: 128MB
+            flags: [boot, esp]
+            id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+          - name: BOOT
+            start: 128M
+            end: 640M
+            flags: []
+            id: bc13c2ff-59e6-4262-a352-b275fd6f7172
+          - name: ROOT
+            start: 640MB
+            end: 100%
+            flags: []
+            id: ''
+
+    - name: "Formatting ${params.disk}."
+      module: installer.disk.fs
+      options:
+        filesystems:
+          - name: EFI
+            label: EFI
+            fs: vfat
+            options: []
+          - name: BOOT
+            label: BOOT
+            fs: ext4
+            options: []
+          - name: ROOT
+            label: ROOT
+            fs: ext4
+            options: []
+
+    - name: "Unpacking ${params.source}"
+      module: installer.unpack
+
+    - name: "Adding user"
+      module: utils.user
+      options:
+        name: user
+        passwd: $1$qdqeSUcj$LHa1pMrNVWL1FpmsJmfth0
+        groups:
+          - sudo
+
+    - name: "Install k3s"
+      module: utils.run_command
+      options:
+        commands:
+          - bash /usr/share/rancher/install.sh
+
+    - name: "Insall helm"
+      module: utils.run_command
+      options:
+        commands:
+          - bash /usr/share/helm/install.sh
+
+    - name: "Installing bootloader on ${params.disk}"
+      module: installer.bootloader
+      options:
+        kernel_args: "root=LABEL=ROOT console=tty0 console=ttyS0,115200"
+        uefi_driver: ext4
+
+    - name: "Undeploy on ${params.disk}."
+      module: utils.undeploy
