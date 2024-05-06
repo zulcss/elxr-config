@@ -1,3 +1,10 @@
+pablo-config (0.1.5) bookworm; urgency=medium
+
+  * manifests/packages-arm64-ostree.yaml: install apt-ostree
+  * manifests/{packages-arm64-ostree.yaml, packages-arm64.yaml}: install Pablo kernel package for arm64 (imx8)
+
+ -- Hongxu Jia <hongxu.jia@windriver.com>  Mon, 06 May 2024 05:20:16 -0400
+
 pablo-config (0.1.4) bookworm; urgency=medium
 
   * Add pablo mirror to vm/installer/base-ostree.yaml

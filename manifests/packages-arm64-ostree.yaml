@@ -1,4 +1,5 @@
 ---
+apt-ostree
 systemd-boot
 dracut
 linux-image-6.1.0-18-imx-arm64-unsigned
