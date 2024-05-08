@@ -1,3 +1,9 @@
+pablo-config (0.1.7) bookworm; urgency=medium
+
+  * manifests/packages-arm64-ostree.yaml: s/apt-ostree/python3-apt-ostree/
+
+ -- Hongxu Jia <hongxu.jia@windriver.com>  Wed, 08 May 2024 04:01:51 -0400
+
 pablo-config (0.1.6) bookworm; urgency=medium
 
   * set priority of pablo mirror to 900
