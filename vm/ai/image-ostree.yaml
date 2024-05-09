@@ -106,8 +106,7 @@ stages:
         kernel_args:
           - root=LABEL=ROOT
           - rw
-          - console=tty0
-          - console=ttyS0,115200n8
+          - console=ttyS0,115200n8 console=tty0
 
     - name: "Installing ostree bootloader on ${params.disk}"
       module: installer.bootloader.ostree

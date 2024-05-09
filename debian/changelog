@@ -1,3 +1,9 @@
+pablo-config (0.1.8) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Hongxu Jia <hongxu.jia@windriver.com>  Thu, 09 May 2024 06:54:34 -0400
+
 pablo-config (0.1.7) bookworm; urgency=medium
 
   * manifests/packages-arm64-ostree.yaml: s/apt-ostree/python3-apt-ostree/
