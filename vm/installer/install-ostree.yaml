@@ -72,5 +72,11 @@ stages:
       options:
         uefi_driver: ext4
 
+    - name: "Save installation log to rootfs/efi/log.tiler"
+      module: utils.copy
+      options:
+        source: /var/tmp/tiler/log/log.tiler
+        dest: efi/
+
     - name: "Undeploy on ${params.disk}."
       module: utils.undeploy
