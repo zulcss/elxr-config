@@ -56,10 +56,10 @@ stages:
       options:
         mode: archive-z2
 
-    - name: "Pull ostree from {params.repository}."
+    - name: "Pull ostree from ${params.repository}."
       module: installer.ostree.pull.local
 
-    - name: "Deploy ostree {params.branch} to ${params.disk}."
+    - name: "Deploy ostree ${params.branch} to ${params.disk}."
       module: installer.ostree.deploy
       options:
         kernel_args:
