@@ -1,8 +1,8 @@
-pablo-config (0.1.8) UNRELEASED; urgency=medium
+pablo-config (0.1.9) UNRELEASED; urgency=medium
 
   * New upstream release
 
- -- Hongxu Jia <hongxu.jia@windriver.com>  Thu, 09 May 2024 06:54:34 -0400
+ -- Hongxu Jia <hongxu.jia@windriver.com>  Fri, 10 May 2024 11:16:36 -0400
 
 pablo-config (0.1.7) bookworm; urgency=medium
 
