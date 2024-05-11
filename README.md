@@ -22,9 +22,8 @@ $ find . -name 'image*.yaml'
 And use ruck to build them:
 
 ```
-    $ truncate -s 10G ./pablo-image-ostree-0.1-arm64-imx8.img
-    $ losetup --partscan /dev/loop1 ./pablo-image-ostree-0.1-arm64-imx8.img
     $ ruck --debug build --config path/to/image-ostree.yaml
+    $ ls *.img *.img.zst
 ```
 
 Check README in ruck repository to see more details for "ruck build"
