@@ -10,6 +10,7 @@ params:
   source: ${oc.env:CURRENT_DIR}/pablo-ostree-${version}-${architecture}.tar.gz
   repository: /var/www/html/repo
   branch: pablo/${architecture}
+  image: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
   disk: /dev/loop1
 stages:
   install:
@@ -54,6 +55,12 @@ stages:
 
     - name: "Create an ostree branch."
       module: installer.ostree.prep
+
+    - name: "Create raw image ${params.image}"
+      module: image.raw
+      options:
+        name: ${params.image}
+        size: 8G
 
     - name: "Partitioning ${params.disk}."
       module: installer.disk.parted
@@ -118,3 +125,9 @@ stages:
 
     - name: "Undeploy on ${params.disk}."
       module: utils.undeploy
+
+    - name: "Compress image ${params.image}"
+      module: image.compress
+      options:
+        name: ${params.image}
+        compression: zstd
