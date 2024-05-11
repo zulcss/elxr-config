@@ -118,8 +118,7 @@ stages:
         kernel_args:
           - root=LABEL=ROOT
           - rw
-          - console=tty0
-          - console=ttymxc0,115200
+          - console=tty0 console=ttymxc0,115200
           - fdt_file=imx8mq-evk.dtb
 
     - name: "Installing ostree bootloader on ${params.disk}"
