@@ -34,7 +34,7 @@ stages:
           - deb http://deb.debian.org/debian bookworm main
           - deb http://deb.debian.org/debian bookworm-updates main
           - deb http://security.debian.org/debian-security bookworm-security main
-          - deb [trusted=yes] http://10.249.254.4 wr main
+          - deb http://10.249.254.4 wr main
 
     - name: "Unpack ${params.tarball}"
       module: unpack.tarball
