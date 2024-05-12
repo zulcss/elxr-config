@@ -18,3 +18,4 @@ ca-certificates
 ostree
 ostree-boot
 python3-apt-ostree
+uefi-ext4

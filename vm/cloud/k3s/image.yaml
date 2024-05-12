@@ -21,7 +21,6 @@ stages:
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/debian/ /'
-          - 'sync-in overlay/edk2/ /'
           - 'sync-in overlay/cloud/ /'
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd

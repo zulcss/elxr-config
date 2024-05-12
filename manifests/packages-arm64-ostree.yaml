@@ -19,3 +19,4 @@ curl
 wget
 ca-certificates
 grub-efi
+uefi-ext4
