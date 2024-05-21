@@ -72,6 +72,12 @@ stages:
       options:
         uefi_driver: ext4
 
+    - name: "Set boot order on ${params.disk}."
+      module: utils.bootorder
+
+    - name: "Installation complete successfully."
+      module: noop.placeholder
+
     - name: "Save installation log to rootfs/efi/log.tiler"
       module: utils.copy
       options:
