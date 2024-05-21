@@ -21,3 +21,4 @@ ca-certificates
 grub-efi
 uefi-ext4
 systemd-resolved
+cloud-guest-utils

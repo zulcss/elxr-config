@@ -23,6 +23,7 @@ stages:
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" pablo-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
         packages:
           - ${include:manifests/packages-base.yaml}
@@ -36,7 +37,7 @@ stages:
       module: image.raw
       options:
         name: ${params.image}
-        size: 8G
+        size: 4G
 
     - name: "Partitioning ${params.disk}."
       module: installer.disk.parted

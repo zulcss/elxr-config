@@ -24,6 +24,7 @@ stages:
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" pablo-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
           - mkdir -p $1/usr/lib/ostree-grub/EFI/BOOT/
           - export GRUB_MKIMAGE_MODULES=$(find $1/usr/lib/grub/arm64-efi/ -type f -name "*.mod" -exec basename {} .mod \;);
@@ -42,7 +43,7 @@ stages:
       module: image.raw
       options:
         name: ${params.image}
-        size: 8G
+        size: 4G
 
     - name: "Partitioning ${params.disk}."
       module: installer.disk.parted

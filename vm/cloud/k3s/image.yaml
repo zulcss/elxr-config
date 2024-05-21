@@ -25,6 +25,7 @@ stages:
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" pablo-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
         # Speed up dpkg and optimize for space a bit
         dpkgots:

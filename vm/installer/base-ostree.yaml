@@ -24,6 +24,7 @@ stages:
           - 'sync-in overlay/ostree/ /'
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" pablo-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
           - mkdir -p $1/efi
         packages:

@@ -1,0 +1,9 @@
+[Unit]
+Description=Grow Root Filesystem
+DefaultDependencies=false
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/pablo-growfs
+RemainAfterExit=yes
+[Install]
+WantedBy=multi-user.target

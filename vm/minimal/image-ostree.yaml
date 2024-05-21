@@ -26,6 +26,7 @@ stages:
           - 'sync-in overlay/ostree/ /'
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" pablo-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
           - mkdir -p $1/efi
         packages:
@@ -55,7 +56,7 @@ stages:
       module: image.raw
       options:
         name: ${params.image}
-        size: 8G
+        size: 4G
 
     - name: "Partitioning ${params.disk}."
       module: installer.disk.parted
