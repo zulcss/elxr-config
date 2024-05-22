@@ -35,6 +35,7 @@ stages:
         packages:
           - ${include:manifests/packages-arm64-ostree.yaml}
           - ${include:manifests/packages-xfce4.yaml}
+          - systemd-timesyncd
         mirrors:
           - deb http://deb.debian.org/debian bookworm main
           - deb http://deb.debian.org/debian bookworm-updates main
@@ -67,7 +68,7 @@ stages:
       options:
         slices:
           - name: EFI
-            start: 0%
+            start: 10MB
             end: 128MB
             flags: [boot, esp]
             id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
@@ -116,7 +117,8 @@ stages:
         kernel_args:
           - root=LABEL=ROOT
           - rw
-          - console=ttyS0,115200n8 console=tty0
+          - console=tty0 console=ttymxc0,115200
+          - fdt_file=imx8mq-evk.dtb
 
     - name: "Installing ostree bootloader on ${params.disk}"
       module: installer.bootloader.ostree
