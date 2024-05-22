@@ -15,4 +15,4 @@ policykit-1
 curl
 wget
 ca-certificates
-systemd-resovled
+systemd-resolved
