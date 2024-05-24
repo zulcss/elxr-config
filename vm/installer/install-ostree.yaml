@@ -78,10 +78,10 @@ stages:
     - name: "Installation complete successfully."
       module: noop.placeholder
 
-    - name: "Save installation log to rootfs/efi/log.tiler"
+    - name: "Save installation log to rootfs/efi/tiler.log"
       module: utils.copy
       options:
-        source: /var/tmp/tiler/log/log.tiler
+        source: /var/log/tiler.log
         dest: efi/
 
     - name: "Undeploy on ${params.disk}."
