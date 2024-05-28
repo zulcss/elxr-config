@@ -21,8 +21,8 @@ stages:
         setup_hooks:
           - 'sync-in overlay/debian/ /'
           - 'sync-in overlay/grub-efi/ /'
+          - 'sync-in overlay/xorg-imx8/ /'
         customize_hooks:
-          - 'sync-in overlay/xorg-imx8/etc/X11/xorg.conf.d/ /etc/X11/xorg.conf.d/'
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
           - systemctl enable --root="$1" pablo-growfs
