@@ -10,7 +10,7 @@ params:
   source: ${oc.env:CURRENT_DIR}/pablo-cloud-${version}-${architecture}.tar.gz
   image: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
   disk: /dev/loop1
-  hooks: ${oc.env:CURRENT_DIR}/hooks
+  hooks: hooks
 stages:
   install:
     - name: "Creating installer."
