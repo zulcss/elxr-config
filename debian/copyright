@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Source: https://gitlab.com/wr-linux/tools/pablo-config
-Upstream-Name: pablo-config
+Source: https://gitlab.com/wr-linux/tools/elxr-config
+Upstream-Name: elxr-config
 Upstream-Contact: Chuck Short <charles.short@windriver.com>
 
 Files:

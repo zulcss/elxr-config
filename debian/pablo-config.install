@@ -1,7 +1,7 @@
-base usr/share/pablo-config
-boards usr/share/pablo-config
-manifests usr/share/pablo-config
-overlay usr/share/pablo-config
-vm usr/share/pablo-config
-LICENSE usr/share/pablo-config
-README.md usr/share/pablo-config
+base usr/share/elxr-config
+boards usr/share/elxr-config
+manifests usr/share/elxr-config
+overlay usr/share/elxr-config
+vm usr/share/elxr-config
+LICENSE usr/share/elxr-config
+README.md usr/share/elxr-config
