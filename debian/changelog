@@ -1,49 +1,56 @@
-pablo-config (0.1.16) UNRELEASED; urgency=medium
+elxr-config (0.1.17) bookworm; urgency=medium
+
+  * New upstream release:
+    * Transition from pablo to elxr.
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 04 Jun 2024 14:23:42 +0000
+
+elxr-config (0.1.16) bookworm; urgency=medium
 
   * New upstream release
 
  -- Hongxu Jia <hongxu.jia@windriver.com>  Mon, 13 May 2024 01:54:49 -0400
 
-pablo-config (0.1.7) bookworm; urgency=medium
+elxr-config (0.1.7) bookworm; urgency=medium
 
   * manifests/packages-arm64-ostree.yaml: s/apt-ostree/python3-apt-ostree/
 
  -- Hongxu Jia <hongxu.jia@windriver.com>  Wed, 08 May 2024 04:01:51 -0400
 
-pablo-config (0.1.6) bookworm; urgency=medium
+elxr-config (0.1.6) bookworm; urgency=medium
 
-  * set priority of pablo mirror to 900
+  * set priority of elxr mirror to 900
 
  -- Hongxu Jia <hongxu.jia@windriver.com>  Tue, 07 May 2024 23:01:53 -0400
 
-pablo-config (0.1.5) bookworm; urgency=medium
+elxr-config (0.1.5) bookworm; urgency=medium
 
   * manifests/packages-arm64-ostree.yaml: install apt-ostree
-  * manifests/{packages-arm64-ostree.yaml, packages-arm64.yaml}: install Pablo kernel package for arm64 (imx8)
+  * manifests/{packages-arm64-ostree.yaml, packages-arm64.yaml}: install elxr kernel package for arm64 (imx8)
 
  -- Hongxu Jia <hongxu.jia@windriver.com>  Mon, 06 May 2024 05:20:16 -0400
 
-pablo-config (0.1.4) bookworm; urgency=medium
+elxr-config (0.1.4) bookworm; urgency=medium
 
-  * Add pablo mirror to vm/installer/base-ostree.yaml
+  * Add elxr mirror to vm/installer/base-ostree.yaml
 
  -- Hongxu Jia <hongxu.jia@windriver.com>  Thu, 02 May 2024 01:07:05 -0400
 
-pablo-config (0.1.3) bookworm; urgency=medium
+elxr-config (0.1.3) bookworm; urgency=medium
 
   * Add debian/salsa-ci.yml
   * Address lintian errors
 
  -- Hongxu Jia <hongxu.jia@windriver.com>  Wed, 01 May 2024 21:59:39 -0400
 
-pablo-config (0.1.20241204-1.1) bookworm; urgency=medium
+elxr-config (0.1.20241204-1.1) bookworm; urgency=medium
 
   * Make vanilla (non-ostree) and ostree image work for
     imx8 bsp which supports devicetree directory for imx8
 
  -- Hongxu Jia <hongxu.jia@windriver.com>  Tue, 30 Apr 2024 09:31:12 -0400
 
-pablo-config (0.1.20241204-1) bookworm; urgency=medium
+elxr-config (0.1.20241204-1) bookworm; urgency=medium
 
   * New upstream release.
 
