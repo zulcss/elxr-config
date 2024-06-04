@@ -1,13 +1,13 @@
 ---
-name: pablo-networking-imx8
+name: elxr-networking-imx8
 description: "i.MX8 networking configuration."
 architecture: arm64
 version: 0.1
 schemaVersion: 1
 params:
   version: ${version}
-  tarball: ${oc.env:CURRENT_DIR}/pablo-installer-${version}-${architecture}.tar.gz
-  source: ${oc.env:CURRENT_DIR}/pablo-installer-${version}-${architecture}.tar.gz
+  tarball: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
+  source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
   image: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
   disk: /dev/loop1
 stages:
@@ -25,7 +25,7 @@ stages:
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
-          - systemctl enable --root="$1" pablo-growfs
+          - systemctl enable --root="$1" elxr-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
           - mkdir -p $1/usr/lib/ostree-grub/EFI/BOOT/
           - export GRUB_MKIMAGE_MODULES=$(find $1/usr/lib/grub/arm64-efi/ -type f -name "*.mod" -exec basename {} .mod \;);

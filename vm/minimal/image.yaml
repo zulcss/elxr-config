@@ -1,13 +1,13 @@
 ---
-name: pablo-minimal-amd64
+name: elxr-minimal-amd64
 description: "AMD64 example configuration."
 architecture: amd64
 version: 0.1
 schemaVersion: 1
 params:
   version: ${version}
-  tarball: ${oc.env:CURRENT_DIR}/pablo-installer-${version}-${architecture}.tar.gz
-  source: ${oc.env:CURRENT_DIR}/pablo-installer-${version}-${architecture}.tar.gz
+  tarball: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
+  source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
   image: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
   disk: /dev/loop1
 stages:
@@ -23,7 +23,7 @@ stages:
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
-          - systemctl enable --root="$1" pablo-growfs
+          - systemctl enable --root="$1" elxr-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
         packages:
           - ${include:manifests/packages-base.yaml}
