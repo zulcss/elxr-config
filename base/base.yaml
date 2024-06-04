@@ -1,12 +1,12 @@
 ---
-name: pablo-uefi-amd64
+name: elxr-uefi-amd64
 description: "AMD64 example configuration."
 architecture: amd64
 version: 0.1
 schemaVersion: 1
 params:
   version: ${version}
-  tarball: ${oc.env:CURRENT_DIR}/pablo-installer-${version}-${architecture}.tar.gz
+  tarball: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
 stages:
   install:
     - name: "Creating installer."

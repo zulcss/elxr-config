@@ -1,1 +1,1 @@
-minimal - Mimimal software install for pablo.
+minimal - Mimimal software install for elxr.

@@ -1,12 +1,12 @@
 ---
-name: pablo-ostree-amd64
+name: elxr-ostree-amd64
 description: "AMD64 ostree configuration."
 architecture: amd64
 version: 0.1
 schemaVersion: 1
 params:
   version: ${version}
-  tarball: ${oc.env:CURRENT_DIR}/pablo-ostree-${version}-${architecture}.tar.gz
+  tarball: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
 stages:
   install:
     - name: "Create rootfs"
@@ -21,7 +21,7 @@ stages:
           - 'sync-in overlay/ostree/usr/lib /usr/lib'
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
-          - systemctl enable --root="$1" pablo-growfs
+          - systemctl enable --root="$1" elxr-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
           - mkdir -p $1/efi
         packages:

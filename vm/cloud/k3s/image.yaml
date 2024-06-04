@@ -1,13 +1,13 @@
 ---
-name: pablo-k3s-amd64
+name: elxr-k3s-amd64
 description: "AMD64 k3s configuration."
 architecture: amd64
 version: 1.0
 schemaVersion: 1
 params:
   version: ${version}
-  tarball: ${oc.env:CURRENT_DIR}/pablo-cloud-${version}-${architecture}.tar.gz
-  source: ${oc.env:CURRENT_DIR}/pablo-cloud-${version}-${architecture}.tar.gz
+  tarball: ${oc.env:CURRENT_DIR}/elxr-cloud-${version}-${architecture}.tar.gz
+  source: ${oc.env:CURRENT_DIR}/elxr-cloud-${version}-${architecture}.tar.gz
   image: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
   disk: /dev/loop1
   hooks: hooks
@@ -25,7 +25,7 @@ stages:
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
-          - systemctl enable --root="$1" pablo-growfs
+          - systemctl enable --root="$1" elxr-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
         # Speed up dpkg and optimize for space a bit
         dpkgots:

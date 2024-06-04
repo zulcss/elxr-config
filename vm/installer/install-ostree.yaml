@@ -1,5 +1,5 @@
 ---
-name: pablo-minimal-ostree-amd64
+name: elxr-minimal-ostree-amd64
 description: "AMD64 ostree configuration."
 architecture: amd64
 version: 0.1
@@ -7,7 +7,7 @@ schemaVersion: 1
 params:
   version: ${version}
   repository: /ostree
-  branch: pablo/${architecture}
+  branch: elxr/${architecture}
   disk: /dev/vda
 stages:
   install:
