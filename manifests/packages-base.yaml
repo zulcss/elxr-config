@@ -18,3 +18,4 @@ wget
 ca-certificates
 systemd-resolved
 cloud-guest-utils
+xterm
