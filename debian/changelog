@@ -2,6 +2,7 @@ elxr-config (0.1.17) bookworm; urgency=medium
 
   * New upstream release:
     * Transition from pablo to elxr.
+    * Fix package elxr-config is empty
 
  -- Chuck Short <charles.short@windriver.com>  Tue, 04 Jun 2024 14:23:42 +0000
 
