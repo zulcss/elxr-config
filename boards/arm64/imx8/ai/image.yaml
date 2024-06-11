@@ -40,7 +40,7 @@ stages:
           - deb http://deb.debian.org/debian bookworm main non-free-firmware
           - deb http://deb.debian.org/debian bookworm-updates main
           - deb http://security.debian.org/debian-security bookworm-security main
-          - deb http://10.249.254.4 wr main
+          - deb http://mirror.elxr.dev/elxr aria main
 
     - name: "Create raw image ${params.image}"
       module: image.raw
