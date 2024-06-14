@@ -23,3 +23,4 @@ uefi-ext4
 systemd-resolved
 cloud-guest-utils
 xterm
+firmware-misc-nonfree
