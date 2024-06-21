@@ -19,4 +19,3 @@ grub-efi
 systemd-resolved
 cloud-guest-utils
 xterm
-firmware-misc-nonfree
