@@ -1,3 +1,10 @@
+elxr-config (0.1.20) bookworm; urgency=medium
+
+  * New upstream release:
+    - 286356f: MANIFESTS: Remove non-free-firmware packages
+
+ -- Hongxu Jia <hongxu.jia@windriver.com>  Fri, 21 Jun 2024 06:15:54 -0400
+
 elxr-config (0.1.19) bookworm; urgency=medium
 
   * New upstream release:
