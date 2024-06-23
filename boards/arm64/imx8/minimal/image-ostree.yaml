@@ -6,7 +6,6 @@ version: 0.1
 schemaVersion: 1
 params:
   version: ${version}
-  tarball: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
   source: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
   repository: /var/www/html/repo
   branch: elxr/${architecture}
@@ -18,7 +17,7 @@ stages:
       module: bootstrap.mmdebestrap
       options:
         suite: bookworm
-        target: ${params.tarball}
+        target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/debian/ /'
@@ -45,12 +44,12 @@ stages:
           - deb http://security.debian.org/debian-security bookworm-security main
           - deb http://mirror.elxr.dev/elxr aria main
 
-    - name: "Unpack ${params.tarball}"
+    - name: "Unpack ${params.source}"
       module: unpack.tarball
       options:
         compression: tgz
         sources:
-          - ${params.tarball}
+          - ${params.source}
 
     - name: "Create ostree repository"
       module: installer.ostree.init

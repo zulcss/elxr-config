@@ -6,7 +6,6 @@ version: 1.0
 schemaVersion: 1
 params:
   version: ${version}
-  tarball: ${oc.env:CURRENT_DIR}/elxr-cloud-${version}-${architecture}.tar.gz
   source: ${oc.env:CURRENT_DIR}/elxr-cloud-${version}-${architecture}.tar.gz
   image: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
   disk: /dev/loop1
@@ -17,7 +16,7 @@ stages:
       module: bootstrap.mmdebestrap
       options:
         suite: bookworm
-        target: ${params.tarball}
+        target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/debian/ /'

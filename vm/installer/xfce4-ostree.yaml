@@ -7,7 +7,6 @@ schemaVersion: 1
 params:
   version: ${version}
   source: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
-  tarball: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
   repository: /var/www/html/ostree_repo
   branch: elxr/${architecture}
 stages:

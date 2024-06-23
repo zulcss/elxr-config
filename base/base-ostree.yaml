@@ -6,14 +6,14 @@ version: 0.1
 schemaVersion: 1
 params:
   version: ${version}
-  tarball: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
+  source: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
 stages:
   install:
     - name: "Create rootfs"
       module: bootstrap.mmdebestrap
       options:
         suite: bookworm
-        target: ${params.tarball}
+        target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/debian/ /'
