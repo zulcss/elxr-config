@@ -1,7 +1,7 @@
 ---
 include:
- - https://gitlab.com/wr-linux/ci/pipeline/raw/wr/salsa-ci.yml
- - https://gitlab.com/wr-linux/ci/pipeline/raw/wr/pipeline-jobs.yml
+ - https://gitlab.com/elxr/ci/pipeline/raw/elxr/salsa-ci.yml
+ - https://gitlab.com/elxr/ci/pipeline/raw/elxr/pipeline-jobs.yml
 
 variables:
  RELEASE: 'bookworm'

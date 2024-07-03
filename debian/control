@@ -6,7 +6,7 @@ Rules-Requires-Root: no
 Build-Depends:
  debhelper-compat (= 13),
 Standards-Version: 4.6.2
-Homepage: https://gitlab.com/wr-linux/tools/elxr-config
+Homepage: https://gitlab.com/elxr/tools/elxr-config
 
 Package: elxr-config
 Architecture: any
