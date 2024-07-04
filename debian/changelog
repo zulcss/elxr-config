@@ -1,3 +1,10 @@
+elxr-config (0.1.22) unstable; urgency=medium
+
+  * New upstream release:
+    - 8cf3faa3e67e93af5b7d866e36088b5b72307648: change name space to elxr
+
+ -- Jianqiang Shi <jianqiang.shi@windriver.com>  Thu, 04 Jul 2024 10:59:53 -0400
+
 elxr-config (0.1.21) unstable; urgency=medium
 
   * New upstream release:
