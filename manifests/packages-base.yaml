@@ -2,7 +2,7 @@
 systemd-boot
 dracut-core
 uefi-ext4
-linux-image-6.1.0-18-amd64-unsigned
+linux-image-amd64
 ca-certificates
 vim
 sudo
