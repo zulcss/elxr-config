@@ -1,3 +1,10 @@
+elxr-config (0.1.24) unstable; urgency=medium
+
+  * New upstream release:
+    - 14e1fb7637abd41608335847dc649a6e88f76352: imx-arm64: upgrade kernel to 6.1.94
+
+ -- Li Zhou <li.zhou@windriver.com>  Mon, 29 Jul 2024 10:42:11 +0800
+
 elxr-config (0.1.23) unstable; urgency=medium
 
   * New upstream release:
