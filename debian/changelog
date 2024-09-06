@@ -1,3 +1,10 @@
+elxr-config (0.1.25) unstable; urgency=medium
+
+  * New upstream release:
+    - 891f61f3e8b7c8f323a649baec4433eb9d1703fa: imx-arm64: remove linux-image packages with ABI name
+
+ -- Li Zhou <li.zhou@windriver.com>  Fri, 6 Sep 2024 09:34:22 +0800
+
 elxr-config (0.1.24) unstable; urgency=medium
 
   * New upstream release:
