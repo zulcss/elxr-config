@@ -15,8 +15,8 @@ Depends:
  ${shlibs:Depends},
  ${misc:Depends},
 Description: eLxr configuration manfiests
- eLxr configuration manifests for ruck and tiler.
+ eLxr configuration manifests for rucksack and tiler.
  These are base configurations to generate images
- using ruck.
+ using rucksack.
  .
  These are for both amd64 and arm64.
