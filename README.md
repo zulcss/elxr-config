@@ -1,5 +1,5 @@
 # Introduction
-These are stock configuration for both Ruck and Tiler. These manifests will create the following:
+These are stock configuration for both Rucksack and Tiler. These manifests will create the following:
 
 * rootfs tarball
 * ostree rootfs tarball
@@ -19,14 +19,14 @@ You can use the following command to find all image manifests:
 
 $ find . -name 'image*.yaml'
 
-And use ruck to build them:
+And use rucksack to build them:
 
 ```
-    $ ruck --debug build --config path/to/image-ostree.yaml
+    $ rs --debug build --config path/to/image-ostree.yaml
     $ ls *.img *.img.zst
 ```
 
-Check README in ruck repository to see more details for "ruck build"
+Check README in rucksack repository to see more details for "rs build"
 
 ## Package manifest fragment
 The package manifest fragment lists the packages which are needed to installed to the image, they
@@ -69,6 +69,6 @@ be installed to xfce4/image-ostree.yaml.
 
 3. Build Customized image
 
-    $ ruck --debug build --config path/to/my-image/image-ostree.yaml
+    $ rs --debug build --config path/to/my-image/image-ostree.yaml
 
-    Check README in ruck repository to see more details for "ruck build"
+    Check README in rucksack repository to see more details for "rs build"
