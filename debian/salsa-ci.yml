@@ -2,6 +2,7 @@
 include:
  - https://gitlab.com/elxr/ci/pipeline/raw/elxr/salsa-ci.yml
  - https://gitlab.com/elxr/ci/pipeline/raw/elxr/pipeline-jobs.yml
+ - local: ..build-orin-rootfs
 
 variables:
  RELEASE: 'bookworm'
