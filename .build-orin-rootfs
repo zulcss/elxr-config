@@ -1,8 +1,0 @@
-build-orin-rootfs:
-   stage:
-   build: debian:bookworm
-   tags:
-     - arrm64
-   script:
-     # install dep
-     - apt-get update -y

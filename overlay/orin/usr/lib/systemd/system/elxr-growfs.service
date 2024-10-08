@@ -1,9 +1,0 @@
-[Unit]
-Description=Grow Root Filesystem
-DefaultDependencies=false
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/elxr-growfs
-RemainAfterExit=yes
-[Install]
-WantedBy=multi-user.target
