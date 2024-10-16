@@ -1,0 +1,38 @@
+---
+name: elxr-jeston-rootfs
+description: "orin minimal configuration."
+architecture: arm64
+version: 0.1
+schemaVersion: 1
+params:
+  version: ${version}
+  source: ${oc.env:CURRENT_DIR}/elxr-tegra-${version}-${architecture}.tar.gz
+stages:
+  install:
+    - name: "Creating rootfs."
+      module: bootstrap.mmdebestrap
+      options:
+        suite: bookworm
+        target: ${params.source}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/orin/ /'
+          - 'mkdir "$1/build"'
+          - 'sync-in workarounds/ /build'
+        customize_hooks:
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" elxr-growfs
+          - chroot $1 dpkg -i /build/libjpeg-turbo8_2.1.2-0ubuntu1_arm64.deb
+          - chroot $1 dpkg -i /build/libffi7_3.3-6_arm64.deb
+          - rm -f $1/etc/X11/xorg.conf.d/fb.conf
+          - rm -rf "$1/build"
+        packages:
+          - ${include:manifests/packages-orin.yaml}
+          - ${include:manifests/packages-xfce4.yaml}
+          - systemd-timesyncd
+        mirrors:
+          - deb http://deb.debian.org/debian bookworm main non-free-firmware
+          - deb http://deb.debian.org/debian bookworm-updates main
+          - deb http://security.debian.org/debian-security bookworm-security main
+          - deb http://mirror.elxr.dev/elxr aria main
