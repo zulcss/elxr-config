@@ -1,3 +1,12 @@
+elxr-config (0.1.26) unstable; urgency=medium
+
+  * New upstream release:
+    - 992feebc: Add AVH image support.
+    - 46cff61a: Add Nvidia Orin Jetson support.
+    - 9d14ed1c: Transition from rucksack to ruck
+
+ -- Chuck Short <charles.short@windriver.com>  Fri, 18 Oct 2024 16:03:40 +0000
+
 elxr-config (0.1.25) unstable; urgency=medium
 
   * New upstream release:
