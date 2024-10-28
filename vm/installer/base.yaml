@@ -2,7 +2,7 @@
 name: elxr-base-installer-amd64
 description: "AMD64 base installer configuration."
 architecture: amd64
-version: 0.1
+version: 12.6.1.0
 schemaVersion: 1
 params:
   version: ${version}
