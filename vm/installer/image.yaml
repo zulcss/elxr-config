@@ -2,7 +2,7 @@
 name: elxr-minimal-amd64
 description: "AMD64 example configuration."
 architecture: amd64
-version: 0.1
+version: 12.6.1.0
 schemaVersion: 1
 params:
   version: ${version}
