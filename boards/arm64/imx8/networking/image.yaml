@@ -30,7 +30,7 @@ stages:
           - export GRUB_MKIMAGE_MODULES=$(find $1/usr/lib/grub/arm64-efi/ -type f -name "*.mod" -exec basename {} .mod \;);
             chroot $1 grub-mkimage -p /EFI/debian -O arm64-efi -o /usr/lib/ostree-grub/EFI/BOOT/bootaa64.efi $GRUB_MKIMAGE_MODULES;
           - cd $1/usr/lib/modules; for d in $(ls * -d); do mkdir -p $1/usr/lib/modules/$d/dtb;
-            cp -rf $1/usr/lib/linux-image-$d/freescale/imx8*.dtb $1/usr/lib/modules/$d/dtb; done; cd -
+            cp -rf $1/usr/lib/linux-image-$d/freescale/imx*.dtb $1/usr/lib/modules/$d/dtb; done; cd -
         packages:
           - ${include:manifests/packages-arm64.yaml}
           - ${include:manifests/packages-networking.yaml}
@@ -91,7 +91,7 @@ stages:
     - name: "Installing bootloader on ${params.disk}"
       module: installer.bootloader
       options:
-        kernel_args: "root=LABEL=ROOT console=tty0 console=ttymxc0,115200 fdt_file=imx8mq-evk.dtb"
+        kernel_args: "root=LABEL=ROOT console=tty0"
         uefi: grub-efi
 
     - name: "Undeploy on ${params.disk}."
