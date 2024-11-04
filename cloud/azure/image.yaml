@@ -1,0 +1,92 @@
+---
+name: elxr-azure-amd64
+description: "amd64 azure image"
+architecture: amd64
+version: 12.7.0.0
+schemaVersion: 1
+params:
+  version: ${version}
+  source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
+  image: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
+  disk: /dev/loop1
+  mounts:
+    - name: root
+      label: ROOT
+      target: /
+      fs: ext4
+    - name: efi
+      label: EFI
+      target: boot/efi
+      fs: vfat
+stages:
+  install:
+    - name: "Creating rootfs tarball."
+      module: bootstrap.mmdebestrap
+      options:
+        suite: bookworm
+        target: ${params.source}
+        architecture: ${architecture}
+        customize_hooks:
+          - 'sync-in overlay/azure/ /'
+          - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" elxr-growfs
+          - chroot $1 echo "localhost" > $1/etc/hostname
+          - chroot $1 sed -i -e 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+          - chroot $1 sed -i -e 's/^PermitRootLogin .*/PermitRootLogin without-password/' /etc/ssh/sshd_config
+          - chroot $1 ln -fs /usr/share/zoneinfo/UTC /etc/localtime
+        packages:
+          - ${include:manifests/packages-azure.yaml}
+        mirrors:
+          - deb https://deb.debian.org/debian bookworm main non-free-firmware
+          - deb https://deb.debian.org/debian bookworm-updates main
+          - deb https://security.debian.org/debian-security bookworm-security main
+          - deb https://mirror.elxr.dev/elxr aria main
+
+    - name: "Create raw image ${params.image}"
+      module: image.raw
+      options:
+        name: ${params.image}
+        size: 30G
+
+    - name: "Partitioning ${params.image}"
+      module: installer.disk.parted
+      options:
+        slices:
+          - name: ROOT
+            start: 134MB
+            end: 32.2GB
+            flags: []
+            id: ''
+          - name: EFI
+            start: 4194kB
+            end: 134MB
+            flags: [boot, esp]
+            id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+          - name: BIOS_GRUB
+            start: 1049kB
+            end: 4193kB
+            flags: [bios_grub]
+            id: ''
+
+    - name: "Formatting ${params.disk}."
+      module: installer.disk.fs
+      options:
+        filesystems:
+          - name: ROOT
+            label: ROOT
+            fs: ext4
+            options: []
+          - name: EFI
+            label: EFI
+            fs: vfat
+            options: []
+
+    - name: "Unpacking ${params.source}"
+      module: installer.unpack
+      options: []
+
+    - name: "Undeploy on ${params.disk}."
+      module: utils.undeploy
+
+    - name: "Installing bootloader"
+      module: installer.bootloader.grub
