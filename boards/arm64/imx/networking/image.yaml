@@ -1,11 +1,12 @@
 ---
-name: elxr-avh-imx8
-description: "i.MX8 xfce4 configuration."
+name: elxr-networking-imx
+description: "i.MX8 networking configuration."
 architecture: arm64
 version: 12.6.1.0
 schemaVersion: 1
 params:
   version: ${version}
+  tarball: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
   source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
   image: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
   disk: /dev/loop1
@@ -15,12 +16,12 @@ stages:
       module: bootstrap.mmdebestrap
       options:
         suite: bookworm
-        target: ${params.source}
+        target: ${params.tarball}
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/debian/ /'
           - 'sync-in overlay/grub-efi/ /'
-          - 'sync-in overlay/xorg-imx8/ /'
+          - 'sync-in overlay/xorg-imx/ /'
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
@@ -33,7 +34,7 @@ stages:
             cp -rf $1/usr/lib/linux-image-$d/freescale/imx*.dtb $1/usr/lib/modules/$d/dtb; done; cd -
         packages:
           - ${include:manifests/packages-arm64.yaml}
-          - ${include:manifests/packages-xfce4.yaml}
+          - ${include:manifests/packages-networking.yaml}
           - systemd-timesyncd
         mirrors:
           - deb http://deb.debian.org/debian bookworm main non-free-firmware
@@ -97,8 +98,8 @@ stages:
     - name: "Undeploy on ${params.disk}."
       module: utils.undeploy
 
-    - name: "Compress avh image ${params.image}"
-      module: utils.run_shell
+    - name: "Compress image ${params.image}"
+      module: image.compress
       options:
-        commands:
-          - tools/generate_avh_zip.sh ${params.image}
+        name: ${params.image}
+        compression: zstd

@@ -1,5 +1,5 @@
 ---
-name: elxr-xfce4-imx8
+name: elxr-avh-imx
 description: "i.MX8 xfce4 configuration."
 architecture: arm64
 version: 12.6.1.0
@@ -21,7 +21,7 @@ stages:
         setup_hooks:
           - 'sync-in overlay/debian/ /'
           - 'sync-in overlay/grub-efi/ /'
-          - 'sync-in overlay/xorg-imx8/ /'
+          - 'sync-in overlay/xorg-imx/ /'
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
@@ -98,8 +98,8 @@ stages:
     - name: "Undeploy on ${params.disk}."
       module: utils.undeploy
 
-    - name: "Compress image ${params.image}"
-      module: image.compress
+    - name: "Compress avh image ${params.image}"
+      module: utils.run_shell
       options:
-        name: ${params.image}
-        compression: zstd
+        commands:
+          - tools/generate_avh_zip.sh ${params.image}
