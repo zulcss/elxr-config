@@ -1,6 +1,6 @@
 ---
-name: elxr-minimal-imx8
-description: "i.MX8 minimal configuration."
+name: elxr-networking-imx
+description: "i.MX8 networking configuration."
 architecture: arm64
 version: 12.6.1.0
 schemaVersion: 1
@@ -19,9 +19,9 @@ stages:
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/debian/ /'
-          - 'sync-in overlay/xorg-imx8/ /'
-        customize_hooks:
           - 'sync-in overlay/grub-efi/ /'
+          - 'sync-in overlay/xorg-imx/ /'
+        customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
           - systemctl enable --root="$1" elxr-growfs
@@ -33,6 +33,7 @@ stages:
             cp -rf $1/usr/lib/linux-image-$d/freescale/imx*.dtb $1/usr/lib/modules/$d/dtb; done; cd -
         packages:
           - ${include:manifests/packages-arm64.yaml}
+          - ${include:manifests/packages-networking.yaml}
           - systemd-timesyncd
         mirrors:
           - deb http://deb.debian.org/debian bookworm main non-free-firmware

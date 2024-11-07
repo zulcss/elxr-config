@@ -1,6 +1,6 @@
 ---
-name: elxr-networking-imx8
-description: "i.MX8 networking configuration."
+name: elxr-ai-imx
+description: "i.MX8 AI configuration."
 architecture: arm64
 version: 12.6.1.0
 schemaVersion: 1
@@ -20,7 +20,7 @@ stages:
         setup_hooks:
           - 'sync-in overlay/debian/ /'
           - 'sync-in overlay/grub-efi/ /'
-          - 'sync-in overlay/xorg-imx8/ /'
+          - 'sync-in overlay/xorg-imx/ /'
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
@@ -33,7 +33,7 @@ stages:
             cp -rf $1/usr/lib/linux-image-$d/freescale/imx*.dtb $1/usr/lib/modules/$d/dtb; done; cd -
         packages:
           - ${include:manifests/packages-arm64.yaml}
-          - ${include:manifests/packages-networking.yaml}
+          - ${include:manifests/packages-ai.yaml}
           - systemd-timesyncd
         mirrors:
           - deb http://deb.debian.org/debian bookworm main non-free-firmware
