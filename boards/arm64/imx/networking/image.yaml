@@ -1,6 +1,6 @@
 ---
 name: elxr-networking-imx
-description: "i.MX8 networking configuration."
+description: "i.MX networking configuration."
 architecture: arm64
 version: 12.6.1.0
 schemaVersion: 1

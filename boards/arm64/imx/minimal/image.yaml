@@ -1,6 +1,6 @@
 ---
 name: elxr-minimal-imx
-description: "i.MX8 minimal configuration."
+description: "i.MX minimal configuration."
 architecture: arm64
 version: 12.6.1.0
 schemaVersion: 1

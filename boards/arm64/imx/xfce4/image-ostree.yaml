@@ -1,6 +1,6 @@
 ---
 name: elxr-xfce4-ostree-imx
-description: "i.MX8 xfce4 ostree configuration."
+description: "i.MX xfce4 ostree configuration."
 architecture: arm64
 version: 12.6.1.0
 schemaVersion: 1
