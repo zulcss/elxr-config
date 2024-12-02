@@ -1,5 +1,6 @@
 base usr/share/elxr-config
 boards usr/share/elxr-config
+cloud usr/share/elxr-config
 manifests usr/share/elxr-config
 overlay usr/share/elxr-config
 vm usr/share/elxr-config
