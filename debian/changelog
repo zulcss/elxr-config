@@ -1,3 +1,10 @@
+elxr-config (0.1.29) unstable; urgency=medium
+
+  * New upstream release:
+    - e9de1f76: Add missing directory.
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 03 Dec 2024 19:47:27 -0500
+
 elxr-config (0.1.28) unstable; urgency=medium
 
   * New upstream release:
