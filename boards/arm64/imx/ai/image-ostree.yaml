@@ -2,7 +2,7 @@
 name: elxr-ai-ostree-imx
 description: "i.MX AI ostree configuration."
 architecture: arm64
-version: 12.6.1.0
+version: 99.99.0
 schemaVersion: 1
 params:
   version: ${version}
