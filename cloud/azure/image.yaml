@@ -21,7 +21,7 @@ params:
 stages:
   install:
     - name: "Creating rootfs tarball."
-      module: bootstrap.mmdebestrap
+      module: bootstrap.mmdebstrap
       options:
         suite: bookworm
         target: ${params.source}
