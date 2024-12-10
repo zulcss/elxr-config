@@ -15,11 +15,11 @@ stages:
     - name: "Create rootfs"
       module: bootstrap.mmdebstrap
       options:
-        suite: bookworm
+        suite: aria
         target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
-          - 'sync-in overlay/debian/ /'
+          - 'sync-in overlay/elxr/ /'
         customize_hooks:
           - 'sync-in overlay/ostree/usr/lib /usr/lib'
           - echo 'root:root' | chroot "$1" chpasswd
@@ -31,9 +31,6 @@ stages:
           - ${include:manifests/packages-ostree.yaml}
           - ${include:manifests/packages-networking.yaml}
         mirrors:
-          - deb http://deb.debian.org/debian bookworm main non-free-firmware
-          - deb http://deb.debian.org/debian bookworm-updates main
-          - deb http://security.debian.org/debian-security bookworm-security main
           - deb http://mirror.elxr.dev/elxr aria main
 
     - name: "Unpack ${params.source}"
