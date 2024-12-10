@@ -15,11 +15,11 @@ stages:
     - name: "Create rootfs"
       module: bootstrap.mmdebstrap
       options:
-        suite: bookworm
+        suite: aria
         target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
-          - 'sync-in overlay/debian/ /'
+          - 'sync-in overlay/elxr/ /'
           - 'sync-in overlay/grub-efi/ /'
           - 'sync-in overlay/xorg-imx/ /'
         customize_hooks:
@@ -39,9 +39,6 @@ stages:
           - ${include:manifests/packages-xfce4.yaml}
           - systemd-timesyncd
         mirrors:
-          - deb http://deb.debian.org/debian bookworm main non-free-firmware
-          - deb http://deb.debian.org/debian bookworm-updates main
-          - deb http://security.debian.org/debian-security bookworm-security main
           - deb http://mirror.elxr.dev/elxr aria main
 
     - name: "Unpack ${params.source}"
