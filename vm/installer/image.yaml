@@ -57,6 +57,9 @@ stages:
         kernel_args: "root=LABEL=ROOT console=tty0 console=ttyS0,115200"
         uefi_driver: ext4
 
+    - name: "Set boot order on ${params.disk}."
+      module: utils.bootorder
+
     - name: "Undeploy on ${params.disk}."
       module: utils.undeploy
 
