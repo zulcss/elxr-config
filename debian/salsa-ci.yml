@@ -1,0 +1,9 @@
+# Copyright (c) 2025 Wind River Systems, Inc.
+#
+# SPDX-License-Identifier: Apache-2.0
+---
+include:
+  - https://gitlab.com/elxr/ci/pipeline/raw/elxr/recipes/elxr.yml
+
+variables:
+  SALSA_CI_DISABLE_PUBLISH_TO_SHARED_APTLY: 1
