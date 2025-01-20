@@ -1,3 +1,11 @@
+elxr-config (0.1.33) unstable; urgency=medium
+
+  * New upstream release:
+    - aeed672 elxr: Bump version to 12.9.0.0
+    - 1759bf7 image.yaml: Modify the bootorder for non-ostree image
+
+ -- Haitao Liu <haitao.liu@windriver.com>  Mon, 20 Jan 2025 11:31:19 +0800
+
 elxr-config (0.1.32) unstable; urgency=medium
 
   * New upstream release:
