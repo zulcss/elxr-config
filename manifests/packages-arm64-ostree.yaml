@@ -17,9 +17,9 @@ dbus
 policykit-1
 curl
 wget
-ca-certificates
 grub-efi
 uefi-ext4
 systemd-resolved
 cloud-guest-utils
 xterm
+zstd
