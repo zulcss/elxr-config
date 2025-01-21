@@ -17,3 +17,6 @@
 *.gz
 elxr*.img
 *.zst
+elr*.img
+*.log
+mirror.list
