@@ -9,8 +9,7 @@ params:
   source: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
   repository: /var/www/html/repo
   branch: elxr/${architecture}
-  image: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
-  disk: /dev/loop1
+  disk: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
 stages:
   install:
     - name: "Create rootfs"
@@ -52,10 +51,10 @@ stages:
     - name: "Create an ostree branch."
       module: installer.ostree.prep
 
-    - name: "Create raw image ${params.image}"
+    - name: "Create raw image ${params.disk}"
       module: image.raw
       options:
-        name: ${params.image}
+        name: ${params.disk}
         size: 4G
 
     - name: "Partitioning ${params.disk}."
@@ -122,8 +121,8 @@ stages:
     - name: "Undeploy on ${params.disk}."
       module: utils.undeploy
 
-    - name: "Compress image ${params.image}"
+    - name: "Compress image ${params.disk}"
       module: image.compress
       options:
-        name: ${params.image}
+        name: ${params.disk}
         compression: zstd

@@ -7,8 +7,7 @@ schemaVersion: 1
 params:
   version: ${version}
   source: ${oc.env:CURRENT_DIR}/elxr-cloud-${version}-${architecture}.tar.gz
-  image: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
-  disk: /dev/loop1
+  disk: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
   hooks: hooks
 stages:
   install:
@@ -48,10 +47,10 @@ stages:
           - deb http://security.debian.org/debian-security bookworm-security main contrib non-free
           - deb http://mirror.elxr.dev/elxr aria main
 
-    - name: "Create raw image ${params.image}"
+    - name: "Create raw image ${params.disk}"
       module: image.raw
       options:
-        name: ${params.image}
+        name: ${params.disk}
         size: 20G
 
     - name: "Partitioning ${params.disk}."
@@ -123,8 +122,8 @@ stages:
     - name: "Undeploy on ${params.disk}."
       module: utils.undeploy
 
-    - name: "Compress image ${params.image}"
+    - name: "Compress image ${params.disk}"
       module: image.compress
       options:
-        name: ${params.image}
+        name: ${params.disk}
         compression: zstd
