@@ -94,14 +94,6 @@ stages:
             fs: ext4
             options: []
 
-    - name: "Create ostree repository"
-      module: installer.ostree.init
-      options:
-        mode: archive-z2
-
-    - name: "Pull ostree from ${params.repository}."
-      module: installer.ostree.pull.local
-
     - name: "Deploy ostree ${params.branch} to ${params.disk}."
       module: installer.ostree.deploy
       options:
