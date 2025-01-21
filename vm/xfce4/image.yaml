@@ -85,9 +85,6 @@ stages:
         kernel_args: "root=LABEL=ROOT console=tty0 console=ttyS0,115200"
         uefi_driver: ext4
 
-    - name: "Undeploy on ${params.disk}."
-      module: utils.undeploy
-
     - name: "Compress image ${params.disk}"
       module: image.compress
       options:

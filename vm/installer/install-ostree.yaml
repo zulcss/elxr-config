@@ -80,6 +80,3 @@ stages:
       options:
         source: /var/log/tiler.log
         dest: efi/
-
-    - name: "Undeploy on ${params.disk}."
-      module: utils.undeploy

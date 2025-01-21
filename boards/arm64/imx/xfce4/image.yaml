@@ -93,9 +93,6 @@ stages:
         kernel_args: "root=LABEL=ROOT console=tty0"
         uefi: grub-efi
 
-    - name: "Undeploy on ${params.disk}."
-      module: utils.undeploy
-
     - name: "Compress image ${params.disk}"
       module: image.compress
       options:

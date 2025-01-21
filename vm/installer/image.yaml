@@ -59,7 +59,3 @@ stages:
 
     - name: "Set boot order on ${params.disk}."
       module: utils.bootorder
-
-    - name: "Undeploy on ${params.disk}."
-      module: utils.undeploy
-

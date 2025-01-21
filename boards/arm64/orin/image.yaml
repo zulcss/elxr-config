@@ -85,7 +85,3 @@ stages:
     - name: "Unpacking ${params.source}"
       module: installer.unpack
       options: []
-
-    - name: "Undeploy on ${params.disk}."
-      module: utils.undeploy
-

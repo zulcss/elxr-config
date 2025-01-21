@@ -84,8 +84,5 @@ stages:
       module: installer.unpack
       options: []
 
-    - name: "Undeploy on ${params.disk}."
-      module: utils.undeploy
-
     - name: "Installing bootloader"
       module: installer.bootloader.grub
