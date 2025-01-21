@@ -94,9 +94,6 @@ stages:
             fs: ext4
             options: []
 
-    - name: "Deploy on ${params.disk}."
-      module: utils.deploy
-
     - name: "Create ostree repository"
       module: installer.ostree.init
       options:
