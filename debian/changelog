@@ -1,3 +1,17 @@
+elxr-config (0.1.30) unstable; urgency=medium
+
+  * New upstream release:
+    - e5f5f01: CI: cleanup salsa-ci.yml and match what is in `main`.
+    - ff3e5b5: Drop Debian bits.
+    - 35e01b2: Correct module name for bootstrap.
+    - da7a896: overlay: fixed the root partition expand failure.
+    - fb78ad3: Add /etc/elxr/variant in edge
+    - f5d807: Update .gitignore for emacs, vim, vscode and compressed image files
+    - e86e124: Add a minimal VM image with default config suitable for K8s nodes
+    - 8d57049: debian: drop salsa-ci.yml and gpb.conf
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 28 Jan 2025 13:44:39 -0500
+
 elxr-config (0.1.29) unstable; urgency=medium
 
   * New upstream release:
