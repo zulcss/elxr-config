@@ -12,7 +12,7 @@ params:
 stages:
   install:
     - name: "Creating installer."
-      module: bootstrap.mmdebestrap
+      module: bootstrap.mmdebstrap
       options:
         suite: aria
         target: ${params.source}
