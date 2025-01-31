@@ -1,3 +1,10 @@
+elxr-config (0.1.31) unstable; urgency=medium
+
+  * New upstream release:
+    - 9896ed9: Fix spelling typo
+
+ -- Mark Asselstine <mark.asselstine@windriver.com>  Fri, 31 Jan 2025 16:46:01 -0500
+
 elxr-config (0.1.30) unstable; urgency=medium
 
   * New upstream release:
