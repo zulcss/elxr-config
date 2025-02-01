@@ -1,3 +1,10 @@
+elxr-config (0.1.32) unstable; urgency=medium
+
+  * New upstream release:
+    - a0a3971: Fix version typo.
+
+ -- Chuck Short <charles.short@windriver.com>  Sat, 01 Feb 2025 08:16:27 -0500
+
 elxr-config (0.1.31) unstable; urgency=medium
 
   * New upstream release:
