@@ -22,7 +22,7 @@ $ find . -name 'image*.yaml'
 And use rucksack to build them:
 
 ```
-    $ rs --debug build --config path/to/image-ostree.yaml
+    $ rs build --debug --config path/to/image-ostree.yaml
     $ ls *.img *.img.zst
 ```
 
@@ -69,6 +69,6 @@ be installed to xfce4/image-ostree.yaml.
 
 3. Build Customized image
 
-    $ rs --debug build --config path/to/my-image/image-ostree.yaml
+    $ rs build --debug --config path/to/my-image/image-ostree.yaml
 
     Check README in rucksack repository to see more details for "rs build"
