@@ -1,3 +1,10 @@
+elxr-config (0.1.34) unstable; urgency=medium
+
+  * New upstream release:
+  - 1917129c: Fix ostree minimal image
+
+ -- Chuck Short <charles.short@windriver.com>  Thu, 06 Mar 2025 15:39:04 -0500
+
 elxr-config (0.1.33) unstable; urgency=medium
 
   * New upstream release:
