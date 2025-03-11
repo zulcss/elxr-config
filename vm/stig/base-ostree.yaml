@@ -1,0 +1,48 @@
+---
+name: elxr-stig-ostree-amd64
+description: "AMD64 ostree configuration for STIG."
+architecture: amd64
+version: 99.99.0
+schemaVersion: 1
+params:
+  source: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
+  tarball: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
+  repository: /var/www/html/ostree_repo
+  branch: elxr/${architecture}
+stages:
+  install:
+    - name: "Create rootfs"
+      module: bootstrap.mmdebstrap
+      options:
+        suite: aria
+        target: ${params.source}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/debian/ /'
+        customize_hooks:
+          - 'sync-in overlay/ostree/usr/lib /usr/lib'
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" elxr-growfs
+          - chroot $1 echo "localhost" > $1/etc/hostname
+          - mkdir -p $1/efi
+        packages:
+          - ${include:manifests/packages-ostree.yaml}
+          - ${include:manifests/packages-stig.yaml}
+        mirrors:
+          - deb http://mirror.elxr.dev/elxr aria main
+
+    - name: "Unpack ${params.source}"
+      module: unpack.tarball
+      options:
+        compression: tgz
+        sources:
+          - ${params.source}
+
+    - name: "Create ostree repository"
+      module: installer.ostree.init
+      options:
+        mode: archive-z2
+
+    - name: "Create an ostree branch."
+      module: installer.ostree.prep
