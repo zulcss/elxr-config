@@ -1,0 +1,8 @@
+---
+openscap-scanner
+ssg-base
+ssg-debderived
+rsyslog
+apparmor
+libpam-pwquality
+ufw

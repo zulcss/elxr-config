@@ -1,0 +1,28 @@
+---
+name: elxr-stig-installer-amd64
+description: "AMD64 base installer configuration for STIG."
+architecture: amd64
+version: 99.99.0
+schemaVersion: 1
+params:
+  source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
+stages:
+  install:
+    - name: "Create rootfs tarball"
+      module: bootstrap.mmdebstrap
+      options:
+        suite: aria
+        target: ${params.source}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/elxr/ /'
+        customize_hooks:
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - chroot $1 echo "localhost" > $1/etc/hostname
+          - mkdir -p $1/efi
+        packages:
+          - ${include:manifests/packages-base.yaml}
+          - ${include:manifests/packages-stig.yaml}
+        mirrors:
+          - deb http://mirror.elxr.dev/elxr aria main

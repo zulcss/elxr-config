@@ -1,0 +1,87 @@
+---
+name: elxr-stig-ostree-amd64
+description: "AMD64 stig ostree configuration."
+architecture: amd64
+version: 99.99.0
+schemaVersion: 1
+params:
+  repository: /ostree
+  branch: elxr/${architecture}
+  disk: /dev/vda
+stages:
+  install:
+    - name: "Partitioning ${params.disk}."
+      module: installer.disk.parted
+      options:
+        slices:
+          - name: EFI
+            start: 0%
+            end: 128MB
+            flags: [boot, esp]
+            id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+          - name: BOOT
+            start: 128M
+            end: 640M
+            flags: []
+            id: bc13c2ff-59e6-4262-a352-b275fd6f7172
+          - name: ROOT
+            start: 640MB
+            end: 100%
+            flags: []
+            id: ''
+
+    - name: "Formatting ${params.disk}."
+      module: installer.disk.fs
+      options:
+        filesystems:
+          - name: EFI
+            label: EFI
+            fs: vfat
+            options: []
+          - name: BOOT
+            label: BOOT
+            fs: ext4
+            options: []
+          - name: ROOT
+            label: ROOT
+            fs: ext4
+            options: []
+
+    - name: "Deploy on ${params.disk}."
+      module: utils.deploy
+
+    - name: "Create ostree repository"
+      module: installer.ostree.init
+      options:
+        mode: archive-z2
+
+    - name: "Pull ostree from ${params.repository}."
+      module: installer.ostree.pull.local
+
+    - name: "Deploy ostree ${params.branch} to ${params.disk}."
+      module: installer.ostree.deploy
+      options:
+        kernel_args:
+          - root=LABEL=ROOT
+          - rw
+          - console=ttyS0,115200n8 console=tty0
+
+    - name: "Installing ostree bootloader on ${params.disk}"
+      module: installer.bootloader.ostree
+      options:
+        uefi_driver: ext4
+
+    - name: "Set boot order on ${params.disk}."
+      module: utils.bootorder
+
+    - name: "Installation complete successfully."
+      module: noop.placeholder
+
+    - name: "Save installation log to rootfs/efi/tiler.log"
+      module: utils.copy
+      options:
+        source: /var/log/tiler.log
+        dest: efi/
+
+    - name: "Undeploy on ${params.disk}."
+      module: utils.undeploy
