@@ -50,7 +50,7 @@ stages:
       module: image.raw
       options:
         name: ${params.disk}
-        size: 4G
+        size: 20G
 
     - name: "Partitioning ${params.disk}."
       module: installer.disk.parted
