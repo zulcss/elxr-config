@@ -59,6 +59,9 @@ stages:
     - name: "Create an ostree branch."
       module: installer.ostree.prep
 
+    - name: "Commit an ostree branch."
+      module: installer.ostree.commit
+
     - name: "Create raw image ${params.disk}"
       module: image.raw
       options:

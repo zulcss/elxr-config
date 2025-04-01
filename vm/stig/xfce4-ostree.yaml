@@ -46,3 +46,6 @@ stages:
 
     - name: "Create an ostree branch."
       module: installer.ostree.prep
+
+    - name: "Create an ostree commit."
+      module: installer.ostree.commit
