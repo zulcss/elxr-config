@@ -1,21 +1,19 @@
 ---
 name: elxr-stig-imx
-description: "i.MX minimal configuration for STIG."
+description: "i.MX stig configuration."
 architecture: arm64
 version: 99.99.0
 schemaVersion: 1
 params:
-  tarball: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
   source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
-  image: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
-  disk: /dev/loop1
+  disk: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
 stages:
   install:
     - name: "Creating installer."
       module: bootstrap.mmdebstrap
       options:
         suite: bookworm
-        target: ${params.tarball}
+        target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/debian/ /'
@@ -41,10 +39,10 @@ stages:
           - deb http://security.debian.org/debian-security bookworm-security main
           - deb http://mirror.elxr.dev/elxr aria main
 
-    - name: "Create raw image ${params.image}"
+    - name: "Create raw image ${params.disk}"
       module: image.raw
       options:
-        name: ${params.image}
+        name: ${params.disk}
         size: 4G
 
     - name: "Partitioning ${params.disk}."
@@ -94,11 +92,8 @@ stages:
         kernel_args: "root=LABEL=ROOT console=tty0"
         uefi: grub-efi
 
-    - name: "Undeploy on ${params.disk}."
-      module: utils.undeploy
-
-    - name: "Compress image ${params.image}"
+    - name: "Compress image ${params.disk}"
       module: image.compress
       options:
-        name: ${params.image}
+        name: ${params.disk}
         compression: zstd
