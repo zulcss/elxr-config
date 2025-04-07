@@ -6,7 +6,6 @@ version: 99.99.0
 schemaVersion: 1
 params:
   source: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
-  tarball: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
   repository: /var/www/html/ostree_repo
   branch: elxr/${architecture}
 stages:
@@ -18,7 +17,7 @@ stages:
         target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
-          - 'sync-in overlay/debian/ /'
+          - 'sync-in overlay/elxr/ /'
         customize_hooks:
           - 'sync-in overlay/ostree/usr/lib /usr/lib'
           - echo 'root:root' | chroot "$1" chpasswd
