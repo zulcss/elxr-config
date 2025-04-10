@@ -1,3 +1,9 @@
+elxr-config (1.0.0) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Chuck Short <charles.short@windriver.com>  Thu, 10 Apr 2025 14:47:52 +0000
+
 elxr-config (0.1.17) bookworm; urgency=medium
 
   * New upstream release:
