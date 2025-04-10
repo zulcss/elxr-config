@@ -1,9 +1,137 @@
+elxr-config (1.0.0) unstable; urgency=medium
+
+  * New upstream release:
+    - 27e9e35: Fix configuration files for STIG
+    - c1996e5: Include upstream Docker repositories
+    - fb508b5: Add eLxr edge image for STIG
+    - 9e8577b: Change "suite" to aria
+    - 06a0704: Fix ostree minimal image
+    - 00468c3: packages-arm64-ostree.yaml: cleanup
+    - c1aa2b2: packages-arm64-ostree.yaml: housekeeping
+  * Update version to 12.10.0.0.
+
+ -- Chuck Short <charles.short@windriver.com>  Fri, 11 Apr 2025 08:43:31 -0400
+
+elxr-config (0.1.31) unstable; urgency=medium
+
+  * New upstream release:
+    - 9896ed9: Fix spelling typo
+
+ -- Mark Asselstine <mark.asselstine@windriver.com>  Fri, 31 Jan 2025 16:46:01 -0500
+
+elxr-config (0.1.30) unstable; urgency=medium
+
+  * New upstream release:
+    - e5f5f01: CI: cleanup salsa-ci.yml and match what is in `main`.
+    - ff3e5b5: Drop Debian bits.
+    - 35e01b2: Correct module name for bootstrap.
+    - da7a896: overlay: fixed the root partition expand failure.
+    - fb78ad3: Add /etc/elxr/variant in edge
+    - f5d807: Update .gitignore for emacs, vim, vscode and compressed image files
+    - e86e124: Add a minimal VM image with default config suitable for K8s nodes
+    - 8d57049: debian: drop salsa-ci.yml and gpb.conf
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 28 Jan 2025 13:44:39 -0500
+
+elxr-config (0.1.29) unstable; urgency=medium
+
+  * New upstream release:
+    - e9de1f76: Add missing directory.
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 03 Dec 2024 19:47:27 -0500
+
+elxr-config (0.1.28) unstable; urgency=medium
+
+  * New upstream release:
+    - Bump version from 12.6.1.0 to 12.7.0.0. 
+    - 3d3f104: Update version from 0.1 to 12.6.1.0.
+    - 76ca39e: Add support for x86 azure cloud image.
+    - 8f0984c: Replace string 'imx8' with 'imx' 
+    - 987a9e3: Improve the description of avh configuration yaml file.
+    - 7398736: Remove letter '8' from uppercase string 'MX8'.
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 19 Nov 2024 13:53:35 +0000
+
+elxr-config (0.1.27) unstable; urgency=medium
+
+  * New upstream release:
+    - 8423749c59d672749dcaf44d998489d460b012b4: elxr-config: support multiple imx platforms with only one imx raw imag
+
+ -- Meng Li <Meng.Li@windriver.com>  Mon, 04 Nov 2024 16:46:40 +0800
+
+elxr-config (0.1.26) unstable; urgency=medium
+
+  * New upstream release:
+    - 992feebc: Add AVH image support.
+    - 46cff61a: Add Nvidia Orin Jetson support.
+    - 9d14ed1c: Transition from rucksack to ruck
+
+ -- Chuck Short <charles.short@windriver.com>  Fri, 18 Oct 2024 16:03:40 +0000
+
+elxr-config (0.1.25) unstable; urgency=medium
+
+  * New upstream release:
+    - 891f61f3e8b7c8f323a649baec4433eb9d1703fa: imx-arm64: remove linux-image packages with ABI name
+
+ -- Li Zhou <li.zhou@windriver.com>  Fri, 6 Sep 2024 09:34:22 +0800
+
+elxr-config (0.1.24) unstable; urgency=medium
+
+  * New upstream release:
+    - 14e1fb7637abd41608335847dc649a6e88f76352: imx-arm64: upgrade kernel to 6.1.94
+
+ -- Li Zhou <li.zhou@windriver.com>  Mon, 29 Jul 2024 10:42:11 +0800
+
+elxr-config (0.1.23) unstable; urgency=medium
+
+  * New upstream release:
+    - 4b68578511a578d409f9afc146e9f2d742ecd80e: amd64: Remove kernel ABI name
+
+ -- Li Zhou <li.zhou@windriver.com>  Tue, 23 Jul 2024 09:52:51 +0800
+
+elxr-config (0.1.22) unstable; urgency=medium
+
+  * New upstream release:
+    - 8cf3faa3e67e93af5b7d866e36088b5b72307648: change name space to elxr
+
+ -- Jianqiang Shi <jianqiang.shi@windriver.com>  Thu, 04 Jul 2024 10:59:53 -0400
+
+elxr-config (0.1.21) unstable; urgency=medium
+
+  * New upstream release:
+    - a80c6924fa58d9764e253759d021fdc31cce22e5: Fix kernel installation.
+
+ -- Chuck Short <charles.short@windriver.com>  Mon, 24 Jun 2024 11:25:19 -0400
+
+elxr-config (0.1.20) bookworm; urgency=medium
+
+  * New upstream release:
+    - 286356f: MANIFESTS: Remove non-free-firmware packages
+
+ -- Hongxu Jia <hongxu.jia@windriver.com>  Fri, 21 Jun 2024 06:15:54 -0400
+
+elxr-config (0.1.19) bookworm; urgency=medium
+
+  * New upstream release:
+    - f9fa7584: Transition to new mirror and code name.
+    - 26268e8c: Add non-free-firmware archive.
+    - db334fef: manfiest: install firmware packages.
+    - fc5ef57b: Update public key for transition.
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 18 Jun 2024 19:38:14 -0400
+
+elxr-config (0.1.18) bookworm; urgency=medium
+
+  * New upstream release:
+    * Fix package elxr-config is empty
+    * Resize serial console
+
+ -- Hongxu Jia <hongxu.jia@windriver.com>  Thu, 06 Jun 2024 22:44:17 -0400
+
 elxr-config (0.1.17) bookworm; urgency=medium
 
   * New upstream release:
     * Transition from pablo to elxr.
-    * Fix package elxr-config is empty
-    * Resize serial console
 
  -- Chuck Short <charles.short@windriver.com>  Tue, 04 Jun 2024 14:23:42 +0000
 
