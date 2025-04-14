@@ -2,7 +2,7 @@
 name: elxr-minimal-ostree-amd64
 description: "AMD64 ostree configuration."
 architecture: amd64
-version: 99.99.0
+version: 12.10.0.0
 schemaVersion: 1
 params:
   source: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
