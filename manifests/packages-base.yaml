@@ -18,3 +18,6 @@ wget
 systemd-resolved
 cloud-guest-utils
 xterm
+apparmor
+apparmor-utils
+auditd
