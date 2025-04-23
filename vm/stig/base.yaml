@@ -22,7 +22,7 @@ stages:
           - chroot $1 echo "localhost" > $1/etc/hostname
           - mkdir -p $1/efi
         packages:
-          - ${include:manifests/packages-base.yaml}
+          - ${include:manifests/packages-elxr.yaml}
           - ${include:manifests/packages-stig.yaml}
         mirrors:
           - deb http://mirror.elxr.dev/elxr aria main
