@@ -12,7 +12,7 @@ stages:
     - name: "Creating rootfs."
       module: bootstrap.mmdebstrap
       options:
-        suite: bookworm
+        suite: aria
         target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
