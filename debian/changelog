@@ -1,3 +1,23 @@
+elxr-config (1.0.1) unstable; urgency=medium
+
+  * New upstream release:
+  - 4876f57: Clean up unused overlay/debian and packages-base.yaml
+  - e86d81f: Change suite to aria for container image manifest
+  - 4d9d221: Drop Debian from stig mainfests
+  - a0e26e0: Drop Debian from arm64 manifests
+  - 1499120: Drop Debian from base manifests
+  - d6658a1: Drop Debian from xfce4 manifests
+  - 5a760cb: Drop Debian from installer manifests
+  - 6063d43: Drop Debian from cloud image
+  - 77438a4: Drop Debian from minimal elxr AI images
+  - 1385114: Drop Debian from minimal networking manifest
+  - b924803: ostree: Update ostree manifests
+  - 38cfb45: Set the default disk size to 20G
+  - 5247db7: Remove unnecessary configuration files for stig
+  - 25d238b: packages-elxr/packages-base: Added AppArmor utilities 
+
+ -- Chuck Short <charles.short@windriver.com>  Wed, 30 Apr 2025 08:47:31 -0400
+
 elxr-config (1.0.0) unstable; urgency=medium
 
   * New upstream release:
