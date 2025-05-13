@@ -1,3 +1,10 @@
+elxr-config (1.0.2) unstable; urgency=medium
+
+  * New upstream release:
+    - fe7ace70: Re-add debian mirror URI
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 13 May 2025 10:22:28 -0400
+
 elxr-config (1.0.1) unstable; urgency=medium
 
   * New upstream release:
