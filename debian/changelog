@@ -1,3 +1,10 @@
+elxr-config (1.0.3) unstable; urgency=medium
+
+  * New upstream release:
+    - 128497c2: Fix typo
+
+ -- Xiaozhan Li <Xiaozhan.Li.CN@windriver.com>  Mon, 19 May 2025 02:09:19 -0400
+
 elxr-config (1.0.2) unstable; urgency=medium
 
   * New upstream release:
