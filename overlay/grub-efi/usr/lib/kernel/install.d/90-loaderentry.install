@@ -151,7 +151,6 @@ mkdir -p "${LOADER_ENTRY%/*}" || {
     [ -n "$SORT_KEY" ] && echo "sort-key   $SORT_KEY"
     echo "options    $BOOT_OPTIONS"
     echo "linux      $ENTRY_DIR/linux"
-    [ -d "/lib/modules/$KERNEL_VERSION/dtb" ] && echo "fdtdir     $ENTRY_DIR/dtb"
 
     have_initrd=
     for initrd in "${@}" "${KERNEL_INSTALL_STAGING_AREA}"/initrd*; do
