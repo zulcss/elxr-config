@@ -30,7 +30,7 @@ stages:
           - ${include:manifests/packages-ostree.yaml}
           - ${include:manifests/packages-xfce4.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main
+          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware
 
     - name: "Unpack ${params.source}"
       module: unpack.tarball
