@@ -29,7 +29,7 @@ stages:
         packages:
           - ${include:manifests/packages-ostree.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main
+          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware
 
     - name: "Unpack ${params.source}"
       module: unpack.tarball
