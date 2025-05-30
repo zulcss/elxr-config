@@ -1,3 +1,11 @@
+elxr-config (1.0.4) unstable; urgency=medium
+
+  * New upstream release:
+    - 10d4d919: Add non-free-firmware component.
+    - 3c29199d: Remove fdtdir line in configuration file.
+
+ -- Chuck Short <charles.short@windriver.com>  Fri, 30 May 2025 08:13:09 -0400
+
 elxr-config (1.0.3) unstable; urgency=medium
 
   * New upstream release:
