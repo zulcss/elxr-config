@@ -1,5 +1,5 @@
 ---
-name: elxr-orin-jestson
+name: elxr-orin-jetson
 description: "orin minimal configuration."
 architecture: arm64
 version: 99.99.0
