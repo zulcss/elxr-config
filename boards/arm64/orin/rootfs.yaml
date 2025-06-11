@@ -1,5 +1,5 @@
 ---
-name: elxr-jeston-rootfs
+name: elxr-jetson-rootfs
 description: "orin minimal configuration."
 architecture: arm64
 version: 12.10.0.0
