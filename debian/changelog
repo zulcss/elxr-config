@@ -1,3 +1,11 @@
+elxr-config (1.0.5) unstable; urgency=medium
+
+  * New upstream release:
+    * c41b3f7d: resize-serial.sh: Suppress the warning information.
+    * 68faa192: Fix spelling typo.
+
+ -- Chuck Short <charles.short@windriver.com>  Thu, 12 Jun 2025 08:34:28 -0400
+
 elxr-config (1.0.4) unstable; urgency=medium
 
   * New upstream release:
