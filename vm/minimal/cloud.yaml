@@ -19,13 +19,12 @@ stages:
         setup_hooks:
           - 'sync-in overlay/elxr/ /'
         customize_hooks:
-          - systemctl enable --root="$1" systemd-networkd
           - systemctl enable --root="$1" elxr-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
           - chroot $1 echo 'br_netfilter' > $1/etc/modules-load.d/netfilter.conf
           - chroot $1 echo 'vm.swappiness = 0' > $1/etc/sysctl.d/disable_swappiness.conf
           - chroot $1 echo 'net.ipv4.ip_forward = 1' > $1/etc/sysctl.d/enable_forwarding.conf
-
+          - chroot $1 apt remove -y --purge ifupdown
         packages:
           - ${include:manifests/packages-cloud-minimal.yaml}
         mirrors:

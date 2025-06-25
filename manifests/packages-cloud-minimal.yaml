@@ -20,3 +20,4 @@ cloud-init
 qemu-guest-agent
 gpg
 zstd
+netplan.io
