@@ -18,6 +18,7 @@ stages:
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/elxr/ /'
+          - 'sync-in overlay/systemd-networkd/ /'
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd

@@ -20,6 +20,7 @@ stages:
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/elxr/ /'
+          - 'sync-in overlay/systemd-networkd/ /'
           - 'sync-in overlay/grub-efi/ /'
           - 'sync-in overlay/xorg-imx/ /'
         customize_hooks:
