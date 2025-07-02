@@ -1,3 +1,10 @@
+elxr-config (1.0.7) unstable; urgency=medium
+
+  * New upstream release:
+    - Bump cloud release to 12.10.1.0.
+
+ -- Chuck Short <charles.short@windriver.com>  Wed, 02 Jul 2025 08:05:33 -0400
+
 elxr-config (1.0.6) unstable; urgency=medium
 
   * New upstream release:
