@@ -2,7 +2,7 @@
 name: elxr-networking-ostree-imx
 description: "i.MX networking ostree configuration."
 architecture: arm64
-version: 12.10.0.0
+version: 12.10.1.0
 schemaVersion: 1
 params:
   version: ${version}

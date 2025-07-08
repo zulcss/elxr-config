@@ -2,7 +2,7 @@
 name: elxr-stig-installer-amd64
 description: "AMD64 base installer configuration for STIG."
 architecture: amd64
-version: 12.10.0.0
+version: 12.10.1.0
 schemaVersion: 1
 params:
   source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
