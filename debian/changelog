@@ -1,3 +1,10 @@
+elxr-config (1.0.10) unstable; urgency=medium
+
+  * New uptream release:
+   - Bump images to 12.11.0.0.
+
+ -- Chuck Short <charles.short@windriver.com>  Mon, 25 Aug 2025 10:44:37 -0400
+
 elxr-config (1.0.9) unstable; urgency=medium
 
   * New upstream release:
