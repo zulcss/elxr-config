@@ -2,7 +2,7 @@
 name: elxr-k3s-amd64
 description: "AMD64 k3s configuration."
 architecture: amd64
-version: 12.10.1.0
+version: 12.11.0.0
 schemaVersion: 1
 params:
   version: ${version}

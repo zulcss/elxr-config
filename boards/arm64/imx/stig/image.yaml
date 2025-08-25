@@ -2,7 +2,7 @@
 name: elxr-stig-imx
 description: "i.MX stig configuration."
 architecture: arm64
-version: 12.10.1.0
+version: 12.11.0.0
 schemaVersion: 1
 params:
   source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz

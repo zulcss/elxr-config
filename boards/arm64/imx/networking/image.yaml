@@ -2,7 +2,7 @@
 name: elxr-networking-imx
 description: "i.MX networking configuration."
 architecture: arm64
-version: 12.10.1.0
+version: 12.11.0.0
 schemaVersion: 1
 params:
   version: ${version}
