@@ -1,3 +1,9 @@
+elxr-config (1.0.11) unstable; urgency=medium
+
+  * debian: Add missing directory - container
+
+ -- William Lyu <William.Lyu@windriver.com>  Wed, 27 Aug 2025 14:34:16 -0400
+
 elxr-config (1.0.10) unstable; urgency=medium
 
   * New uptream release:
