@@ -28,7 +28,7 @@ stages:
           - ${include:manifests/packages-elxr.yaml}
           - ${include:manifests/packages-xfce4.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware
+          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
 
     - name: "Create raw image ${params.disk}"
       module: image.raw

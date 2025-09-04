@@ -32,7 +32,7 @@ stages:
           - ${include:manifests/packages-ostree.yaml}
           - ${include:manifests/packages-networking.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware
+          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
 
     - name: "Unpack ${params.source}"
       module: unpack.tarball

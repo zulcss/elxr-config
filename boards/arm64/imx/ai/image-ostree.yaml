@@ -40,7 +40,7 @@ stages:
           - ${include:manifests/packages-ai.yaml}
           - systemd-timesyncd
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware
+          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
 
     - name: "Unpack ${params.source}"
       module: unpack.tarball
