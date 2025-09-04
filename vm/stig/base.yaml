@@ -26,4 +26,4 @@ stages:
           - ${include:manifests/packages-elxr.yaml}
           - ${include:manifests/packages-stig.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware
+          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
