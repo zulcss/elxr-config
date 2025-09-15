@@ -13,6 +13,10 @@ stages:
       module: bootstrap.mmdebstrap
       options:
         suite: aria
+        components:
+          - main
+          - non-free-firmware
+          - contrib
         target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
@@ -31,9 +35,3 @@ stages:
           - ${include:manifests/packages-orin.yaml}
           - ${include:manifests/packages-xfce4.yaml}
           - systemd-timesyncd
-        mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
-          - deb http://deb.debian.org/debian bookworm main non-free-firmware contrib
-          - deb http://deb.debian.org/debian bookworm-updates main
-          - deb http://security.debian.org/debian-security bookworm-security main
-
