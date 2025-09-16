@@ -1,6 +1,6 @@
 ---
 systemd-boot
-dracut-core
+dracut
 linux-image-imx-arm64
 ca-certificates
 vim

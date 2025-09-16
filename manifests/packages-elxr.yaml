@@ -1,6 +1,6 @@
 ---
 systemd-boot
-dracut-core
+dracut
 uefi-ext4
 linux-image-amd64
 ca-certificates
