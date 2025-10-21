@@ -59,3 +59,12 @@ stages:
 
     - name: "Set boot order on ${params.disk}."
       module: utils.bootorder
+    
+    - name: "Installation complete successfully."
+      module: noop.placeholder
+
+    - name: "Save installation log to rootfs/efi/tiler.log"
+      module: utils.copy
+      options:
+        source: /var/log/tiler.log
+        dest: efi/
