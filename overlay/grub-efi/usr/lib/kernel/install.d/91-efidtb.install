@@ -27,7 +27,10 @@ DTB_PARENT_DIR="/efi"
 [ "$COMMAND" = add ] || exit 0
 
 if [ -d "/lib/modules/$KERNEL_VERSION/dtb" ]; then
-    cp -arf /lib/modules/$KERNEL_VERSION/dtb $DTB_PARENT_DIR/dtb
+    # Ensure destination exists
+    install -d -m 0755 $DTB_PARENT_DIR/dtb
+    # Copy DTB files only, avoid hard-link preservation
+    cp -f /lib/modules/$KERNEL_VERSION/dtb/*.dtb $DTB_PARENT_DIR/dtb/ 2>/dev/null || true
 fi
 
 exit 0
