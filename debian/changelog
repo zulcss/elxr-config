@@ -1,3 +1,9 @@
+elxr-config (1.0.14) UNRELEASED; urgency=medium
+
+  * Add EC2 configuration files
+
+ -- Qingyi Lu <qingyi.lu@windriver.com>  Fri, 28 Nov 2025 12:14:39 +0800
+
 elxr-config (1.0.13) unstable; urgency=medium
 
   * New uptream release:
