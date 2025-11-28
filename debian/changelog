@@ -1,3 +1,9 @@
+elxr-config (0.0.1) UNRELEASED; urgency=medium
+
+  * 91-efidtb.install: avoid hard-link preservation when cp
+
+ -- Min Wang1 <min.wang1.cn@windriver.com>  Fri, 28 Nov 2025 10:15:54 +0000
+
 elxr-config (0.0.0) UNRELEASED; urgency=medium
 
   * Dummy entry for development branch.
