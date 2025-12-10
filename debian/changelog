@@ -1,4 +1,4 @@
-elxr-config (1.0.14) UNRELEASED; urgency=medium
+elxr-config (1.0.14) unstable; urgency=medium
 
   * Add EC2 configuration files
 
