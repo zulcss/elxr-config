@@ -4,6 +4,14 @@
 ---
 include:
   - https://gitlab.com/elxr/ci/pipeline/raw/elxr/recipes/elxr.yml
+  - local: .misc-lint.yml
 
 variables:
   SALSA_CI_DISABLE_PUBLISH_TO_APTLY_UPLOAD: 1
+
+stages:
+  - provisioning
+  - lint
+  - build
+  - test
+  - publish
