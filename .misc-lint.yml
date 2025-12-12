@@ -1,0 +1,6 @@
+---
+lint markdown:
+  stage: lint
+  image: registry.gitlab.com/pipeline-components/markdownlint:latest
+  script:
+    - mdl --style all --warnings .
