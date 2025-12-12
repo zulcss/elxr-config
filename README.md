@@ -96,3 +96,35 @@ manifests/packages-xfce4.yaml will be installed in the resulting image.
    ```
 
    Review the README.md in the Rucksack repository for more details on "rs build"
+
+## Development
+
+You may wish to develop and submit changes to this project. This can be done
+following these steps:
+
+1. Fork the repository into your GitLab namespace
+1. Create a feature branch (for example: `feature/amazing-feature`)
+1. Commit your changes
+1. Push to the branch
+1. Open a GitLab merge request
+
+Be sure to follow our contribution guidelines and branch guidelines outlined
+below.
+
+### Contributing
+
+Contributions are welcome! Please ensure:
+
+* Changes and additions align with existing filenames and content
+* Changes have been tested and are working at the time of submission
+* Changes include documentation updates when applicable
+* Commit messages are descriptive
+
+### Branch Guidelines
+
+* Send changes to the `main` branch **unless** it is a bug fix that only applies
+  to a specific release branch
+* Merge requests to port bug fixes from `main` to release branches should be
+  sent after a bug fix is merged to `main`
+* Minor releases should only include bug fixes
+* Major releases will include bug fixes and new features
