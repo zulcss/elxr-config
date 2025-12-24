@@ -6,4 +6,4 @@ include:
   - https://gitlab.com/elxr/ci/pipeline/raw/elxr/recipes/elxr.yml
 
 variables:
-  SALSA_CI_DISABLE_PUBLISH_TO_SHARED_APTLY: 1
+  SALSA_CI_DISABLE_PUBLISH_TO_APTLY_UPLOAD: 1
