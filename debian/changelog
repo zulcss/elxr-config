@@ -1,3 +1,9 @@
+elxr-config (1.0.15) unstable; urgency=medium
+
+  * Replace SHARED_APTLY with APTLY_UPLOAD in CI configuration
+
+ -- Qingyi Lu <qingyi.lu@windriver.com>  Sun, 04 Jan 2026 15:22:34 +0800
+
 elxr-config (1.0.14) unstable; urgency=medium
 
   * Add EC2 configuration files
