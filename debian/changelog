@@ -1,3 +1,9 @@
+elxr-config (1.0.16) unstable; urgency=medium
+
+  * 91-efidtb.install: avoid hard-link preservation when cp
+
+ -- Min Wang1 <min.wang1.cn@windriver.com>  Tue, 13 Jan 2026 02:10:55 +0800
+
 elxr-config (1.0.15) unstable; urgency=medium
 
   * Replace SHARED_APTLY with APTLY_UPLOAD in CI configuration
