@@ -1,9 +1,3 @@
-base usr/share/elxr-config
-boards usr/share/elxr-config
-cloud usr/share/elxr-config
-container usr/share/elxr-config
-manifests usr/share/elxr-config
-overlay usr/share/elxr-config
-vm usr/share/elxr-config
+elxr usr/share/elxr=config
 LICENSE usr/share/elxr-config
 README.md usr/share/elxr-config
