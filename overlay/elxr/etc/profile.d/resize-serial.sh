@@ -1,4 +1,4 @@
-ttydev=$(tty)
+ttydev="$(tty)"
 case "$ttydev" in
   /dev/ttyS0 | /dev/ttymxc0)
     if [ -x /usr/bin/resize ]; then
