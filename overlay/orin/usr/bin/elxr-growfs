@@ -8,7 +8,7 @@ src=/dev/disk/by-label/ROOT
 partition=$(realpath /dev/disk/by-label/ROOT)
 
 # Go through each blockdev in the hierarchy and verify we know how to grow them
-lsblk -no TYPE "${partition}" | while read dev; do
+lsblk -no TYPE "${partition}" | while read -r dev; do
     case "${dev}" in
         part) ;;
         *) echo "error: Unsupported blockdev type ${dev}" 1>&2; exit 1 ;;
@@ -19,7 +19,7 @@ done
 # because the partition, once extended, might include leftover superblocks
 # from the previous contents of the disk (notably ZFS), causing blkid to
 # refuse to return any filesystem type at all.
-eval $(blkid -p -o export "${src}")
+eval "$(blkid -p -o export "${src}")"
 ROOTFS_TYPE=${TYPE:-}
 case "${ROOTFS_TYPE}" in
     ext4) ;;
@@ -31,12 +31,11 @@ esac
 current_blkdev=${partition}
 while true; do
     eval "$(lsblk --paths --nodeps --pairs -o NAME,TYPE,PKNAME "${current_blkdev}")"
-    MAJMIN=$(echo $(lsblk -dno MAJ:MIN "${NAME}"))
+    MAJMIN=$(lsblk -dno MAJ:MIN "${NAME}")
     case "${TYPE}" in
         part)
             partnum=$(cat "/sys/dev/block/${MAJMIN}/partition")
-            growpart "${PKNAME}" "${partnum}"
-            if [ $? -ne 0 ]; then
+            if ! growpart "${PKNAME}" "${partnum}"; then
                 echo "No need to grow root filesystem"
                 exit 0
             fi
@@ -46,7 +45,7 @@ while true; do
     esac
     holders="/sys/dev/block/${MAJMIN}/holders"
     [ -d "${holders}" ] || break
-    nholders="$(ls "${holders}" | wc -l)"
+    nholders="$(find "${holders}" -mindepth 1 -maxdepth 1 | wc -l)"
     if [ "${nholders}" -eq 0 ]; then
         break
     elif [ "${nholders}" -gt 1 ]; then

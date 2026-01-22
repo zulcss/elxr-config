@@ -25,19 +25,19 @@ fi
 image=$1
 
 temp_dir=$(mktemp -d)
-cd $temp_dir
-cp $image nand
+cd "$temp_dir" || exit 1
+cp "$image" nand
 
-off2=$(parted $image -s unit b print | awk 'NR==9  {print substr($2, 1, length($2)-1)}')
-off3=$(parted $image -s unit b print | awk 'NR==10 {print substr($2, 1, length($2)-1)}')
+off2=$(parted "$image" -s unit b print | awk 'NR==9  {print substr($2, 1, length($2)-1)}')
+off3=$(parted "$image" -s unit b print | awk 'NR==10 {print substr($2, 1, length($2)-1)}')
 mkdir mnt
 
-mount -o loop,offset=$off2 $image mnt
+mount -o loop,offset="$off2" "$image" mnt
 cp mnt/vmlinuz-* kernel
 cp mnt/initrd.img-* ramdisk.img
 umount mnt
 
-mount -o loop,offset=$off3 $image mnt
+mount -o loop,offset="$off3" "$image" mnt
 cp mnt/usr/lib/modules/*/dtb/imx8mp-evk.dtb devicetree
 umount mnt
 
@@ -63,6 +63,6 @@ cat << EOF > Info.plist
 EOF
 
 zfile=${image/.img/.zip}
-zip -r $zfile Info.plist nand devicetree kernel ramdisk.img
-cd -; rm -rf $temp_dir
+zip -r "$zfile" Info.plist nand devicetree kernel ramdisk.img
+cd - || exit 1; rm -rf "$temp_dir"
 

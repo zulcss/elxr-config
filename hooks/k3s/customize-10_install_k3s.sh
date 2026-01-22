@@ -11,7 +11,7 @@ fi
 
 rootdir="$1"
 INSTALL_K3S_VERSION=v1.29.3+k3s1
-mkdir -p $rootdir/usr/share/rancher
+mkdir -p "$rootdir"/usr/share/rancher
 curl https://raw.githubusercontent.com/rancher/k3s/$INSTALL_K3S_VERSION/install.sh \
-       	-o $rootdir/usr/share/rancher/install.sh
-chmod +x $rootdir/usr/share/rancher/install.sh
+               -o "$rootdir"/usr/share/rancher/install.sh
+chmod +x "$rootdir"/usr/share/rancher/install.sh
