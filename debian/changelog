@@ -1,3 +1,18 @@
+elxr-config (1.0.17) unstable; urgency=medium
+
+  * New upstream release:
+    - 45f13c48: Housekeeping: README.md cleanup and linter fixes
+    - a640c40f: README.md: Add a development section to the documentation
+    - 44104376: Housekeeping: add markdown linting to the CI pipeline
+    - a6708394: Split out aria and bianca configs
+    - dc0fcd3b: Add support for bianca
+    - c40c4288: Fix debian packaging 
+    - bf8bec7e: fix word splitting when using "tty" command
+    - 16024f50: Housekeeping: add shell linting to the CI pipeline
+    - c79a48f8: Housekeeping: fix issues reported by ShellCheck linter
+
+ -- Chuck Short <charles.short@windriver.com>  Thu, 05 Feb 2026 11:04:33 -0500
+
 elxr-config (1.0.16) unstable; urgency=medium
 
   * 91-efidtb.install: avoid hard-link preservation when cp
