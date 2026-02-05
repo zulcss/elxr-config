@@ -4,8 +4,12 @@ set -uo pipefail
 # This script is run by elxr-growfs.service. It grows the root
 # partition, unless it determines that the partition was already resized
 
-src=/dev/disk/by-label/ROOT
-partition=$(realpath /dev/disk/by-label/ROOT)
+if [ -e /dev/disk/by-label/ROOT ]; then
+    src=/dev/disk/by-label/ROOT
+else
+    src=$(findmnt / -n -o SOURCE)
+fi
+partition=$(realpath "$src")
 
 # Go through each blockdev in the hierarchy and verify we know how to grow them
 lsblk -no TYPE "${partition}" | while read -r dev; do
