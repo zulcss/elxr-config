@@ -21,16 +21,20 @@ stages:
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/orin/ /'
-          - 'mkdir "$1/build"'
-          - 'sync-in workarounds/ /build'
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
           - systemctl enable --root="$1" elxr-growfs
-          - chroot $1 dpkg -i /build/libjpeg-turbo8_2.1.2-0ubuntu1_arm64.deb
-          - chroot $1 dpkg -i /build/libffi7_3.3-6_arm64.deb
           - rm -f $1/etc/X11/xorg.conf.d/fb.conf
-          - rm -rf "$1/build"
+          - |
+            install -Dm644 /etc/resolv.conf "$1/run/systemd/resolve/stub-resolv.conf"
+            chroot $1 sh -c "set -e
+            URLS='
+            http://ftp.debian.org/debian/pool/main/p/procps/libprocps8_3.3.17-5_arm64.deb
+            http://ftp.debian.org/debian/pool/main/libf/libffi/libffi7_3.3-6_arm64.deb
+            http://ports.ubuntu.com/pool/main/libj/libjpeg-turbo/libjpeg-turbo8_2.1.5-4ubuntu2_arm64.deb'
+            for url in \$URLS; do f=/tmp/\$(basename \$url); wget -q \$url -O \$f && apt install -y \$f && rm \$f; done"
+            rm -rf "$1/run/systemd"
         packages:
           - ${include:manifests/packages-orin.yaml}
           - ${include:manifests/packages-xfce4.yaml}
