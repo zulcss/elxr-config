@@ -27,7 +27,7 @@ stages:
         packages:
           - ${include:manifests/packages-bianca.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr bianca main non-free-firmware contrib
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
 
     - name: Unpack tarball
       module: unpack.tarball
