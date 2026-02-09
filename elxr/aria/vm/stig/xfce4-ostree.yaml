@@ -2,7 +2,7 @@
 name: elxr-xfce4-ostree-stig-amd64
 description: "AMD64 xfce4 ostree configuration for STIG."
 architecture: amd64
-version: 12.12.0.0
+version: ${oc.env:DEFAULT_ELXR_VERSION}
 schemaVersion: 1
 params:
   source: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
