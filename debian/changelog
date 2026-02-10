@@ -1,3 +1,20 @@
+elxr-config (1.0.18) unstable; urgency=medium
+
+  [Chuck Short]
+  * New upstream release:
+    - 2f5e7ff1: remove APT data sources pointing to Debian software repository for Nvidia Orin Jetson
+    - 63b243c8: manifests: Use dracut instead of dracut-core for non-OSTree systems 
+    - 2df19701: Cleanup post-installation
+    - f47ace48: debian: Fix typo
+  
+  [Raja Harikrishnan]
+  * 53029e3e: Install external dependencies from upstream mirrors instead of local deb files
+  * 939dcd8f: Updated bootloader for Jetson SDK r36.4.4 
+  * 06e9621b: Updated packages list for Jetson SDK r36.4.4
+  * 71409fe2: Fix root device resolution in elxr-growfs
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 10 Feb 2026 12:45:19 -0500
+
 elxr-config (1.0.17) unstable; urgency=medium
 
   * New upstream release:
