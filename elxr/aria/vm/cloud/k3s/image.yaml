@@ -2,7 +2,7 @@
 name: elxr-k3s-amd64
 description: "AMD64 k3s configuration."
 architecture: amd64
-version: 99.99.0
+version: ${oc.env:DEFAULT_ELXR_VERSION}
 schemaVersion: 1
 params:
   version: ${version}
