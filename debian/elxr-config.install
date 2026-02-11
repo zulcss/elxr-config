@@ -1,3 +1,7 @@
 elxr usr/share/elxr-config
+manifests usr/share/elxr-config
+definitions usr/share/elxr-config
+overlay usr/share/elxr-config
+hooks usr/share/elxr-config
 LICENSE usr/share/elxr-config
 README.md usr/share/elxr-config
