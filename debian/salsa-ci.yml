@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 include:
-  - https://gitlab.com/elxr/ci/pipeline/raw/elxr/recipes/elxr.yml
+  - https://gitlab.com/elxr/ci/pipeline/raw/elxr/recipes/bianca.yml
   - local: .misc-lint.yml
 
 variables:
