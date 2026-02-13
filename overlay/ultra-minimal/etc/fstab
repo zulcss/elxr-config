@@ -1,0 +1,3 @@
+# Ultra-minimal fstab - 2 partition layout (EFI + ROOT)
+LABEL=ROOT         /            ext4      defaults 0 1
+LABEL=EFI          /efi         vfat      umask=077 0 1
