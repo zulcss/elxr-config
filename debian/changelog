@@ -1,3 +1,9 @@
+elxr-config (1.0.20) unstable; urgency=medium
+
+  * Use DEFAULT_ELXR_VERSION to set version
+
+ -- joe slater <jslater@ala-jslater-lx1.corp.ad.wrs.com>  Fri, 13 Feb 2026 09:42:47 -0800
+
 elxr-config (1.0.19) bianca; urgency=medium
 
   * New upstream release:
@@ -5,6 +11,7 @@ elxr-config (1.0.19) bianca; urgency=medium
   * debian/salsa-ci.yaml: Update pipeline so we can upload to bianca.
 
  -- Chuck Short <charles.short@windriver.com>  Thu, 12 Feb 2026 06:39:52 -0500
+
 
 elxr-config (1.0.19) unstable; urgency=medium
 
