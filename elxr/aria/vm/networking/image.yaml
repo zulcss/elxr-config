@@ -17,7 +17,7 @@ stages:
         target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
-          - 'sync-in overlay/elxr/usr/ /'
+          - 'sync-in overlay/elxr/ /'
           - 'sync-in overlay/systemd-networkd/ /'
         customize_hooks:
           - echo 'root:root' | chroot "$1" chpasswd
