@@ -1,0 +1,21 @@
+---
+# Management Component - Basic package management tools for customer extension
+
+name: management
+description: Basic package management tools for customer extension
+
+packages:
+  - apt
+  - dpkg
+  - login
+  - bash
+  - coreutils
+  - util-linux
+
+exclude_packages: []
+
+customize_hooks:
+  - chroot $1 apt-get clean
+  - rm -rf $1/usr/lib/apt/methods/ftp $1/usr/lib/apt/methods/rsh 2>/dev/null || true
+
+dpkgopt: []

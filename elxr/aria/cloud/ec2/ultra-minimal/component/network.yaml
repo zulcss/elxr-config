@@ -1,0 +1,26 @@
+---
+name: network
+description: "Minimal networking (systemd-networkd only, no wireless/bluetooth)"
+packages:
+  - iproute2
+  - iputils-ping
+  - isc-dhcp-client
+  - ifupdown
+  - netbase
+
+customize_hooks:
+  - mkdir -p $1/etc/network
+  - printf 'auto lo\niface lo inet loopback\n\nauto eth0\niface eth0 inet dhcp\n' > $1/etc/network/interfaces
+  - systemctl disable networking.service || true
+  - ln -sf /lib/systemd/system/systemd-networkd.service $1/etc/systemd/system/multi-user.target.wants/
+  - rm -rf $1/lib/firmware/{iwlwifi,rtlwifi,ath*,brcm} 2>/dev/null || true
+  - rm -rf $1/lib/modules/*/kernel/drivers/{bluetooth,wireless} 2>/dev/null || true
+  
+
+dpkgopt:
+  - path-exclude=/lib/modules/*/kernel/drivers/net/wireless/*
+  - path-exclude=/lib/modules/*/kernel/drivers/net/can/*
+  - path-exclude=/lib/modules/*/kernel/drivers/net/usb/*
+  - path-exclude=/lib/modules/*/kernel/drivers/bluetooth/*
+  - path-exclude=/lib/modules/*/kernel/drivers/wireless/*
+  - path-include=/lib/modules/*/kernel/drivers/net/ethernet/amazon/*
