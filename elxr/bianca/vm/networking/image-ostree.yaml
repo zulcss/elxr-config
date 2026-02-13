@@ -1,0 +1,115 @@
+---
+name: elxr-networking-ostree-amd64
+description: "AMD64 networking ostree configuration."
+architecture: amd64
+version: 99.99.0
+schemaVersion: 1
+params:
+  version: ${version}
+  source: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
+  repository: /var/www/html/repo
+  branch: elxr/${architecture}
+  disk: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
+stages:
+  install:
+    - name: "Create rootfs"
+      module: bootstrap.mmdebstrap
+      options:
+        suite: aria
+        target: ${params.source}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/elxr/ /'
+          - 'sync-in overlay/systemd-networkd/ /'
+        customize_hooks:
+          - 'sync-in overlay/ostree/usr/lib /usr/lib'
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" elxr-growfs
+          - chroot $1 echo "localhost" > $1/etc/hostname
+          - mkdir -p $1/efi
+        packages:
+          - ${include:manifests/packages-ostree.yaml}
+          - ${include:manifests/packages-networking.yaml}
+        mirrors:
+          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
+
+    - name: "Unpack ${params.source}"
+      module: unpack.tarball
+      options:
+        compression: tgz
+        sources:
+          - ${params.source}
+
+    - name: "Create ostree repository"
+      module: installer.ostree.init
+      options:
+        mode: archive-z2
+
+    - name: "Create an ostree branch."
+      module: installer.ostree.prep
+
+    - name: "Commit an ostree branch."
+      module: installer.ostree.commit
+
+    - name: "Create raw image ${params.disk}"
+      module: image.raw
+      options:
+        name: ${params.disk}
+        size: 20G
+
+    - name: "Partitioning ${params.disk}."
+      module: installer.disk.parted
+      options:
+        slices:
+          - name: EFI
+            start: 0%
+            end: 128MB
+            flags: [boot, esp]
+            id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+          - name: BOOT
+            start: 128M
+            end: 640M
+            flags: []
+            id: bc13c2ff-59e6-4262-a352-b275fd6f7172
+          - name: ROOT
+            start: 640MB
+            end: 100%
+            flags: []
+            id: ''
+
+    - name: "Formatting ${params.disk}."
+      module: installer.disk.fs
+      options:
+        filesystems:
+          - name: EFI
+            label: EFI
+            fs: vfat
+            options: []
+          - name: BOOT
+            label: BOOT
+            fs: ext4
+            options: []
+          - name: ROOT
+            label: ROOT
+            fs: ext4
+            options: []
+
+    - name: "Deploy ostree ${params.branch} to ${params.disk}."
+      module: installer.ostree.deploy
+      options:
+        kernel_args:
+          - root=LABEL=ROOT
+          - rw
+          - console=ttyS0,115200n8 console=tty0
+
+    - name: "Installing ostree bootloader on ${params.disk}"
+      module: installer.bootloader.ostree
+      options:
+        uefi_driver: ext4
+
+    - name: "Compress image ${params.disk}"
+      module: image.compress
+      options:
+        name: ${params.disk}
+        compression: zstd
