@@ -1,3 +1,9 @@
+elxr-config (1.0.20) unstable; urgency=medium
+
+  * Use DEFAULT_ELXR_VERSION to set version
+
+ -- joe slater <jslater@ala-jslater-lx1.corp.ad.wrs.com>  Fri, 13 Feb 2026 09:42:47 -0800
+
 elxr-config (1.0.19) unstable; urgency=medium
 
   * New upstream release:
