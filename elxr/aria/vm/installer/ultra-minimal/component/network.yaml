@@ -1,0 +1,25 @@
+---
+name: network
+description: "Minimal networking with essential ethernet drivers only"
+packages:
+  - systemd-resolved
+
+customize_hooks:
+  - systemctl enable --root="$1" systemd-networkd
+  - systemctl enable --root="$1" systemd-resolved
+  - ln -sf /run/systemd/resolve/stub-resolv.conf $1/etc/resolv.conf
+  - rm -rf $1/lib/firmware/{iwlwifi,rtlwifi,ath*,brcm} 2>/dev/null || true
+
+dpkgopt:
+  - path-exclude=/lib/modules/*/kernel/drivers/bluetooth/*
+  - path-exclude=/lib/modules/*/kernel/drivers/wireless/*
+  - path-exclude=/lib/modules/*/kernel/drivers/net/wireless/*
+  - path-exclude=/lib/modules/*/kernel/drivers/net/can/*
+  - path-exclude=/lib/modules/*/kernel/drivers/net/usb/*
+  - path-exclude=/lib/modules/*/kernel/drivers/net/ethernet/mellanox/*
+  - path-exclude=/lib/modules/*/kernel/drivers/net/ethernet/broadcom/*
+  - path-exclude=/lib/modules/*/kernel/drivers/net/ethernet/qlogic/*
+  - path-exclude=/lib/modules/*/kernel/drivers/net/ethernet/chelsio/*
+  - path-exclude=/lib/modules/*/kernel/drivers/net/ethernet/sfc/*
+  - path-exclude=/lib/modules/*/kernel/drivers/net/ethernet/netronome/*
+  - path-exclude=/lib/modules/*/kernel/drivers/net/ethernet/cavium/*

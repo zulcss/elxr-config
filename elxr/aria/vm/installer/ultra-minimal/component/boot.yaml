@@ -1,0 +1,88 @@
+---
+name: boot
+description: "Boot components with aggressive kernel module cleanup"
+packages:
+  - systemd-boot
+  - uefi-ext4
+
+customize_hooks:
+  - mkdir -p $1/efi
+  - rm -rf $1/lib/firmware/{amdgpu,radeon,nvidia,usb} 2>/dev/null || true
+  - find $1/lib/firmware -name "*.bin" ! -name "*intel*" ! -name "*amd*" -delete 2>/dev/null || true
+  - find $1/lib/modules -name "*.ko.xz" -exec rm -f {} + 2>/dev/null || true
+  - find $1/lib/modules -name "*.ko.zst" -exec rm -f {} + 2>/dev/null || true
+  - depmod -a -b $1 $(ls $1/lib/modules/) 2>/dev/null || true
+  - rm -rf $1/lib/modules/*/kernel/drivers/{gpu,media,staging,usb,hid,input,i2c,spi,mmc,platform,power,thermal,watchdog,hwmon,leds,regulator,infiniband,iio,comedi,mtd,video,target,misc,isdn,thunderbolt,atm,edac,message,crypto,ufs,nvdimm,soundwire,dma,w1,xen,hv,accessibility,pcmcia,firewire,vfio,mfd,nfc,android,vhost,firmware,memstick,cpufreq,ptp,parport,gpio,bus,ssb,hwtracing,uio,pinctrl,virt,bcma,extcon,cxl,gnss,powercap,dax,soc,slimbus,base,pps,pwm,dca,devfreq} 2>/dev/null || true
+  - rm -rf $1/lib/modules/*/kernel/sound 2>/dev/null || true
+
+dpkgopt:
+  - path-exclude=/lib/modules/*/kernel/drivers/gpu/*
+  - path-exclude=/lib/modules/*/kernel/drivers/media/*
+  - path-exclude=/lib/modules/*/kernel/drivers/staging/*
+  - path-exclude=/lib/modules/*/kernel/drivers/usb/*
+  - path-exclude=/lib/modules/*/kernel/drivers/hid/*
+  - path-exclude=/lib/modules/*/kernel/drivers/input/*
+  - path-exclude=/lib/modules/*/kernel/drivers/infiniband/*
+  - path-exclude=/lib/modules/*/kernel/drivers/iio/*
+  - path-exclude=/lib/modules/*/kernel/drivers/hwmon/*
+  - path-exclude=/lib/modules/*/kernel/drivers/md/*
+  - path-exclude=/lib/modules/*/kernel/drivers/platform/*
+  - path-exclude=/lib/modules/*/kernel/drivers/comedi/*
+  - path-exclude=/lib/modules/*/kernel/drivers/mtd/*
+  - path-exclude=/lib/modules/*/kernel/drivers/video/*
+  - path-exclude=/lib/modules/*/kernel/drivers/target/*
+  - path-exclude=/lib/modules/*/kernel/drivers/misc/*
+  - path-exclude=/lib/modules/*/kernel/drivers/mmc/*
+  - path-exclude=/lib/modules/*/kernel/drivers/isdn/*
+  - path-exclude=/lib/modules/*/kernel/drivers/watchdog/*
+  - path-exclude=/lib/modules/*/kernel/drivers/i2c/*
+  - path-exclude=/lib/modules/*/kernel/drivers/thunderbolt/*
+  - path-exclude=/lib/modules/*/kernel/drivers/atm/*
+  - path-exclude=/lib/modules/*/kernel/drivers/edac/*
+  - path-exclude=/lib/modules/*/kernel/drivers/message/*
+  - path-exclude=/lib/modules/*/kernel/drivers/crypto/*
+  - path-exclude=/lib/modules/*/kernel/drivers/ufs/*
+  - path-exclude=/lib/modules/*/kernel/drivers/nvdimm/*
+  - path-exclude=/lib/modules/*/kernel/drivers/soundwire/*
+  - path-exclude=/lib/modules/*/kernel/drivers/dma/*
+  - path-exclude=/lib/modules/*/kernel/drivers/w1/*
+  - path-exclude=/lib/modules/*/kernel/drivers/xen/*
+  - path-exclude=/lib/modules/*/kernel/drivers/hv/*
+  - path-exclude=/lib/modules/*/kernel/drivers/accessibility/*
+  - path-exclude=/lib/modules/*/kernel/drivers/leds/*
+  - path-exclude=/lib/modules/*/kernel/drivers/pcmcia/*
+  - path-exclude=/lib/modules/*/kernel/drivers/firewire/*
+  - path-exclude=/lib/modules/*/kernel/drivers/vfio/*
+  - path-exclude=/lib/modules/*/kernel/drivers/mfd/*
+  - path-exclude=/lib/modules/*/kernel/drivers/thermal/*
+  - path-exclude=/lib/modules/*/kernel/drivers/power/*
+  - path-exclude=/lib/modules/*/kernel/drivers/nfc/*
+  - path-exclude=/lib/modules/*/kernel/drivers/android/*
+  - path-exclude=/lib/modules/*/kernel/drivers/vhost/*
+  - path-exclude=/lib/modules/*/kernel/drivers/firmware/*
+  - path-exclude=/lib/modules/*/kernel/drivers/memstick/*
+  - path-exclude=/lib/modules/*/kernel/drivers/cpufreq/*
+  - path-exclude=/lib/modules/*/kernel/drivers/ptp/*
+  - path-exclude=/lib/modules/*/kernel/drivers/parport/*
+  - path-exclude=/lib/modules/*/kernel/drivers/gpio/*
+  - path-exclude=/lib/modules/*/kernel/drivers/bus/*
+  - path-exclude=/lib/modules/*/kernel/drivers/ssb/*
+  - path-exclude=/lib/modules/*/kernel/drivers/hwtracing/*
+  - path-exclude=/lib/modules/*/kernel/drivers/uio/*
+  - path-exclude=/lib/modules/*/kernel/drivers/pinctrl/*
+  - path-exclude=/lib/modules/*/kernel/drivers/spi/*
+  - path-exclude=/lib/modules/*/kernel/drivers/virt/*
+  - path-exclude=/lib/modules/*/kernel/drivers/bcma/*
+  - path-exclude=/lib/modules/*/kernel/drivers/extcon/*
+  - path-exclude=/lib/modules/*/kernel/drivers/cxl/*
+  - path-exclude=/lib/modules/*/kernel/drivers/gnss/*
+  - path-exclude=/lib/modules/*/kernel/drivers/powercap/*
+  - path-exclude=/lib/modules/*/kernel/drivers/dax/*
+  - path-exclude=/lib/modules/*/kernel/drivers/soc/*
+  - path-exclude=/lib/modules/*/kernel/drivers/slimbus/*
+  - path-exclude=/lib/modules/*/kernel/drivers/base/*
+  - path-exclude=/lib/modules/*/kernel/drivers/pps/*
+  - path-exclude=/lib/modules/*/kernel/drivers/pwm/*
+  - path-exclude=/lib/modules/*/kernel/drivers/dca/*
+  - path-exclude=/lib/modules/*/kernel/drivers/devfreq/*
+  - path-exclude=/lib/modules/*/kernel/sound/*

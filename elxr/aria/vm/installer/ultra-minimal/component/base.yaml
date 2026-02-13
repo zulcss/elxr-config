@@ -1,0 +1,19 @@
+---
+name: base
+description: "Essential base system configuration for installer"
+packages:
+  - linux-image-amd64
+  - systemd
+  - systemd-sysv
+  - udev
+  - dbus
+  - login
+  - bash
+  - coreutils
+  - util-linux
+
+customize_hooks:
+  - echo 'root:root' | chroot "$1" chpasswd
+  - chroot $1 echo "localhost" > $1/etc/hostname
+
+dpkgopt: []

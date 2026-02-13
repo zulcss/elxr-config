@@ -1,0 +1,32 @@
+---
+name: cleanup
+description: "Aggressive cleanup for minimal installer size"
+packages: []
+
+customize_hooks:
+  - rm -rf $1/tmp/* $1/var/log/* $1/var/tmp/*
+  - rm -rf $1/usr/share/doc/* $1/usr/share/man/* $1/usr/share/info/* $1/usr/share/linda/* $1/usr/share/lintian/*
+  - find $1/usr/share/locale -mindepth 1 -maxdepth 1 ! -name 'en*' -exec rm -rf {} +
+  - find $1 -name '*.pyc' -delete
+  - find $1 -name '__pycache__' -type d -exec rm -rf {} +
+  - find $1/usr/share -name '*.a' -delete
+  - find $1/usr/lib -name '*.a' -delete
+  - rm -rf $1/usr/share/pixmaps $1/usr/share/icons $1/usr/share/sounds
+  - find $1/lib/modules -name '*.ko' -exec strip --strip-unneeded {} \; 2>/dev/null || true
+  - find $1/usr/bin $1/usr/sbin $1/bin $1/sbin -type f -executable -exec strip --strip-all {} \; 2>/dev/null || true
+  - rm -rf $1/usr/share/bash-completion $1/usr/share/debconf 2>/dev/null || true
+  - rm -rf $1/usr/share/systemd $1/usr/share/dbus-1 2>/dev/null || true
+  - rm -rf $1/var/lib/systemd $1/var/lib/dbus 2>/dev/null || true
+  - find $1/usr/lib -name "*.so.*" -exec strip --strip-unneeded {} \; 2>/dev/null || true
+  - rm -rf $1/usr/include $1/usr/src 2>/dev/null || true
+  - find $1 -name "*.log" -delete 2>/dev/null || true
+
+dpkgopt:
+  - path-exclude=/usr/share/doc/*
+  - path-exclude=/usr/share/info/*
+  - path-exclude=/usr/share/linda/*
+  - path-exclude=/usr/share/lintian/overrides/*
+  - path-exclude=/usr/share/locale/*
+  - path-exclude=/usr/share/man/*
+  - path-include=/usr/share/doc/*/copyright
+  - path-include=/usr/share/locale/en*
