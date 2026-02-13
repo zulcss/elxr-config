@@ -4,12 +4,14 @@ elxr-config (1.0.20) unstable; urgency=medium
 
  -- joe slater <jslater@ala-jslater-lx1.corp.ad.wrs.com>  Fri, 13 Feb 2026 09:42:47 -0800
 
-elxr-config (1.0.19) unstable; urgency=medium
+elxr-config (1.0.19) bianca; urgency=medium
 
   * New upstream release:
+    - 26efc5d: Add debian-community components to bianca
     - 2d2cd709: Fix missing debian directories.
+  * debian/salsa-ci.yaml: Update pipeline so we can upload to bianca.
 
- -- Chuck Short <charles.short@windriver.com>  Wed, 11 Feb 2026 13:04:34 -0500
+ -- Chuck Short <charles.short@windriver.com>  Thu, 12 Feb 2026 06:39:52 -0500
 
 elxr-config (1.0.18) unstable; urgency=medium
 
