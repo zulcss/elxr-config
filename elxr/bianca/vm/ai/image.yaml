@@ -1,0 +1,53 @@
+---
+name: elxr-ai-amd64
+description: "AMD64 AI configurationn."
+architecture: amd64
+version: 99.99.0
+schemaVersion: 1
+params:
+  version: ${version}
+  source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
+  disk: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
+stages:
+  install:
+    - name: "Creating installer."
+      module: bootstrap.mmdebstrap
+      options:
+        suite: bianca
+        target: ${params.source}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/bianca/ /'
+          - 'sync-in overlay/systemd-networkd/ /'
+        customize_hooks:
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" elxr-growfs
+          - chroot $1 echo "localhost" > $1/etc/hostname
+        packages:
+          - ${include:manifests/packages-bianca.yaml}
+          - ${include:manifests/packages-ai.yaml}
+        mirrors:
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
+
+    - name: Unpack tarball
+      module: unpack.tarball
+      options:
+        sources:
+          - ${params.source}
+
+    - name: Create image
+      module: image.repart
+      options:
+        definitions: ${oc.env:CURRENT_DIR}/definitions/image
+
+    - name: "Installing bootloader on ${params.disk}"
+      module: installer.bootloader
+      options:
+        kernel_args: "root=LABEL=root-x86-64 console=tty0 console=ttyS0,115200"
+
+    - name: "Compress image ${params.disk}"
+      module: image.compress
+      options:
+        name: ${params.disk}
+        compression: zstd
