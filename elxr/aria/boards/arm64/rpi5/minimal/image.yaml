@@ -22,6 +22,7 @@
             - 'sync-in /usr/src/elxr-config/overlay/systemd-networkd/ /' # TODO: the same
           customize_hooks:
             - echo 'root:root' | chroot "$1" chpasswd
+            - sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' $1/etc/ssh/sshd_config # WARN: enables root password login via ssh
             - systemctl enable --root="$1" systemd-networkd
             - systemctl enable --root="$1" elxr-growfs
             - systemctl enable --root="$1" ssh
@@ -103,6 +104,15 @@
       - name: "Unpacking ${params.source}"
         module: installer.unpack
         options: []
+
+      - name: "Setting up boot partition"
+        module: utils.run_shell
+        options:
+          from_root_dir: true
+          commands:
+            - "cp -r boot/firmware/* efi/"
+            - "cp boot/vmlinuz-* efi/vmlinuz"
+            - "cp boot/initrd.img-* efi/initrd.img"
 
       - name: "Compress image ${params.disk}"
         module: image.compress
