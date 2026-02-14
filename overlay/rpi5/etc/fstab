@@ -1,0 +1,3 @@
+  LABEL=BOOT         /boot/firmware  vfat      defaults 0 2
+  LABEL=ROOT         /               ext4      defaults 0 1
+  
