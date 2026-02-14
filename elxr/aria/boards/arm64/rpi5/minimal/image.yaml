@@ -15,9 +15,11 @@
           suite: aria
           target: ${params.source}
           architecture: ${architecture}
-          setup_hooks:
-            - 'sync-in overlay/rpi5/ /'
-            - 'sync-in overlay/systemd-networkd/ /'
+          keyring:
+            - /usr/share/keyrings/raspberrypi-archive-keyring.gpg # TODO: rel path
+          setup_hooks: 
+            - 'sync-in /usr/src/elxr-config/overlay/rpi5/ /' # TODO: figurte out whats wrong with relative path (mmdebstrap issue)
+            - 'sync-in /usr/src/elxr-config/overlay/systemd-networkd/ /' # TODO: the same
           customize_hooks:
             - echo 'root:root' | chroot "$1" chpasswd
             - systemctl enable --root="$1" systemd-networkd
@@ -62,7 +64,7 @@
             - auditd
           mirrors:
             - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
-            - deb http://archive.raspberrypi.com/debian bookworm main
+            - deb [signed-by=/usr/share/keyrings/raspberrypi-archive-keyring.gpg] http://archive.raspberrypi.com/debian bookworm main
 
       - name: "Create raw image ${params.disk}"
         module: image.raw
