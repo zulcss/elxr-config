@@ -1,0 +1,81 @@
+---
+name: elxr-k3s-amd64
+description: "AMD64 k3s configuration."
+architecture: amd64
+version: 99.99.0
+schemaVersion: 1
+params:
+  version: ${version}
+  source: ${oc.env:CURRENT_DIR}/elxr-cloud-${version}-${architecture}.tar.gz
+  disk: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
+  hooks: hooks
+stages:
+  install:
+    - name: "Creating installer."
+      module: bootstrap.mmdebstrap
+      options:
+        suite: bianca
+        target: ${params.source}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/elxr/ /'
+          - 'sync-in overlay/systemd-networkd/ /'
+          - 'sync-in overlay/cloud/ /'
+        customize_hooks:
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" elxr-growfs
+          - chroot $1 echo "localhost" > $1/etc/hostname
+        # Speed up dpkg and optimize for space a bit
+        dpkgots:
+          - force-unsafe-io
+          - path-exclude=/usr/share/doc/*
+          - path-exclude=/usr/share/info/*
+          - path-exclude=/usr/share/man/*
+          - path-exclude=/usr/share/omf/*
+          - path-exclude=/usr/share/help/*
+        hooks:
+          # Download and install k3s script
+          - ${params.hooks}/k3s
+          # Download and install helm script.
+          - ${params.hooks}/helm
+        packages:
+          - ${include:manifests/packages-bianca.yaml}
+          - ${include:manifests/packages-cloud-k3s.yaml}
+        mirrors:
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware contrib
+
+    - name: Unpack tarball
+      module: unpack.tarball
+      options:
+        compression: tgz
+        sources:
+          - ${params.source}
+          
+    - name: Create image
+      module: image.repart
+      options:
+        definitions: ${oc.env:CURRENT_DIR}/definitions/cloud
+
+    - name: "Install k3s"
+      module: utils.run_command
+      options:
+        commands:
+          - bash /usr/share/rancher/install.sh
+
+    - name: "Insall helm"
+      module: utils.run_command
+      options:
+        commands:
+          - bash /usr/share/helm/install.sh
+
+    - name: "Installing bootloader on ${params.disk}"
+      module: installer.bootloader
+      options:
+        kernel_args: "root=LABEL=root-x86-64 console=tty0 console=ttyS0,115200"
+
+    - name: "Compress image ${params.disk}"
+      module: image.compress
+      options:
+        name: ${params.disk}
+        compression: zstd
