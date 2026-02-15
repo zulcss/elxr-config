@@ -1,0 +1,75 @@
+---
+name: elxr-minimal-ostree-amd64
+description: "AMD64 ostree configuration."
+architecture: amd64
+version: 99.99.0
+schemaVersion: 1
+params:
+  source: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
+  repository: /var/www/html/repo
+  branch: elxr/${architecture}
+  disk: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
+stages:
+  install:
+    - name: "Create rootfs"
+      module: bootstrap.mmdebstrap
+      options:
+        suite: bianca
+        target: ${params.source}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/bianca/ /'
+          - 'sync-in overlay/systemd-networkd/ /'
+        customize_hooks:
+          - 'sync-in overlay/ostree/usr/lib /usr/lib'
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" elxr-growfs
+          - chroot $1 echo "localhost" > $1/etc/hostname
+          - mkdir -p $1/efi
+        packages:
+          - ${include:manifests/packages-ostree-bianca.yaml}
+        mirrors:
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware contrib
+
+    - name: "Unpack ${params.source}"
+      module: unpack.tarball
+      options:
+        compression: tgz
+        sources:
+          - ${params.source}
+
+    - name: "Create ostree repository"
+      module: installer.ostree.init
+      options:
+        mode: archive-z2
+
+    - name: "Create an ostree branch."
+      module: installer.ostree.prep
+
+    - name: "Commit an ostree branch."
+      module: installer.ostree.commit
+
+    - name: Create image
+      module: image.repart
+      options:
+        definitions: ${oc.env:CURRENT_DIR}/definitions/ostree
+
+    - name: "Deploy ostree ${params.branch} to ${params.disk}."
+      module: installer.ostree.deploy
+      options:
+        kernel_args:
+          - root=LABEL=root-x86-64
+          - rw
+          - console=ttyS0,115200n8 console=tty0
+
+    - name: "Installing ostree bootloader on ${params.disk}"
+      module: installer.bootloader.ostree
+      options:
+        uefi: ostree-bianca
+
+    - name: "Compress image ${params.disk}"
+      module: image.compress
+      options:
+        name: ${params.disk}
+        compression: zstd
