@@ -1,11 +1,10 @@
 ---
 name: elxr-ai-ostree-amd64
-description: "AMD64 AI ostree configuration."
+description: "AMD64 ostree configuration."
 architecture: amd64
 version: 99.99.0
 schemaVersion: 1
 params:
-  version: ${version}
   source: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
   repository: /var/www/html/repo
   branch: elxr/${architecture}
@@ -15,11 +14,11 @@ stages:
     - name: "Create rootfs"
       module: bootstrap.mmdebstrap
       options:
-        suite: aria
+        suite: bianca
         target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
-          - 'sync-in overlay/elxr/ /'
+          - 'sync-in overlay/bianca/ /'
           - 'sync-in overlay/systemd-networkd/ /'
         customize_hooks:
           - 'sync-in overlay/ostree/usr/lib /usr/lib'
@@ -29,10 +28,10 @@ stages:
           - chroot $1 echo "localhost" > $1/etc/hostname
           - mkdir -p $1/efi
         packages:
-          - ${include:manifests/packages-ostree.yaml}
+          - ${include:manifests/packages-ostree-bianca.yaml}
           - ${include:manifests/packages-ai.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware contrib
 
     - name: "Unpack ${params.source}"
       module: unpack.tarball
@@ -52,61 +51,23 @@ stages:
     - name: "Commit an ostree branch."
       module: installer.ostree.commit
 
-    - name: "Create raw image ${params.disk}"
-      module: image.raw
+    - name: Create image
+      module: image.repart
       options:
-        name: ${params.disk}
-        size: 20G
-
-    - name: "Partitioning ${params.disk}."
-      module: installer.disk.parted
-      options:
-        slices:
-          - name: EFI
-            start: 0%
-            end: 128MB
-            flags: [boot, esp]
-            id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
-          - name: BOOT
-            start: 128M
-            end: 640M
-            flags: []
-            id: bc13c2ff-59e6-4262-a352-b275fd6f7172
-          - name: ROOT
-            start: 640MB
-            end: 100%
-            flags: []
-            id: ''
-
-    - name: "Formatting ${params.disk}."
-      module: installer.disk.fs
-      options:
-        filesystems:
-          - name: EFI
-            label: EFI
-            fs: vfat
-            options: []
-          - name: BOOT
-            label: BOOT
-            fs: ext4
-            options: []
-          - name: ROOT
-            label: ROOT
-            fs: ext4
-            options: []
+        definitions: ${oc.env:CURRENT_DIR}/definitions/ostree
 
     - name: "Deploy ostree ${params.branch} to ${params.disk}."
       module: installer.ostree.deploy
       options:
         kernel_args:
-          - root=LABEL=ROOT
+          - root=LABEL=root-x86-64
           - rw
           - console=ttyS0,115200n8 console=tty0
 
     - name: "Installing ostree bootloader on ${params.disk}"
       module: installer.bootloader.ostree
       options:
-        uefi_driver: ext4
+        uefi: ostree-bianca
 
     - name: "Compress image ${params.disk}"
       module: image.compress
