@@ -1,0 +1,97 @@
+---
+name: elxr-minimal-imx
+description: "i.MX minimal configuration."
+architecture: arm64
+version: 99.99.0
+schemaVersion: 1
+params:
+  version: ${version}
+  source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
+  disk: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
+stages:
+  install:
+    - name: "Creating installer."
+      module: bootstrap.mmdebstrap
+      options:
+        suite: bianca
+        target: ${params.source}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/elxr/ /'
+          - 'sync-in overlay/systemd-networkd/ /'
+          - 'sync-in overlay/xorg-imx/ /'
+        customize_hooks:
+          - 'sync-in overlay/grub-efi/ /'
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" elxr-growfs
+          - chroot $1 echo "localhost" > $1/etc/hostname
+          - mkdir -p $1/usr/lib/ostree-grub/EFI/BOOT/
+          - export GRUB_MKIMAGE_MODULES=$(find $1/usr/lib/grub/arm64-efi/ -type f -name "*.mod" -exec basename {} .mod \;);
+            chroot $1 grub-mkimage -p /EFI/debian -O arm64-efi -o /usr/lib/ostree-grub/EFI/BOOT/bootaa64.efi $GRUB_MKIMAGE_MODULES;
+          - cd $1/usr/lib/modules; for d in $(ls * -d); do mkdir -p $1/usr/lib/modules/$d/dtb;
+            cp -rf $1/usr/lib/linux-image-$d/freescale/imx*.dtb $1/usr/lib/modules/$d/dtb; done; cd -
+        packages:
+          - ${include:manifests/packages-arm64-bianca.yaml}
+          - systemd-timesyncd
+        mirrors:
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community  non-free-firmware contrib
+
+    - name: "Create raw image ${params.disk}"
+      module: image.raw
+      options:
+        name: ${params.disk}
+        size: 4G
+
+    - name: "Partitioning ${params.disk}."
+      module: installer.disk.parted
+      options:
+        slices:
+          - name: EFI
+            start: 10MB
+            end: 128MB
+            flags: [boot, esp]
+            id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+          - name: BOOT
+            start: 128M
+            end: 640M
+            flags: []
+            id: bc13c2ff-59e6-4262-a352-b275fd6f7172
+          - name: ROOT
+            start: 640MB
+            end: 100%
+            flags: []
+            id: ''
+
+    - name: "Formatting ${params.disk}."
+      module: installer.disk.fs
+      options:
+        filesystems:
+          - name: EFI
+            label: EFI
+            fs: vfat
+            options: []
+          - name: BOOT
+            label: BOOT
+            fs: ext4
+            options: []
+          - name: ROOT
+            label: ROOT
+            fs: ext4
+            options: []
+
+    - name: "Unpacking ${params.source}"
+      module: installer.unpack
+      options: []
+
+    - name: "Installing bootloader on ${params.disk}"
+      module: installer.bootloader
+      options:
+        kernel_args: "root=LABEL=ROOT console=tty0"
+        uefi: grub-efi
+
+    - name: "Compress image ${params.disk}"
+      module: image.compress
+      options:
+        name: ${params.disk}
+        compression: zstd
