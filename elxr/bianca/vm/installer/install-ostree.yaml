@@ -1,0 +1,42 @@
+---
+name: elxr-minimal-ostree-amd64
+description: "AMD64 ostree configuration."
+architecture: amd64
+version: 99.99.0
+schemaVersion: 1
+params:
+  version: ${version}
+  repository: /ostree
+  branch: elxr/${architecture}
+  disk: /dev/vda
+stages:
+  install:
+    - name: Create image
+      module: image.repart
+      options:
+        definitions: ${oc.env:CURRENT_DIR}/definitions/ostree
+
+    - name: "Deploy ostree ${params.branch} to ${params.disk}."
+      module: installer.ostree.deploy
+      options:
+        kernel_args:
+          - root=LABEL=root-x86-64
+          - rw
+          - console=ttyS0,115200n8 console=tty0
+
+    - name: "Installing ostree bootloader on ${params.disk}"
+      module: installer.bootloader.ostree
+      options:
+        uefi_driver: ext4
+
+    - name: "Set boot order on ${params.disk}."
+      module: utils.bootorder
+
+    - name: "Installation complete successfully."
+      module: noop.placeholder
+
+    - name: "Save installation log to rootfs/efi/tiler.log"
+      module: utils.copy
+      options:
+        source: /var/log/tiler.log
+        dest: efi/
