@@ -1,0 +1,29 @@
+---
+name: elxr-base-installer-amd64
+description: "AMD64 base installer configuration."
+architecture: amd64
+version: 99.99.0
+schemaVersion: 1
+params:
+  version: ${version}
+  source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
+stages:
+  install:
+    - name: "Create rootfs tarball"
+      module: bootstrap.mmdebstrap
+      options:
+        suite: bianca
+        target: ${params.source}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/bianca/ /'
+          - 'sync-in overlay/systemd-networkd/ /'
+        customize_hooks:
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - chroot $1 echo "localhost" > $1/etc/hostname
+          - mkdir -p $1/efi
+        packages:
+          - ${include:manifests/packages-bianca.yaml}
+        mirrors:
+          - deb http://mirror.elxr.dev/elxr aria main main-debian-community non-free-firmware contrib
