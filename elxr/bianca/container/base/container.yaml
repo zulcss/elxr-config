@@ -1,0 +1,29 @@
+---
+name: elxr-container-amd64
+description: "AMD64 container configuration."
+architecture: amd64
+version: 99.99.0
+schemaVersion: 1
+params:
+  version: ${version}
+  source: ${oc.env:CURRENT_DIR}/rootfs.tar.gz
+stages:
+  install:
+    - name: "Creating rootfs."
+      module: bootstrap.mmdebstrap
+      options:
+        suite: bianca
+        target: ${params.source}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/container/ /'
+        customize_hooks:
+          - chroot $1 echo "localhost" > $1/etc/hostname
+        packages:
+          - ${include:packages/packages-container.yaml}
+        mirrors:
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware contrib
+    - name: "Building container"
+      module: container.build
+      options:
+        image: elxr:latest
