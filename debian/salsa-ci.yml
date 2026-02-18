@@ -8,6 +8,7 @@ include:
 
 variables:
   SALSA_CI_DISABLE_PUBLISH_TO_APTLY_UPLOAD: 1
+  SALSA_CI_DISABLE_PIUPARTS: 1
 
 stages:
   - provisioning
