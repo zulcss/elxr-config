@@ -55,7 +55,7 @@ stages:
     - name: Create image
       module: image.repart
       options:
-        definitions: ${oc.env:CURRENT_DIR}/definitions/cloud
+        definitions: definitions/cloud
 
     - name: "Install k3s"
       module: utils.run_command

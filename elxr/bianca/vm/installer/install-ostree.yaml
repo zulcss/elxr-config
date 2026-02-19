@@ -14,7 +14,7 @@ stages:
     - name: Create image
       module: image.repart
       options:
-        definitions: ${oc.env:CURRENT_DIR}/definitions/ostree
+        definitions: definitions/ostree
 
     - name: "Deploy ostree ${params.branch} to ${params.disk}."
       module: installer.ostree.deploy
