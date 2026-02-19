@@ -1,3 +1,24 @@
+elxr-config (1.0.21) bianca; urgency=medium
+
+  * New upstream release:
+    - bfd08aa7: sd-repart: Fix path for loading definitions
+    - be4ff1c4: Add bianca cloud manifest
+    - 13bb9f1c: Add AI manifest
+    - df019225: Add networking manifest 
+    - bab459c1: Add minimal bianca image for ostree
+    - 2517481c: Add k3s manifest
+    - 985c516a: Add AI ostree image for bianca
+    - dcbd57c4: Add bianca ostree networking manifest 
+    - 1f39a834: Add manifest for stig 
+    - 0fb5f342: Add xfce support for bianca 
+    - 56ee2ac8: Add bianca support for the installer manifest
+    - 8b155270: Add bianca support for containers 
+    - cc087728: Add bianca support for imx manifests
+    - d55d43c8: debian: Disable piuparts test 
+    - e45bae00: Set DEFAULT_ELXR_VERSION for bianca manifests
+
+ -- Chuck Short <charles.short@windriver.com>  Wed, 18 Feb 2026 22:25:42 -0500
+
 elxr-config (1.0.20) unstable; urgency=medium
 
   * Use DEFAULT_ELXR_VERSION to set version
