@@ -17,6 +17,7 @@ wget
 ca-certificates
 ostree
 ostree-boot
+python3-apt-ostree
 systemd-resolved
 cloud-guest-utils
 xterm
