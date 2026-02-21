@@ -14,6 +14,7 @@ ostree
 ostree-boot
 polkitd
 procps
+python3-apt-ostree
 sudo
 systemd-boot
 systemd-resolved
