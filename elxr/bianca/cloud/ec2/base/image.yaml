@@ -1,0 +1,76 @@
+---
+name: elxr-ec2-amd64
+description: "amd64 ec2 image"
+architecture: amd64
+version: ${oc.env:DEFAULT_ELXR_VERSION}
+schemaVersion: 1
+params:
+  source: ${oc.env:CURRENT_DIR}/elxr-ec2-installer-${version}-${architecture}.tar.gz
+  disk: ${oc.env:CURRENT_DIR}/elxr-ec2-${version}-${architecture}.img
+stages:
+  install:
+    - name: "Creating rootfs tarball."
+      module: bootstrap.mmdebstrap
+      options:
+        suite: bianca
+        components:
+          - main
+          - non-free-firmware
+          - contrib
+        target: ${params.source}
+        architecture: ${architecture}
+        customize_hooks:
+          - 'sync-in overlay/ec2/ /'
+          - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" elxr-growfs
+          - chroot $1 echo "localhost" > $1/etc/hostname
+          - chroot $1 sed -i -e 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+          - chroot $1 sed -i -e 's/^PermitRootLogin .*/PermitRootLogin without-password/' /etc/ssh/sshd_config
+          - chroot $1 ln -fs /usr/share/zoneinfo/UTC /etc/localtime
+        packages:
+          - ${include:manifests/packages-ec2.yaml}
+        mirrors:
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
+
+    - name: "Create raw image ${params.disk}"
+      module: image.raw
+      options:
+        name: ${params.disk}
+        size: 10G
+
+    - name: "Partitioning ${params.disk}"
+      module: installer.disk.parted
+      options:
+        noerase: False
+        slices:
+          - name: EFI
+            start: 0%
+            end: 128MB
+            flags: [boot, esp]
+            id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+          - name: ROOT
+            start: 128MB
+            end: 100%
+            flags: []
+            id: ''
+
+
+    - name: "Formatting ${params.disk}."
+      module: installer.disk.fs
+      options:
+        filesystems:
+          - name: EFI
+            label: EFI
+            fs: vfat
+            options: []
+          - name: ROOT
+            label: ROOT
+            fs: ext4
+            options: []
+
+    - name: "Unpacking ${params.source}"
+      module: installer.unpack
+      options: []
+
+    - name: "Installing bootloader"
+      module: installer.bootloader.grub
