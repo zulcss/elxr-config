@@ -1,3 +1,11 @@
+elxr-config (1.0.22) bianca; urgency=medium
+
+  * New upstream release:
+    - 28ef4734: Add ec2 cloud manifest 
+    - ostree: Ensure python3-apt-ostree is installed 
+
+ -- Chuck Short <charles.short@windriver.com>  Mon, 23 Feb 2026 13:13:30 -0500
+
 elxr-config (1.0.21) bianca; urgency=medium
 
   * New upstream release:
