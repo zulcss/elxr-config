@@ -1,3 +1,9 @@
+elxr-config (1.0.22+26.04.01) aria; urgency=medium
+
+  * Backport bianca changes for aria.
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 24 Feb 2026 10:49:00 -0500
+
 elxr-config (1.0.22) bianca; urgency=medium
 
   * New upstream release:
