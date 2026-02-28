@@ -30,7 +30,7 @@ stages:
           - ${include:manifests/packages-ostree-bianca.yaml}
           - ${include:manifests/packages-stig.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr bianca main nmain-debian-community on-free-firmware contrib
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware contrib
 
     - name: "Unpack ${params.source}"
       module: unpack.tarball
