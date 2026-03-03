@@ -1,3 +1,10 @@
+elxr-config (1.0.23) bianca; urgency=medium
+
+  * New upstream release:
+    - 5c906bf2: correct typos in component names in YAML files
+
+ -- xiao zhang <xzhang1@ala-lpd-susbld.wrs.com>  Tue, 03 Mar 2026 02:14:12 +0000
+
 elxr-config (1.0.22) bianca; urgency=medium
 
   * New upstream release:
