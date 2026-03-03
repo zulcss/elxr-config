@@ -1,3 +1,10 @@
+elxr-config (1.0.24) bianca; urgency=medium
+
+  * New upstream release:
+    - 8529c30c: Reset intaller changes.
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 03 Mar 2026 13:48:49 -0500
+
 elxr-config (1.0.23) bianca; urgency=medium
 
   * New upstream release:
