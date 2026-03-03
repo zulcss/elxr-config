@@ -10,21 +10,51 @@ params:
   disk: /dev/vda
 stages:
   install:
-    - name: Unpack tarball
-      module: unpack.tarball
+    - name: "Partitioning ${params.disk}."
+      module: installer.disk.parted
       options:
-        sources:
-          - ${params.source}
+        slices:
+          - name: EFI
+            start: 0%
+            end: 128MB
+            flags: [boot, esp]
+            id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+          - name: BOOT
+            start: 128M
+            end: 640M
+            flags: []
+            id: bc13c2ff-59e6-4262-a352-b275fd6f7172
+          - name: ROOT
+            start: 640MB
+            end: 100%
+            flags: []
+            id: ''
 
-    - name: Create image
-      module: image.repart
+    - name: "Formatting ${params.disk}."
+      module: installer.disk.fs
       options:
-        definitions: definitions/image
+        filesystems:
+          - name: EFI
+            label: EFI
+            fs: vfat
+            options: []
+          - name: BOOT
+            label: BOOT
+            fs: ext4
+            options: []
+          - name: ROOT
+            label: ROOT
+            fs: ext4
+            options: []
+
+    - name: "Unpacking ${params.source}"
+      module: installer.unpack
+      options: []
 
     - name: "Installing bootloader on ${params.disk}"
       module: installer.bootloader
       options:
-        kernel_args: "root=LABEL=root-x86-64 console=tty0 console=ttyS0,115200"
+        kernel_args: "root=LABEL=ROOT console=tty0 console=ttyS0,115200"
         uefi_driver: ext4
 
     - name: "Set boot order on ${params.disk}."
