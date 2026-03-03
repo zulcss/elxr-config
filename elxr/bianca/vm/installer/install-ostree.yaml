@@ -11,23 +11,55 @@ params:
   disk: /dev/vda
 stages:
   install:
-    - name: Create image
-      module: image.repart
+    - name: "Partitioning ${params.disk}."
+      module: installer.disk.parted
       options:
-        definitions: definitions/ostree
+        slices:
+          - name: EFI
+            start: 0%
+            end: 128MB
+            flags: [boot, esp]
+            id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+          - name: BOOT
+            start: 128M
+            end: 640M
+            flags: []
+            id: bc13c2ff-59e6-4262-a352-b275fd6f7172
+          - name: ROOT
+            start: 640MB
+            end: 100%
+            flags: []
+            id: ''
+
+    - name: "Formatting ${params.disk}."
+      module: installer.disk.fs
+      options:
+        filesystems:
+          - name: EFI
+            label: EFI
+            fs: vfat
+            options: []
+          - name: BOOT
+            label: BOOT
+            fs: ext4
+            options: []
+          - name: ROOT
+            label: ROOT
+            fs: ext4
+            options: []
 
     - name: "Deploy ostree ${params.branch} to ${params.disk}."
       module: installer.ostree.deploy
       options:
         kernel_args:
-          - root=LABEL=root-x86-64
+          - root=LABEL=ROOT
           - rw
           - console=ttyS0,115200n8 console=tty0
 
     - name: "Installing ostree bootloader on ${params.disk}"
       module: installer.bootloader.ostree
       options:
-        uefi_driver: ext4
+        uefi: ostree-bianca
 
     - name: "Set boot order on ${params.disk}."
       module: utils.bootorder
