@@ -14,7 +14,7 @@ stages:
     - name: "Create rootfs"
       module: bootstrap.mmdebstrap
       options:
-        suite: aria
+        suite: bianca
         target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
@@ -28,10 +28,10 @@ stages:
           - chroot $1 echo "localhost" > $1/etc/hostname
           - mkdir -p $1/efi
         packages:
-          - ${include:manifests/packages-ostree.yaml}
+          - ${include:manifests/packages-ostree-bianca.yaml}
           - ${include:manifests/packages-xfce4.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
+          - deb http://mirror.elxr.dev/elxr bianca main non-free-firmware contrib
 
     - name: "Unpack ${params.source}"
       module: unpack.tarball
