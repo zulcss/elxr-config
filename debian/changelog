@@ -1,4 +1,4 @@
-elxr-config (1.0.22+26.04.01) aria; urgency=medium
+elxr-config (1.0.22+26.04.02) aria; urgency=medium
 
   * Backport bianca changes for aria.
 
