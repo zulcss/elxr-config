@@ -36,7 +36,9 @@ stages:
           - ${include:manifests/packages-xfce4.yaml}
           - systemd-timesyncd
         mirrors:
-          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware contrib
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware contrib non-free-firmware-debian-community
+          - deb http://mirror.elxr.dev/elxr bianca-updates main-debian-community main non-free-firmware contrib non-free-firmware-debian-community
+          - deb http://mirror.elxr.dev/elxr biancai-security main-debian-community main non-free-firmware contrib non-free-firmware-debian-community
 
     - name: "Create raw image ${params.disk}"
       module: image.raw

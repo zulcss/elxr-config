@@ -43,7 +43,9 @@ stages:
           - ${include:manifests/packages-bianca.yaml}
           - ${include:manifests/packages-cloud-k3s.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware contrib
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware contrib non-free-firmware-debian-community
+          - deb http://mirror.elxr.dev/elxr bianca-updates main main-debian-community non-free-firmware contrib non-free-firmware-debian-community
+          - deb http://mirror.elxr.dev/elxr bianca-security main main-debian-community non-free-firmware contrib non-free-firmware-debian-community
 
     - name: Unpack tarball
       module: unpack.tarball
