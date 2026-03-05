@@ -26,4 +26,6 @@ stages:
         packages:
           - ${include:manifests/packages-bianca.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main main-debian-community non-free-firmware contrib
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware contrib non-free-firmware-debian-community
+          - deb http://mirror.elxr.dev/elxr bianca-updates main main-debian-community non-free-firmware contrib non-free-firmware-debian-community
+          - deb http://mirror.elxr.dev/elxr bianca-secuity main main-debian-community non-free-firmware contrib non-free-firmware-debian-community
