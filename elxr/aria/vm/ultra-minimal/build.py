@@ -33,9 +33,9 @@ SUBSYSTEMS = {
 
 BASE_TEMPLATE = {
     'name': 'elxr-ultra-minimal-amd64',
-    'description': 'AMD64 ultra-minimal subsystem configuration for modular edge devices (AC 1.3).',
+    'description': 'AMD64 ultra-minimal subsystem configuration for modular edge devices.',
     'architecture': 'amd64',
-    'version': '99.99.0',
+    'version': '${oc.env:DEFAULT_ELXR_VERSION}',
     'schemaVersion': 1,
     'params': {
         'version': '${version}',
