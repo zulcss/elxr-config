@@ -30,7 +30,7 @@ BASE_TEMPLATE = {
     'name': 'elxr-ultra-minimal-imx',
     'description': 'i.MX ultra-minimal configuration.',
     'architecture': 'arm64',
-    'version': '99.99.0',
+    'version': '${oc.env:DEFAULT_ELXR_VERSION}',
     'schemaVersion': 1,
     'params': {
         'version': '${version}',
