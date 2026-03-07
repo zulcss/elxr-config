@@ -1,0 +1,70 @@
+---
+name: elxr-ultra-minimal-amd64
+description: "AMD64 ultra-minimal configuration."
+architecture: amd64
+version: ${oc.env:DEFAULT_ELXR_VERSION}
+schemaVersion: 1
+params:
+  version: ${version}
+  source: /oem/elxr-ultra-minimal-installer-${version}-${architecture}.tar.gz
+  disk: /dev/vda
+stages:
+  install:
+    - name: "Partitioning ${params.disk}"
+      module: installer.disk.parted
+      options:
+        slices:
+          - name: EFI
+            start: 0%
+            end: 128MB
+            flags: [boot, esp]
+            id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+          - name: BOOT
+            start: 128M
+            end: 640M
+            flags: []
+            id: bc13c2ff-59e6-4262-a352-b275fd6f7172
+          - name: ROOT
+            start: 640MB
+            end: 100%
+            flags: []
+            id: ''
+
+    - name: "Formatting ${params.disk}"
+      module: installer.disk.fs
+      options:
+        filesystems:
+          - name: EFI
+            label: EFI
+            fs: vfat
+            options: []
+          - name: BOOT
+            label: BOOT
+            fs: ext4
+            options: []
+          - name: ROOT
+            label: ROOT
+            fs: ext4
+            options: []
+
+    - name: "Unpacking ${params.source}"
+      module: installer.unpack
+      options: []
+
+    - name: "Installing bootloader on ${params.disk}"
+      module: installer.bootloader
+      options:
+        kernel_args: "root=LABEL=ROOT console=tty0 console=ttyS0,115200"
+        uefi_driver: ext4
+
+    - name: "Set boot order on ${params.disk}"
+      module: utils.bootorder
+    
+    - name: "Installation complete successfully"
+      module: noop.placeholder
+
+    - name: "Save installation log to rootfs/efi/tiler.log"
+      module: utils.copy
+      options:
+        source: /var/log/tiler.log
+        dest: efi/
