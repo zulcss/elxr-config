@@ -1,0 +1,56 @@
+---
+name: boot
+description: "Essential boot components (systemd-boot, kernel, init)"
+packages:
+  - linux-image-cloud-amd64
+  - systemd 
+  - systemd-sysv
+  - udev
+  - dbus
+  - grub2-common 
+  - grub-efi-amd64-bin
+  - grub-efi-amd64-signed
+  - dbus
+  - init
+  - kmod
+
+customize_hooks:
+  - mkdir -p $1/efi
+  - mkdir -p $1/etc/systemd/system/multi-user.target.wants
+  - ln -sf /lib/systemd/system/getty@.service $1/etc/systemd/system/getty.target.wants/getty@tty1.service
+  - ln -sf /lib/systemd/system/serial-getty@.service $1/etc/systemd/system/getty.target.wants/serial-getty@ttyS0.service
+  - mkdir -p $1/etc/systemd/system/serial-getty@ttyS0.service.d
+  - printf '[Service]\nExecStart=\nExecStart=-/sbin/agetty -o "-p -- root" --noclear --autologin root - $TERM\n' > $1/etc/systemd/system/serial-getty@ttyS0.service.d/autologin.conf
+  # Create /etc/os-release for AWS detection (overwrite existing)
+  - printf 'NAME="eLxr"\nID=elxr\nID_LIKE=debian\nVERSION="${version}"\nVERSION_ID="${version}"\nPRETTY_NAME="eLxr ${version}"\nHOME_URL="https://elxr.dev"\n' > $1/usr/lib/os-release
+  # Create GRUB directory and default config for AWS
+  - mkdir -p $1/boot/grub $1/etc/default
+  - printf 'GRUB_DEFAULT=0\nGRUB_TIMEOUT=0\nGRUB_DISTRIBUTOR="eLxr"\nGRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0,115200n8 console=tty0 rw"\nGRUB_CMDLINE_LINUX="net.ifnames=0 rw"\nGRUB_TERMINAL="console serial"\nGRUB_SERIAL_COMMAND="serial --speed=115200"\n' > $1/etc/default/grub
+                 
+  - echo 'fs0:\\EFI\\BOOT\\BOOTX64.EFI' > $1/efi/startup.nsh
+  - rm -rf $1/lib/modules/*/kernel/drivers/{gpu,media,staging,hid,input,i2c,spi,mmc,platform,power,thermal,watchdog,hwmon,leds,regulator} 2>/dev/null || true
+  - rm -rf $1/lib/modules/*/kernel/sound 2>/dev/null || true
+  - rm -rf $1/lib/firmware/{amdgpu,radeon,nvidia,usb} 2>/dev/null || true
+  - find $1/lib/firmware -name "*.bin" ! -name "*intel*" ! -name "*amd*" -delete 2>/dev/null || true
+  - depmod -a -b $1 $(ls $1/lib/modules/) 2>/dev/null || true
+  - find $1/lib/modules -name "*.ko.xz" -exec xz -d {} \; 2>/dev/null || true
+  - find $1/lib/modules -name "*.ko" -exec strip --strip-debug {} \; 2>/dev/null || true
+  - find $1/lib/modules -name "*.ko" -exec xz {} \; 2>/dev/null || true
+  - rm -rf $1/var/lib/systemd/catalog 2>/dev/null || true
+  - rm -rf $1/usr/lib/systemd/catalog 2>/dev/null || true
+  - rm -rf $1/usr/lib/systemd/system-generators 2>/dev/null || true
+  - rm -rf $1/usr/share/bash-completion 2>/dev/null || true
+
+dpkgopt:
+  - path-exclude=/lib/modules/*/kernel/drivers/gpu/*
+  - path-exclude=/lib/modules/*/kernel/drivers/media/*
+  - path-exclude=/lib/modules/*/kernel/drivers/staging/*
+  - path-exclude=/lib/modules/*/kernel/drivers/usb/*
+  - path-exclude=/lib/modules/*/kernel/drivers/hid/*
+  - path-exclude=/lib/modules/*/kernel/drivers/input/*
+  - path-exclude=/lib/modules/*/kernel/drivers/hwmon/*
+  - path-exclude=/lib/modules/*/kernel/drivers/watchdog/*
+  - path-exclude=/lib/modules/*/kernel/drivers/thermal/*
+  - path-exclude=/lib/modules/*/kernel/drivers/power/*
+  - path-exclude=/lib/modules/*/kernel/sound/*
+  - path-exclude=/usr/share/bash-completion/*
