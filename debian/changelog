@@ -1,3 +1,9 @@
+elxr-config (1.0.22+26.04.03) aria; urgency=medium
+
+  * add ultra-minimal config file for aria
+
+ -- Wenlin Kang <wenlin.kang@windriver.com>  Mon, 09 Mar 2026 17:34:34 +0800
+
 elxr-config (1.0.22+26.04.02) aria; urgency=medium
 
   * Backport bianca changes for aria.
