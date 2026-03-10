@@ -1,3 +1,15 @@
+elxr-config (1.0.25) bianca; urgency=medium
+
+  * New upstream release:
+    - c0e560ca: Update suite to bianca
+    - acdaf2fd: add ultra-minimal config file
+    - ac726e86: debian/control: add python3 dependency
+    - cf40e44b: ultra-minimal/image.yaml: use default version
+    - 79beb871: vm/installer/ultra-minimal: Remove unnecessary sources.list
+    - a73e4899: mirror: Add updates and security
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 10 Mar 2026 13:31:26 -0400
+
 elxr-config (1.0.24) bianca; urgency=medium
 
   * New upstream release:
