@@ -35,7 +35,7 @@ esac
 current_blkdev=${partition}
 while true; do
     eval "$(lsblk --paths --nodeps --pairs -o NAME,TYPE,PKNAME "${current_blkdev}")"
-    MAJMIN=$(lsblk -dno MAJ:MIN "${NAME}")
+    MAJMIN=$(lsblk -dno MAJ:MIN "${NAME}" | tr -d ' ')
     case "${TYPE}" in
         part)
             partnum=$(cat "/sys/dev/block/${MAJMIN}/partition")
