@@ -1,0 +1,41 @@
+---
+name: elxr-jetson-rootfs
+description: "orin minimal configuration."
+architecture: arm64
+version: ${oc.env:DEFAULT_ELXR_VERSION}
+schemaVersion: 1
+params:
+  version: ${version}
+  source: ${oc.env:CURRENT_DIR}/elxr-tegra-${version}-${architecture}.tar.gz
+stages:
+  install:
+    - name: "Creating rootfs."
+      module: bootstrap.mmdebstrap
+      options:
+        suite: bianca
+        target: ${params.source}
+        architecture: ${architecture}
+        setup_hooks:
+          - 'sync-in overlay/orin/ /'
+        customize_hooks:
+          - echo 'root:root' | chroot "$1" chpasswd
+          - systemctl enable --root="$1" systemd-networkd
+          - systemctl enable --root="$1" elxr-growfs
+          - rm -f $1/etc/X11/xorg.conf.d/fb.conf
+          - |
+            install -Dm644 /etc/resolv.conf "$1/run/systemd/resolve/stub-resolv.conf"
+            chroot $1 sh -c "set -e
+            URLS='
+            http://ftp.debian.org/debian/pool/main/p/procps/libprocps8_3.3.17-5_arm64.deb
+            http://ftp.debian.org/debian/pool/main/libf/libffi/libffi7_3.3-6_arm64.deb
+            http://ports.ubuntu.com/pool/main/libj/libjpeg-turbo/libjpeg-turbo8_2.1.5-4ubuntu2_arm64.deb'
+            for url in \$URLS; do f=/tmp/\$(basename \$url); wget -q \$url -O \$f && apt install -y \$f && rm \$f; done"
+            rm -rf "$1/run/systemd"
+        packages:
+          - ${include:manifests/packages-orin.yaml}
+          - ${include:manifests/packages-xfce4.yaml}
+          - systemd-timesyncd
+        mirrors:
+          - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
+          - deb http://mirror.elxr.dev/elxr bianca-security main main-debian-community non-free-firmware non-free-firmware-debian-community
+          - deb http://mirror.elxr.dev/elxr bianca-updates main main-debian-community non-free-firmware non-free-firmware-debian-community
