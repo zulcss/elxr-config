@@ -1,3 +1,13 @@
+elxr-config (1.0.26) bianca; urgency=medium
+
+  * New upstream release:
+    - bfc270fd: Fix DNS in networking image by syncing full elxr overlay
+    - c5cc2623: imx: Fix spelling typos
+    - a3f23b39: Remove trailing space
+    - a1c43e1a: create /etc/fstab to make sure BOOT partition is mounted at boot time
+
+ -- William Lyu <William.Lyu@windriver.com>  Thu, 12 Mar 2026 15:57:12 -0400
+
 elxr-config (1.0.25) bianca; urgency=medium
 
   * New upstream release:
