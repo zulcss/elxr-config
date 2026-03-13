@@ -18,6 +18,7 @@ stages:
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/bianca/ /'
+          - 'sync-in overlay/bianca-ostree/ /'
           - 'sync-in overlay/systemd-networkd/ /'
         customize_hooks:
           - 'sync-in overlay/ostree/usr/lib /usr/lib'
