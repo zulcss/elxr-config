@@ -1,3 +1,9 @@
+elxr-config (1.0.23elxr1) aria; urgency=medium
+
+  * add ultra-minimal config file for bianca
+
+ -- Wenlin Kang <wenlin.kang@windriver.com>  Fri, 13 Mar 2026 22:31:37 +0800
+
 elxr-config (1.0.22+26.04.03) aria; urgency=medium
 
   * add ultra-minimal config file for aria
