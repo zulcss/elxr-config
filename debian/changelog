@@ -1,3 +1,9 @@
+elxr-config (1.0.26elxr2.26.04.01) bianca; urgency=medium
+
+  * bianca:ai/image-ostree.yaml: reorder repository components in ELXR mirrors
+
+ -- Min Wang1 <min.wang1.cn@windriver.com>  Sat, 14 Mar 2026 01:48:39 +0000
+
 elxr-config (1.0.26elxr1.26.04.01) bianca; urgency=medium
 
   * add ultra-minimal config file for bianca
