@@ -4,6 +4,7 @@ description: "Boot components with aggressive kernel module cleanup"
 packages:
   - systemd-boot
   - systemd-boot-efi
+  - uefi-ext4
 
 customize_hooks:
   - mkdir -p $1/efi
