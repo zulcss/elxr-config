@@ -1,7 +1,8 @@
 ---
 name: base
 description: "Essential base system for ARM64 IMX boards"
-packages: []
+packages:
+  - elxr-archive-keyring
 
 customize_hooks:
   - echo 'root:root' | chroot "$1" chpasswd
