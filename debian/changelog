@@ -1,3 +1,10 @@
+elxr-config (1.0.28) bianca; urgency=medium
+
+  * New upstream release:
+    - 5e920e53: orin: Add support for orin tegra boards
+
+ -- Chuck Short <charles.short@windriver.com>  Wed, 18 Mar 2026 13:36:31 -0400
+
 elxr-config (1.0.27) bianca; urgency=medium
 
   * New upstream release:
