@@ -1,3 +1,13 @@
+elxr-config (1.0.27) bianca; urgency=medium
+
+  * New upstream release:
+    - a4aca396: ostree: Revert systemd-repart configuration 
+    - 6e26fc12: installer/base.yaml: fix spelling typo
+    - 5827221d: ultra-minimal: add package elxr-archive-keyring
+    - 255ac144: ultra-minimal:installer: add package uefi-ext4 
+
+ -- Chuck Short <charles.short@windriver.com>  Wed, 18 Mar 2026 09:10:31 -0400
+
 elxr-config (1.0.26elxr1.26.04.01) bianca; urgency=medium
 
   * add ultra-minimal config file for bianca
