@@ -1,6 +1,6 @@
 ---
-name: elxr-minimal-ostree-amd64
-description: "AMD64 ostree configuration."
+name: elxr-networking-ostree-amd64
+description: "AMD64 networking ostree configuration."
 architecture: amd64
 version: ${oc.env:DEFAULT_ELXR_VERSION}
 schemaVersion: 1
