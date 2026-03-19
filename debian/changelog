@@ -1,3 +1,9 @@
+elxr-config (1.0.24) aria; urgency=medium
+
+  * ultra-minimal: removed the deletion of perl-related packages
+
+ -- Wenlin Kang <wenlin.kang@windriver.com>  Thu, 19 Mar 2026 21:01:12 +0800
+
 elxr-config (1.0.23elxr1) aria; urgency=medium
 
   * add ultra-minimal config file for bianca
