@@ -1,3 +1,11 @@
+elxr-config (1.0.29) bianca; urgency=medium
+
+  * New upstream release:
+  * 7450909d: ultra-minimal: removed the deletion of perl-related packages
+  * 9a114753: bianca: fixes networking image name
+
+ -- Wenlin Kang <wenlin.kang@windriver.com>  Thu, 19 Mar 2026 21:12:56 +0800
+
 elxr-config (1.0.28) bianca; urgency=medium
 
   * New upstream release:
