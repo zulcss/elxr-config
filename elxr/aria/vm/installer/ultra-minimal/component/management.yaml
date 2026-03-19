@@ -6,13 +6,9 @@ packages:
   - dpkg
 
 customize_hooks:
-  - chroot $1 dpkg --purge --force-all perl perl-modules-5.36 libperl5.36 libfile-find-rule-perl libnumber-compare-perl libtext-glob-perl 2>/dev/null || true
   - chroot $1 apt-get clean
   - rm -rf $1/var/cache/apt/* $1/var/lib/apt/lists/*
   - rm -rf $1/var/lib/dpkg/info/*.md5sums $1/usr/share/common-licenses/*
-  - awk 'BEGIN{RS=""; ORS="\n\n"} $0 !~ /^Package. (perl|perl-modules-5\.36|libperl5\.36|libfile-find-rule-perl|libnumber-compare-perl|libtext-glob-perl)$/ {print}' $1/var/lib/dpkg/status > $1/var/lib/dpkg/status.tmp && mv $1/var/lib/dpkg/status.tmp $1/var/lib/dpkg/status
-  - find $1/usr/lib/x86_64-linux-gnu -maxdepth 1 -name 'perl*' ! -name 'perl-base' -exec rm -rf {} +
-  - rm -rf $1/usr/share/perl*
 dpkgopt:
   - path-exclude=/var/cache/apt/*
   - path-exclude=/var/lib/apt/lists/*
