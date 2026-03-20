@@ -15,7 +15,7 @@ customize_hooks:
   - find $1/lib/modules -name '*.ko' -exec strip --strip-unneeded {} \; 2>/dev/null || true
   - find $1/usr/bin $1/usr/sbin $1/bin $1/sbin -type f -executable -exec strip --strip-all {} \; 2>/dev/null || true
   - rm -rf $1/usr/share/bash-completion $1/usr/share/debconf 2>/dev/null || true
-  - rm -rf $1/usr/share/systemd $1/usr/share/dbus-1 2>/dev/null || true
+  - rm -rf $1/usr/share/systemd 2>/dev/null || true
   - rm -rf $1/var/lib/systemd $1/var/lib/dbus 2>/dev/null || true
   - find $1/usr/lib -name "*.so.*" -exec strip --strip-unneeded {} \; 2>/dev/null || true
   - rm -rf $1/usr/include $1/usr/src 2>/dev/null || true
