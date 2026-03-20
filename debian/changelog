@@ -1,3 +1,13 @@
+elxr-config (1.0.30) bianca; urgency=medium
+
+  * New upstream release:
+   - d4841521:  ultra-minimal: add systemd-resolved for dynamic DNS configuration
+   - 70114ae7: ultra-minimal: stop mounting efi partition 
+   - 244c20ac: ultra-minimal: removed the deletion of dbus-1
+   - 536ecf41: orin: Fix package installs for orin on bianca
+
+ -- Chuck Short <charles.short@windriver.com>  Fri, 20 Mar 2026 13:54:22 -0400
+
 elxr-config (1.0.29) bianca; urgency=medium
 
   * New upstream release:
