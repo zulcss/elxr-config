@@ -26,6 +26,7 @@ stages:
           - rm -f $1/etc/X11/xorg.conf.d/fb.conf
           - cp $1/vmlinuz $1/boot/Image
           - cp $1/initrd.img $1/boot/initrd
+          - chroot "$1" depmod -a "$(ls $1/usr/lib/modules/ | head -1)"
           - |
             install -Dm644 /etc/resolv.conf "$1/run/systemd/resolve/stub-resolv.conf"
             chroot $1 sh -c "set -e
