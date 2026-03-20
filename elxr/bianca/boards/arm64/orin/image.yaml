@@ -36,7 +36,7 @@ stages:
             for url in \$URLS; do f=/tmp/\$(basename \$url); wget -q \$url -O \$f && apt install -y \$f && rm \$f; done"
             rm -rf "$1/run/systemd"
         packages:
-          - ${include:manifests/packages-orin.yaml}
+          - ${include:manifests/packages-orin-bianca.yaml}
           - ${include:manifests/packages-xfce4.yaml}
           - systemd-timesyncd
         mirrors:
