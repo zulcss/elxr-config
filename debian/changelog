@@ -1,3 +1,11 @@
+elxr-config (1.0.25) aria; urgency=medium
+
+  * 244c20ac: ultra-minimal: removed the deletion of dbus-1
+  * 70114ae7: ultra-minimal: stop mounting efi partition
+  * d4841521: ultra-minimal: add systemd-resolved for dynamic DNS configuration
+
+ -- Wenlin Kang <wenlin.kang@windriver.com>  Fri, 20 Mar 2026 22:07:34 +0800
+
 elxr-config (1.0.24) aria; urgency=medium
 
   * ultra-minimal: removed the deletion of perl-related packages
