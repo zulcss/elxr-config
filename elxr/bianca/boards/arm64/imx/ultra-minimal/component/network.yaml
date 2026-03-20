@@ -4,6 +4,7 @@ description: "Minimal networking (systemd-networkd only, no wireless/bluetooth) 
 packages:
   - iproute2
   - iputils-ping
+  - systemd-resolved
 
 customize_hooks:
   - ln -sf /lib/systemd/system/systemd-networkd.service $1/etc/systemd/system/multi-user.target.wants/
