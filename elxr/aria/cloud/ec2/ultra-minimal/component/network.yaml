@@ -7,6 +7,7 @@ packages:
   - isc-dhcp-client
   - ifupdown
   - netbase
+  - systemd-resolved
 
 customize_hooks:
   - mkdir -p $1/etc/network
