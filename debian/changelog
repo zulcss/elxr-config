@@ -1,3 +1,15 @@
+elxr-config (1.0.31) bianca; urgency=medium
+
+  * New upstream release:
+    - 44d35339: Simplify installer image configuration
+    - 52682d1f: Remove storage component
+    - d9534939: Remove kernel network drivers exclusions
+    - ce88e1e0: Remove unused apt methods
+    - 805b9039: Be less agreesive during cleanup
+    - 44d35339: Be less aggresive for boot component
+
+ -- Chuck Short <charles.short@windriver.com>  Wed, 25 Mar 2026 08:20:55 -0400
+
 elxr-config (1.0.30) bianca; urgency=medium
 
   * New upstream release:
