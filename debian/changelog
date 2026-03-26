@@ -1,3 +1,10 @@
+elxr-config (1.0.23+26.04.01) unstable; urgency=medium
+
+  * Backport bianca changes for aria.
+
+
+ -- Chuck Short <charles.short@windriver.com>  Thu, 26 Mar 2026 11:27:46 -0400
+
 elxr-config (1.0.22+26.04.03) aria; urgency=medium
 
   * add ultra-minimal config file for aria
