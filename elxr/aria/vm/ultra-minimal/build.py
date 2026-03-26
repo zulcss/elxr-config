@@ -28,7 +28,6 @@ SUBSYSTEMS = {
     'management': 'component/management.yaml',
     'network': 'component/network.yaml',
     'security': 'component/security.yaml',
-    'storage': 'component/storage.yaml'
 }
 
 BASE_TEMPLATE = {
