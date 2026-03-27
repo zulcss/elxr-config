@@ -1,3 +1,21 @@
+elxr-config (1.0.26+26.04.01) unstable; urgency=medium
+
+  * New backport from bianca:
+    - a3f23b39: Remove trailing space
+    - a1c43e1a: create /etc/fstab to make sure BOOT partition is mounted at boot time 
+    - a4aca396: ostree: Revert systemd-repart configuration 
+    - 5e920e53: orin: Add support for orin tegra boards 
+    - 536ecf41: orin: Fix package installs for orin on bianca 
+    - c9b0d393: Simplify installer image configuration
+    - 52682d1f: Remove storage component 
+    - d9534939: Remove kernel network drivers exclusions 
+    - ce88e1e0: Remove unused apt methods 
+    - 805b9039: Be less agreesive during cleanup
+    - 44d35339: Be less aggresive for boot component
+    - 97b483e4: Be less agressive
+
+ -- Chuck Short <charles.short@windriver.com>  Fri, 27 Mar 2026 12:07:41 -0400
+
 elxr-config (1.0.25) aria; urgency=medium
 
   * 244c20ac: ultra-minimal: removed the deletion of dbus-1
