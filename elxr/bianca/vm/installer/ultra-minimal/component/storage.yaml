@@ -1,0 +1,64 @@
+---
+name: storage
+description: "Core filesystems only (ext4, vfat)"
+packages:
+  - e2fsprogs
+
+customize_hooks: []
+
+dpkgopt:
+  - path-exclude=/lib/modules/*/kernel/fs/xfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/btrfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/nfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/ocfs2/*
+  - path-exclude=/lib/modules/*/kernel/fs/smb/*
+  - path-exclude=/lib/modules/*/kernel/fs/f2fs/*
+  - path-exclude=/lib/modules/*/kernel/fs/nfsd/*
+  - path-exclude=/lib/modules/*/kernel/fs/gfs2/*
+  - path-exclude=/lib/modules/*/kernel/fs/ceph/*
+  - path-exclude=/lib/modules/*/kernel/fs/afs/*
+  - path-exclude=/lib/modules/*/kernel/fs/ubifs/*
+  - path-exclude=/lib/modules/*/kernel/fs/reiserfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/jfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/jffs2/*
+  - path-exclude=/lib/modules/*/kernel/fs/nilfs2/*
+  - path-exclude=/lib/modules/*/kernel/fs/dlm/*
+  - path-exclude=/lib/modules/*/kernel/fs/fuse/*
+  - path-exclude=/lib/modules/*/kernel/fs/overlayfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/orangefs/*
+  - path-exclude=/lib/modules/*/kernel/fs/cachefiles/*
+  - path-exclude=/lib/modules/*/kernel/fs/ecryptfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/udf/*
+  - path-exclude=/lib/modules/*/kernel/fs/lockd/*
+  - path-exclude=/lib/modules/*/kernel/fs/hfsplus/*
+  - path-exclude=/lib/modules/*/kernel/fs/fscache/*
+  - path-exclude=/lib/modules/*/kernel/fs/erofs/*
+  - path-exclude=/lib/modules/*/kernel/fs/hpfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/9p/*
+  - path-exclude=/lib/modules/*/kernel/fs/exfat/*
+  - path-exclude=/lib/modules/*/kernel/fs/ufs/*
+  - path-exclude=/lib/modules/*/kernel/fs/hfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/affs/*
+  - path-exclude=/lib/modules/*/kernel/fs/squashfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/pstore/*
+  - path-exclude=/lib/modules/*/kernel/fs/netfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/configfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/coda/*
+  - path-exclude=/lib/modules/*/kernel/fs/autofs/*
+  - path-exclude=/lib/modules/*/kernel/fs/sysv/*
+  - path-exclude=/lib/modules/*/kernel/fs/zonefs/*
+  - path-exclude=/lib/modules/*/kernel/fs/minix/*
+  - path-exclude=/lib/modules/*/kernel/fs/vboxsf/*
+  - path-exclude=/lib/modules/*/kernel/fs/isofs/*
+  - path-exclude=/lib/modules/*/kernel/fs/quota/*
+  - path-exclude=/lib/modules/*/kernel/fs/befs/*
+  - path-exclude=/lib/modules/*/kernel/fs/adfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/omfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/qnx6/*
+  - path-exclude=/lib/modules/*/kernel/fs/freevxfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/efs/*
+  - path-exclude=/lib/modules/*/kernel/fs/bfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/romfs/*
+  - path-exclude=/lib/modules/*/kernel/fs/nfs_common/*
+  - path-exclude=/lib/modules/*/kernel/fs/qnx4/*
+  - path-exclude=/lib/modules/*/kernel/fs/binfmt_misc.ko

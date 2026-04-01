@@ -1,0 +1,17 @@
+---
+name: management
+description: "Package management tools (defined in manifest)"
+packages:
+  - apt
+  - dpkg
+
+customize_hooks:
+  - chroot $1 apt-get clean
+  - rm -rf $1/var/cache/apt/* $1/var/lib/apt/lists/*
+  - rm -rf $1/var/lib/dpkg/info/*.md5sums $1/usr/share/common-licenses/*
+dpkgopt:
+  - path-exclude=/var/cache/apt/*
+  - path-exclude=/var/lib/apt/lists/*
+  - path-include=/usr/share/dpkg/cputable
+  - path-include=/usr/share/dpkg/tupletable
+  - path-include=/usr/share/dpkg/archtable

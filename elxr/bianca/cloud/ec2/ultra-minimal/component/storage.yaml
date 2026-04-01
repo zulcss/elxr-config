@@ -16,3 +16,5 @@ dpkgopt:
   - path-exclude=/lib/modules/*/kernel/fs/overlayfs/*
   - path-exclude=/lib/modules/*/kernel/fs/squashfs/*
   - path-exclude=/lib/modules/*/kernel/fs/isofs/*
+  - path-include=/lib/modules/*/kernel/drivers/nvme/*
+          

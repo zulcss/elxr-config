@@ -1,0 +1,10 @@
+[Match]
+Name=en*
+
+[Network]
+DHCP=yes
+IPForward=no
+
+[DHCP]
+UseDNS=yes
+UseNTP=yes
