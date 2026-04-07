@@ -1,5 +1,5 @@
 ---
-linux-image-orin-arm64
+linux-image-6.12.48+deb13-orin-arm64-unsigned
 accountsservice
 alsa-topology-conf
 alsa-ucm-conf
@@ -97,7 +97,6 @@ util-linux
 vim
 wget
 wireless-regdb
-wpasupplicant
 xdg-utils
 xxd
 xz-utils
