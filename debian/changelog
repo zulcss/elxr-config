@@ -1,3 +1,9 @@
+elxr-config (1.0.32) bianca; urgency=medium
+
+  * orin: add L4T BSP compat libs, drop wpasupplicant collision
+
+ -- Mostafa Amin <mostafa.amin@windriver.com>  Tue, 07 Apr 2026 12:30:00 -0400
+
 elxr-config (1.0.31) bianca; urgency=medium
 
   * New upstream release:
