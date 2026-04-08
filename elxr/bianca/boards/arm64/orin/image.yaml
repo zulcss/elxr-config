@@ -34,11 +34,6 @@ stages:
             http://ftp.debian.org/debian/pool/main/libf/libffi/libffi7_3.3-6_arm64.deb
             http://ports.ubuntu.com/pool/main/libj/libjpeg-turbo/libjpeg-turbo8_2.1.5-4ubuntu2_arm64.deb
             http://snapshot.debian.org/archive/debian/20240101T000000Z/pool/main/p/pcre3/libpcre3_8.39-15_arm64.deb
-            http://snapshot.debian.org/archive/debian/20240101T000000Z/pool/main/o/openssl/libssl3_3.0.11-1~deb12u2_arm64.deb
-            http://snapshot.debian.org/archive/debian/20240101T000000Z/pool/main/g/glib2.0/libglib2.0-0_2.74.6-2_arm64.deb
-            http://snapshot.debian.org/archive/debian/20240101T000000Z/pool/main/libp/libpng1.6/libpng16-16_1.6.39-2_arm64.deb
-            http://snapshot.debian.org/archive/debian/20240101T000000Z/pool/main/g/gtk+3.0/libgtk-3-0_3.24.38-2~deb12u1_arm64.deb
-            http://snapshot.debian.org/archive/debian/20240101T000000Z/pool/main/n/nss/libnss3_3.87.1-1+deb12u1_arm64.deb
             http://snapshot.debian.org/archive/debian/20240101T000000Z/pool/main/m/mesa/libegl1-mesa_22.3.6-1+deb12u1_arm64.deb'
             for url in \$URLS; do f=/tmp/\$(basename \$url); wget -q \$url -O \$f && apt install -y \$f && rm \$f; done"
             rm -rf "$1/run/systemd"
