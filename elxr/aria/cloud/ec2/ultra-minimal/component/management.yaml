@@ -16,11 +16,3 @@ exclude_packages: []
 
 customize_hooks:
   - chroot $1 apt-get clean        
-  # Ensure apt directories exist
-  - mkdir -p $1/var/lib/apt/lists/partial $1/var/cache/apt/archives/partial        
-  - rm -rf $1/var/lib/apt/lists/* $1/var/cache/apt/archives/*       
-  - rm -rf $1/usr/lib/apt/methods/ftp $1/usr/lib/apt/methods/rsh 2>/dev/null || true
-
-dpkgopt: 
-  - path-exclude=/var/cache/apt/*
-  - path-exclude=/var/lib/apt/lists/*
