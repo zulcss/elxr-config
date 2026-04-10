@@ -28,7 +28,6 @@ SUBSYSTEMS = {
     'management': 'component/management.yaml',
     'network': 'component/network.yaml',
     'security': 'component/security.yaml',
-    'storage': 'component/storage.yaml'
 }
 
 BASE_TEMPLATE = {
@@ -62,7 +61,7 @@ BASE_TEMPLATE = {
             {
                 'name': 'Create raw image ${params.disk}',
                 'module': 'image.raw',
-                'options': {'name': '${params.disk}', 'size': '1G'}
+                'options': {'name': '${params.disk}', 'size': '4G'}
             },
             {
                 'name': 'Partitioning ${params.disk}',
