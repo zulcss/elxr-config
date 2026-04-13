@@ -3,8 +3,6 @@ name: boot
 description: "Essential boot components (systemd-boot, kernel, init)"
 packages:
   - linux-image-cloud-amd64
-  - systemd 
-  - systemd-sysv
   - e2fsprogs
   - udev
   - dbus
@@ -21,11 +19,6 @@ packages:
 
 customize_hooks:
   - mkdir -p $1/efi
-  - mkdir -p $1/etc/systemd/system/multi-user.target.wants
-  - ln -sf /lib/systemd/system/getty@.service $1/etc/systemd/system/getty.target.wants/getty@tty1.service
-  - ln -sf /lib/systemd/system/serial-getty@.service $1/etc/systemd/system/getty.target.wants/serial-getty@ttyS0.service
-  - mkdir -p $1/etc/systemd/system/serial-getty@ttyS0.service.d
-  - printf '[Service]\nExecStart=\nExecStart=-/sbin/agetty -o "-p -- root" --noclear --autologin root - $TERM\n' > $1/etc/systemd/system/serial-getty@ttyS0.service.d/autologin.conf
   # Create /etc/os-release for AWS detection (overwrite existing)
   - printf 'NAME="eLxr"\nID=elxr\nID_LIKE=debian\nVERSION="${version}"\nVERSION_ID="${version}"\nPRETTY_NAME="eLxr ${version}"\nHOME_URL="https://elxr.dev"\n' > $1/usr/lib/os-release
   # Create GRUB directory and default config for AWS
@@ -37,9 +30,6 @@ customize_hooks:
   - rm -rf $1/lib/modules/*/kernel/sound 2>/dev/null || true
   - find $1/lib/firmware -name "*.bin" ! -name "*intel*" ! -name "*amd*" -delete 2>/dev/null || true
   - depmod -a -b $1 $(ls $1/lib/modules/) 2>/dev/null || true
-  - rm -rf $1/var/lib/systemd/catalog 2>/dev/null || true
-  - rm -rf $1/usr/lib/systemd/catalog 2>/dev/null || true
-  - rm -rf $1/usr/lib/systemd/system-generators 2>/dev/null || true
   - rm -rf $1/usr/share/bash-completion 2>/dev/null || true
 
 dpkgopt:
