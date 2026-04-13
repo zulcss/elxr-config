@@ -1,10 +1,11 @@
 #!/bin/bash
-# Fix nv-update-initrd kernel version detection for 6.12 kernel.
+# Fix nv-update-initrd for 6.12 kernel.
 #
-# The L4T nv-update-initrd script uses "strings /boot/Image" to detect
-# the kernel version, which fails under qemu-aarch64-static emulation
-# for the 6.12 kernel (returns empty). This script patches nv-update-initrd
-# to fall back to reading the version from /lib/modules/ when strings fails.
+# Two issues with L4T's nv-update-initrd on the 6.12 kernel:
+# 1. "strings /boot/Image" returns empty under qemu-aarch64-static,
+#    so the kernel version is not detected.
+# 2. The modules list references ucsi_ccg.ko which was merged into
+#    typec_ucsi.ko in kernel 6.12.
 #
 # Run this AFTER apply_binaries.sh, BEFORE l4t_update_initrd.sh.
 # Usage: sudo ./elxr-fix-l4t-initrd [rootfs-path]
@@ -13,25 +14,31 @@ set -e
 
 ROOTFS="${1:-.}"
 NV_SCRIPT="${ROOTFS}/usr/sbin/nv-update-initrd"
+MODULES_LIST="${ROOTFS}/etc/nv-update-initrd/list.d/modules"
 
 if [ ! -f "${NV_SCRIPT}" ]; then
     echo "Error: ${NV_SCRIPT} not found. Run apply_binaries.sh first."
     exit 1
 fi
 
-# Check if already patched
-if grep -q "elxr-fallback" "${NV_SCRIPT}"; then
-    echo "Already patched."
-    exit 0
-fi
-
-# Patch: add fallback version detection from /lib/modules/
-# If strings returns empty, pick the newest non-5.x kernel from /lib/modules/
-sed -i '/echo "${_kernel_version}"/i\
+# Fix 1: patch version detection fallback
+if ! grep -q "elxr-fallback" "${NV_SCRIPT}"; then
+    sed -i '/echo "${_kernel_version}"/i\
 \t# elxr-fallback: if strings failed, read version from /lib/modules/\
 \tif [ -z "${_kernel_version}" ]; then\
 \t\t_kernel_version=$(ls -1 /lib/modules/ 2>/dev/null | grep -v "^5\\." | sort -V | tail -1)\
 \tfi' "${NV_SCRIPT}"
+    echo "Patched ${NV_SCRIPT} with kernel version fallback."
+else
+    echo "Version fallback already patched."
+fi
 
-echo "Patched ${NV_SCRIPT} with kernel version fallback."
+# Fix 2: remove ucsi_ccg.ko (merged into typec_ucsi.ko in 6.12)
+if [ -f "${MODULES_LIST}" ] && grep -q "ucsi_ccg" "${MODULES_LIST}"; then
+    sed -i '/ucsi_ccg/d' "${MODULES_LIST}"
+    echo "Removed ucsi_ccg.ko from ${MODULES_LIST} (merged into typec_ucsi in 6.12)."
+else
+    echo "No ucsi_ccg entry to remove."
+fi
+
 echo "You can now run: sudo ./tools/l4t_update_initrd.sh"
