@@ -10,6 +10,7 @@ packages:
   - udev
   - dbus
   - e2fsprogs
+  - xz-utils
 
 customize_hooks:
   - mkdir -p $1/efi
@@ -19,8 +20,6 @@ customize_hooks:
   - rm -rf $1/lib/modules/*/kernel/drivers/{media,staging,i2c,spi,platform,power,thermal,watchdog,hwmon,leds,regulator} 2>/dev/null || true
   - rm -rf $1/lib/modules/*/kernel/sound 2>/dev/null || true
   - depmod -a -b $1 $(ls $1/lib/modules/) 2>/dev/null || true
-  - find $1/lib/modules -name "*.ko.xz" -exec xz -d {} \; 2>/dev/null || true
-  - find $1/lib/modules -name "*.ko" -exec strip --strip-debug {} \; 2>/dev/null || true
   - find $1/lib/modules -name "*.ko" -exec xz {} \; 2>/dev/null || true
   - rm -rf $1/var/lib/systemd/catalog 2>/dev/null || true
   - rm -rf $1/usr/lib/systemd/catalog 2>/dev/null || true
