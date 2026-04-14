@@ -1,3 +1,10 @@
+elxr-config (1.0.34) bianca; urgency=medium
+
+  * New upstream release:
+    - e7af948: Additional fixes for ec2.
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 14 Apr 2026 14:34:04 -0400
+
 elxr-config (1.0.33) bianca; urgency=medium
 
   * New upstream release:
