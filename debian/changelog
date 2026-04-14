@@ -1,3 +1,11 @@
+elxr-config (1.0.28+26.04.01) unstable; urgency=medium
+
+  * New backport from bianca:
+    - a834472e: Fix compressed kernel modules 
+    - e7af948f: Additional fixes for ec2 
+
+ -- Chuck Short <charles.short@windriver.com>  Tue, 14 Apr 2026 14:40:45 -0400
+
 elxr-config (1.0.27+26.04.01) unstable; urgency=medium
 
   * New backport from bianca:
