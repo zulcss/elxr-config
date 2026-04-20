@@ -12,6 +12,7 @@ packages:
   - bash
   - coreutils
   - util-linux
+  - e2fsprogs
 
 customize_hooks:
   - echo 'root:root' | chroot "$1" chpasswd
