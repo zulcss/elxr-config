@@ -1,3 +1,13 @@
+elxr-config (1.0.35) bianca; urgency=medium
+
+  * orin: add L4T BSP compat libs, drop wpasupplicant collision
+  * orin: use unsigned kernel package for OOT modules
+  * orin: drop t64-conflicting compat deb URLs
+  * orin: add nv-update-initrd version detection fallback
+  * orin: remove ucsi_ccg.ko from initrd modules list
+
+ -- Mostafa Amin <mostafa.amin@windriver.com>  Mon, 21 Apr 2026 17:00:00 -0400
+
 elxr-config (1.0.34) bianca; urgency=medium
 
   * New upstream release:
@@ -11,12 +21,6 @@ elxr-config (1.0.33) bianca; urgency=medium
     - 2394933b: Various ec2 fixes.
 
  -- Chuck Short <charles.short@windriver.com>  Fri, 10 Apr 2026 08:42:06 -0400
-
-elxr-config (1.0.32) bianca; urgency=medium
-
-  * orin: add L4T BSP compat libs, drop wpasupplicant collision
-
- -- Mostafa Amin <mostafa.amin@windriver.com>  Tue, 07 Apr 2026 12:30:00 -0400
 
 elxr-config (1.0.31) bianca; urgency=medium
 
