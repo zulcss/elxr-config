@@ -1,27 +1,44 @@
 #!/bin/bash
-# Fix nv-update-initrd for 6.12 kernel.
+# Prepare L4T flash image for 6.12 kernel.
 #
-# Two issues with L4T's nv-update-initrd on the 6.12 kernel:
-# 1. "strings /boot/Image" returns empty under qemu-aarch64-static,
-#    so the kernel version is not detected.
-# 2. The modules list references ucsi_ccg.ko which was merged into
-#    typec_ucsi.ko in kernel 6.12.
+# After apply_binaries.sh installs the L4T 5.15 kernel, this script:
+# 1. Replaces /boot/Image with the 6.12 kernel
+# 2. Patches nv-update-initrd version detection (strings fails under qemu)
+# 3. Removes ucsi_ccg.ko from initrd modules list (not built in 6.12)
 #
 # Run this AFTER apply_binaries.sh, BEFORE l4t_update_initrd.sh.
-# Usage: sudo ./elxr-fix-l4t-initrd [rootfs-path]
+# Usage (from Linux_for_Tegra/):
+#   sudo rootfs/usr/local/bin/elxr-fix-l4t-initrd rootfs
 
 set -e
 
 ROOTFS="${1:-.}"
 NV_SCRIPT="${ROOTFS}/usr/sbin/nv-update-initrd"
 MODULES_LIST="${ROOTFS}/etc/nv-update-initrd/list.d/modules"
+KERNEL_VERSION="6.12.48+deb13-orin-arm64"
+VMLINUZ="${ROOTFS}/boot/vmlinuz-${KERNEL_VERSION}"
 
 if [ ! -f "${NV_SCRIPT}" ]; then
     echo "Error: ${NV_SCRIPT} not found. Run apply_binaries.sh first."
     exit 1
 fi
 
-# Fix 1: patch version detection fallback
+# Fix 1: replace 5.15 kernel with 6.12
+if [ -f "${VMLINUZ}" ]; then
+    cp "${VMLINUZ}" "${ROOTFS}/boot/Image"
+    echo "Copied ${KERNEL_VERSION} to ${ROOTFS}/boot/Image"
+
+    # Also copy to kernel/Image if we're in Linux_for_Tegra/
+    LDK_DIR="$(dirname "${ROOTFS}")"
+    if [ -d "${LDK_DIR}/kernel" ]; then
+        cp "${VMLINUZ}" "${LDK_DIR}/kernel/Image"
+        echo "Copied ${KERNEL_VERSION} to ${LDK_DIR}/kernel/Image"
+    fi
+else
+    echo "Warning: ${VMLINUZ} not found, skipping kernel copy."
+fi
+
+# Fix 2: patch version detection fallback
 if ! grep -q "elxr-fallback" "${NV_SCRIPT}"; then
     sed -i '/echo "${_kernel_version}"/i\
 \t# elxr-fallback: if strings failed, read version from /lib/modules/\
@@ -33,12 +50,15 @@ else
     echo "Version fallback already patched."
 fi
 
-# Fix 2: remove ucsi_ccg.ko (merged into typec_ucsi.ko in 6.12)
+# Fix 3: remove ucsi_ccg.ko (not built in 6.12 config)
 if [ -f "${MODULES_LIST}" ] && grep -q "ucsi_ccg" "${MODULES_LIST}"; then
     sed -i '/ucsi_ccg/d' "${MODULES_LIST}"
-    echo "Removed ucsi_ccg.ko from ${MODULES_LIST} (merged into typec_ucsi in 6.12)."
+    echo "Removed ucsi_ccg.ko from initrd modules list."
 else
     echo "No ucsi_ccg entry to remove."
 fi
 
-echo "You can now run: sudo ./tools/l4t_update_initrd.sh"
+echo ""
+echo "Done. Next steps:"
+echo "  sudo ./tools/l4t_update_initrd.sh"
+echo "  sudo ./flash.sh jetson-agx-orin-devkit mmcblk0p1"
