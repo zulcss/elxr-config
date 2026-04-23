@@ -1,44 +1,92 @@
 #!/bin/bash
-# Fix nv-update-initrd for 6.12 kernel.
+# Prepare L4T flash image for 6.12 kernel.
 #
-# Two issues with L4T's nv-update-initrd on the 6.12 kernel:
-# 1. "strings /boot/Image" returns empty under qemu-aarch64-static,
-#    so the kernel version is not detected.
-# 2. The modules list references ucsi_ccg.ko which was merged into
-#    typec_ucsi.ko in kernel 6.12.
+# Handles ALL post-apply_binaries.sh fixups in one shot:
+# 1. Copies 6.12 kernel to rootfs/boot/Image and kernel/Image
+# 2. Patches nv-update-initrd version detection
+# 3. Removes ucsi_ccg.ko from initrd modules list
+# 4. Patches flash.sh recovery ramdisk version detection
+# 5. Runs l4t_update_initrd.sh
+# 6. Restores Debian initrd for normal boot
 #
-# Run this AFTER apply_binaries.sh, BEFORE l4t_update_initrd.sh.
-# Usage: sudo ./elxr-fix-l4t-initrd [rootfs-path]
+# Usage (from Linux_for_Tegra/):
+#   sudo rootfs/usr/local/bin/elxr-fix-l4t-initrd rootfs
+#   sudo ./flash.sh jetson-agx-orin-devkit mmcblk0p1
 
 set -e
 
 ROOTFS="${1:-.}"
 NV_SCRIPT="${ROOTFS}/usr/sbin/nv-update-initrd"
 MODULES_LIST="${ROOTFS}/etc/nv-update-initrd/list.d/modules"
+KERNEL_VERSION="6.12.48+deb13-orin-arm64"
+VMLINUZ="${ROOTFS}/boot/vmlinuz-${KERNEL_VERSION}"
+DEBIAN_INITRD="${ROOTFS}/boot/initrd.img-${KERNEL_VERSION}"
+LDK_DIR="$(dirname "${ROOTFS}")"
+OTA_SCRIPT="${LDK_DIR}/tools/ota_tools/version_upgrade/ota_make_recovery_img_dtb.sh"
 
 if [ ! -f "${NV_SCRIPT}" ]; then
     echo "Error: ${NV_SCRIPT} not found. Run apply_binaries.sh first."
     exit 1
 fi
 
-# Fix 1: patch version detection fallback
+echo "=== Step 1: Install 6.12 kernel ==="
+if [ -f "${VMLINUZ}" ]; then
+    cp "${VMLINUZ}" "${ROOTFS}/boot/Image"
+    echo "  rootfs/boot/Image updated"
+    if [ -d "${LDK_DIR}/kernel" ]; then
+        cp "${VMLINUZ}" "${LDK_DIR}/kernel/Image"
+        echo "  kernel/Image updated"
+    fi
+else
+    echo "  Warning: ${VMLINUZ} not found"
+fi
+
+echo "=== Step 2: Patch nv-update-initrd ==="
 if ! grep -q "elxr-fallback" "${NV_SCRIPT}"; then
     sed -i '/echo "${_kernel_version}"/i\
 \t# elxr-fallback: if strings failed, read version from /lib/modules/\
 \tif [ -z "${_kernel_version}" ]; then\
 \t\t_kernel_version=$(ls -1 /lib/modules/ 2>/dev/null | grep -v "^5\\." | sort -V | tail -1)\
 \tfi' "${NV_SCRIPT}"
-    echo "Patched ${NV_SCRIPT} with kernel version fallback."
+    echo "  Patched version detection fallback"
 else
-    echo "Version fallback already patched."
+    echo "  Already patched"
 fi
 
-# Fix 2: remove ucsi_ccg.ko (merged into typec_ucsi.ko in 6.12)
+echo "=== Step 3: Fix initrd modules list ==="
 if [ -f "${MODULES_LIST}" ] && grep -q "ucsi_ccg" "${MODULES_LIST}"; then
     sed -i '/ucsi_ccg/d' "${MODULES_LIST}"
-    echo "Removed ucsi_ccg.ko from ${MODULES_LIST} (merged into typec_ucsi in 6.12)."
+    echo "  Removed ucsi_ccg.ko"
 else
-    echo "No ucsi_ccg entry to remove."
+    echo "  No ucsi_ccg to remove"
 fi
 
-echo "You can now run: sudo ./tools/l4t_update_initrd.sh"
+echo "=== Step 4: Patch flash.sh OTA script ==="
+if [ -f "${OTA_SCRIPT}" ] && ! grep -q "elxr-fallback" "${OTA_SCRIPT}"; then
+    sed -i 's|echo "ERROR: failed to get kernel version from ${_kernel_fs}"|# elxr-fallback: hardcode version when strings fails\n\t\t_BASE_KERNEL_VERSION="'"${KERNEL_VERSION}"'"\n\t\techo "WARN: using fallback kernel version ${_BASE_KERNEL_VERSION}"|' "${OTA_SCRIPT}"
+    sed -i '/WARN: using fallback/,+1{/exit 1/d}' "${OTA_SCRIPT}"
+    echo "  Patched OTA version detection"
+else
+    echo "  Already patched or not found"
+fi
+
+echo "=== Step 5: Update initrd ==="
+rm -f /tmp/Image.tmp
+if [ -x "${LDK_DIR}/tools/l4t_update_initrd.sh" ]; then
+    "${LDK_DIR}/tools/l4t_update_initrd.sh"
+    echo "  l4t_update_initrd.sh completed"
+else
+    echo "  Warning: l4t_update_initrd.sh not found, skipping"
+fi
+
+echo "=== Step 6: Restore Debian initrd for boot ==="
+if [ -f "${DEBIAN_INITRD}" ]; then
+    cp "${DEBIAN_INITRD}" "${ROOTFS}/boot/initrd"
+    echo "  Restored ${DEBIAN_INITRD} to rootfs/boot/initrd"
+else
+    echo "  Warning: ${DEBIAN_INITRD} not found"
+fi
+
+echo ""
+echo "Done. Flash with:"
+echo "  sudo ./flash.sh jetson-agx-orin-devkit mmcblk0p1"
