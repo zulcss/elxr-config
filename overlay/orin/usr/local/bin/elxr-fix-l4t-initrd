@@ -31,11 +31,10 @@ if [ -f "${VMLINUZ}" ]; then
     cp "${VMLINUZ}" "${ROOTFS}/boot/Image"
     echo "Copied ${KERNEL_VERSION} to ${ROOTFS}/boot/Image"
 
-    # Also copy to kernel/Image as gzip (flash.sh expects gzip format)
+    # Also copy to kernel/Image (must be uncompressed - flash.sh copies it to rootfs)
     if [ -d "${LDK_DIR}/kernel" ]; then
-        cp "${VMLINUZ}" "${LDK_DIR}/kernel/Image.uncompressed"
-        gzip -c "${VMLINUZ}" > "${LDK_DIR}/kernel/Image"
-        echo "Copied ${KERNEL_VERSION} to ${LDK_DIR}/kernel/Image (gzip-compressed)"
+        cp "${VMLINUZ}" "${LDK_DIR}/kernel/Image"
+        echo "Copied ${KERNEL_VERSION} to ${LDK_DIR}/kernel/Image"
     fi
 else
     echo "Warning: ${VMLINUZ} not found, skipping kernel copy."
