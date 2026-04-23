@@ -5,6 +5,7 @@
 # 1. Replaces /boot/Image with the 6.12 kernel
 # 2. Patches nv-update-initrd version detection (strings fails under qemu)
 # 3. Removes ucsi_ccg.ko from initrd modules list (not built in 6.12)
+# 4. Patches flash.sh recovery ramdisk version detection
 #
 # Run this AFTER apply_binaries.sh, BEFORE l4t_update_initrd.sh.
 # Usage (from Linux_for_Tegra/):
@@ -17,6 +18,8 @@ NV_SCRIPT="${ROOTFS}/usr/sbin/nv-update-initrd"
 MODULES_LIST="${ROOTFS}/etc/nv-update-initrd/list.d/modules"
 KERNEL_VERSION="6.12.48+deb13-orin-arm64"
 VMLINUZ="${ROOTFS}/boot/vmlinuz-${KERNEL_VERSION}"
+LDK_DIR="$(dirname "${ROOTFS}")"
+OTA_SCRIPT="${LDK_DIR}/tools/ota_tools/version_upgrade/ota_make_recovery_img_dtb.sh"
 
 if [ ! -f "${NV_SCRIPT}" ]; then
     echo "Error: ${NV_SCRIPT} not found. Run apply_binaries.sh first."
@@ -29,17 +32,16 @@ if [ -f "${VMLINUZ}" ]; then
     echo "Copied ${KERNEL_VERSION} to ${ROOTFS}/boot/Image"
 
     # Also copy to kernel/Image as gzip (flash.sh expects gzip format)
-    LDK_DIR="$(dirname "${ROOTFS}")"
     if [ -d "${LDK_DIR}/kernel" ]; then
         cp "${VMLINUZ}" "${LDK_DIR}/kernel/Image.uncompressed"
         gzip -c "${VMLINUZ}" > "${LDK_DIR}/kernel/Image"
-        echo "Copied ${KERNEL_VERSION} to ${LDK_DIR}/kernel/Image (gzip-compressed for flash.sh)"
+        echo "Copied ${KERNEL_VERSION} to ${LDK_DIR}/kernel/Image (gzip-compressed)"
     fi
 else
     echo "Warning: ${VMLINUZ} not found, skipping kernel copy."
 fi
 
-# Fix 2: patch version detection fallback
+# Fix 2: patch nv-update-initrd version detection fallback
 if ! grep -q "elxr-fallback" "${NV_SCRIPT}"; then
     sed -i '/echo "${_kernel_version}"/i\
 \t# elxr-fallback: if strings failed, read version from /lib/modules/\
@@ -58,6 +60,18 @@ if [ -f "${MODULES_LIST}" ] && grep -q "ucsi_ccg" "${MODULES_LIST}"; then
 else
     echo "No ucsi_ccg entry to remove."
 fi
+
+# Fix 4: patch flash.sh recovery ramdisk version detection
+if [ -f "${OTA_SCRIPT}" ] && ! grep -q "elxr-fallback" "${OTA_SCRIPT}"; then
+    sed -i 's|echo "ERROR: failed to get kernel version from ${_kernel_fs}"|# elxr-fallback: hardcode version when strings fails\n\t\t_BASE_KERNEL_VERSION="'"${KERNEL_VERSION}"'"\n\t\techo "WARN: using fallback kernel version ${_BASE_KERNEL_VERSION}"|' "${OTA_SCRIPT}"
+    sed -i '/WARN: using fallback/,+1{/exit 1/d}' "${OTA_SCRIPT}"
+    echo "Patched ${OTA_SCRIPT} with kernel version fallback."
+else
+    echo "OTA script already patched or not found."
+fi
+
+# Clean up stale temp files from previous flash attempts
+rm -f /tmp/Image.tmp
 
 echo ""
 echo "Done. Next steps:"
