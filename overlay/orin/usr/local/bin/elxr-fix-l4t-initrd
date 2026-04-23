@@ -28,11 +28,12 @@ if [ -f "${VMLINUZ}" ]; then
     cp "${VMLINUZ}" "${ROOTFS}/boot/Image"
     echo "Copied ${KERNEL_VERSION} to ${ROOTFS}/boot/Image"
 
-    # Also copy to kernel/Image if we're in Linux_for_Tegra/
+    # Also copy to kernel/Image and create Image.gz for flash.sh
     LDK_DIR="$(dirname "${ROOTFS}")"
     if [ -d "${LDK_DIR}/kernel" ]; then
         cp "${VMLINUZ}" "${LDK_DIR}/kernel/Image"
-        echo "Copied ${KERNEL_VERSION} to ${LDK_DIR}/kernel/Image"
+        gzip -kf "${LDK_DIR}/kernel/Image"
+        echo "Copied ${KERNEL_VERSION} to ${LDK_DIR}/kernel/Image (+ Image.gz)"
     fi
 else
     echo "Warning: ${VMLINUZ} not found, skipping kernel copy."
