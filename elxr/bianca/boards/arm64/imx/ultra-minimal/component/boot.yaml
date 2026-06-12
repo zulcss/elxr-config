@@ -2,7 +2,7 @@
 name: boot
 description: "Essential boot components (systemd-boot, kernel, init) for ARM64"
 packages:
-  - linux-image-cloud-arm64
+  - linux-image-imx-arm64
   - systemd
   - systemd-boot
   - systemd-boot-efi
