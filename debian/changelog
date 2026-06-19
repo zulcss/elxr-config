@@ -1,3 +1,9 @@
+elxr-config (1.0.36elxr2) UNRELEASED; urgency=high
+
+  * Adding package quota to add project and quota features for ext4
+
+ -- Ashish Bunkar <ashish.bunkar@windriver.com>  Fri, 19 Jun 2026 02:35:31 -0400
+
 elxr-config (1.0.36elxr2) bianca; urgency=medium
 
   * Updating to imx kernel for ultraminimal cloud imx images
