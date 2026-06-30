@@ -1,8 +1,12 @@
-elxr-config (1.0.36elxr2) UNRELEASED; urgency=high
+elxr-config (1.0.36elxr3) bianca; urgency=medium
 
+  [ Ashish Bunkar ]
   * Adding package quota to add project and quota features for ext4
 
- -- Ashish Bunkar <ashish.bunkar@windriver.com>  Fri, 19 Jun 2026 02:35:31 -0400
+  [ Sridhar Gopalan ]
+  * Upgrade image version to 6.12.86
+
+ -- Sridhar Gopalan <Sridhar.Gopalan@windriver.com>  Tue, 30 Jun 2026 10:55:35 +0530
 
 elxr-config (1.0.36elxr2) bianca; urgency=medium
 
