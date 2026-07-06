@@ -1,3 +1,9 @@
+elxr-config (1.0.29+26.04.01elxr) aria; urgency=medium
+
+  * Updating to imx kernel for ultraminimal imx images instead of cloud kernel
+
+ -- Abbas Mohammed S <AbbasMohammed.SainulAbdeen@windriver.com>  Fri, 03 Jul 2026 15:09:47 +0530
+
 elxr-config (1.0.28+26.04.01) unstable; urgency=medium
 
   * New backport from bianca:
