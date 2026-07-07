@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build script to dynamically generate image.yaml from subsystem modules."""
+"""Build script to dynamically generate lbase.yaml from subsystem modules."""
 
 import argparse
 import yaml
@@ -28,75 +28,35 @@ SUBSYSTEMS = {
     'management': 'component/management.yaml',
     'network': 'component/network.yaml',
     'security': 'component/security.yaml',
+    'storage': 'component/storage.yaml'
 }
 
 BASE_TEMPLATE = {
-    'name': 'elxr-ultra-minimal-amd64',
-    'description': 'AMD64 ultra-minimal subsystem configuration for modular edge devices.',
+    'name': 'elxr-minimal-installer-amd64',
+    'description': 'AMD64 minimal installer configuration.',
     'architecture': 'amd64',
     'version': '${oc.env:DEFAULT_ELXR_VERSION}',
     'schemaVersion': 1,
     'params': {
         'version': '${version}',
-        'source': '${oc.env:CURRENT_DIR}/elxr-ultra-minimal-${version}-${architecture}.tar.gz',
-        'disk': '${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img'
+        'source': '${oc.env:CURRENT_DIR}/elxr-minimal-installer-${version}-${architecture}.tar.gz'
     },
     'stages': {
         'install': [
             {
-                'name': 'Creating ultra-minimal rootfs',
+                'name': 'Create minimal rootfs tarball',
                 'module': 'bootstrap.mmdebstrap',
                 'options': {
                     'suite': 'aria',
                     'target': '${params.source}',
                     'architecture': '${architecture}',
                     'variant': 'minbase',
-                    'setup_hooks': ['sync-in overlay/ultra-minimal/ /'],
+                    'setup_hooks': ['sync-in overlay/minimal/ /'],
                     'customize_hooks': [],
                     'packages': [],
                     'dpkgopt': [],
                     'mirrors': ['deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib']
                 }
-            },
-            {
-                'name': 'Create raw image ${params.disk}',
-                'module': 'image.raw',
-                'options': {'name': '${params.disk}', 'size': '1G'}
-            },
-            {
-                'name': 'Partitioning ${params.disk}',
-                'module': 'installer.disk.parted',
-                'options': {
-                    'slices': [
-                        {'name': 'EFI', 'start': '0%', 'end': '128MB', 'flags': ['boot', 'esp'], 'id': 'c12a7328-f81f-11d2-ba4b-00a0c93ec93b'},
-                        {'name': 'ROOT', 'start': '128MB', 'end': '100%', 'flags': [], 'id': ''}
-                    ]
-                }
-            },
-            {
-                'name': 'Formatting ${params.disk}',
-                'module': 'installer.disk.fs',
-                'options': {
-                    'filesystems': [
-                        {'name': 'EFI', 'label': 'EFI', 'fs': 'vfat', 'options': []},
-                        {'name': 'ROOT', 'label': 'ROOT', 'fs': 'ext4', 'options': []}
-                    ]
-                }
-            },
-            {
-                'name': 'Unpacking ${params.source}',
-                'module': 'installer.unpack',
-                'options': []
-            },
-            {
-                'name': 'Installing systemd-boot bootloader',
-                'module': 'installer.bootloader',
-                'options': {'kernel_args': 'root=LABEL=ROOT rw console=ttyS0,115200n8 console=tty0'}
-            },
-            {
-                'name': 'Compress image ${params.disk}',
-                'module': 'image.compress',
-                'options': {'name': '${params.disk}', 'compression': 'zstd'}
             }
         ]
     }
@@ -107,8 +67,8 @@ def load_subsystem(filepath):
     with open(filepath) as f:
         return yaml.safe_load(f)
 
-def generate_image_yaml(enabled_subsystems, output_file):
-    """Generate image.yaml from enabled subsystems."""
+def generate_lbase_yaml(enabled_subsystems, output_file):
+    """Generate lbase.yaml from enabled subsystems."""
     config = BASE_TEMPLATE.copy()
     bootstrap_stage = config['stages']['install'][0]
     
@@ -150,26 +110,46 @@ def generate_image_yaml(enabled_subsystems, output_file):
     bootstrap_stage['options']['customize_hooks'].append('depmod -a -b $1 $(ls $1/lib/modules/) 2>/dev/null || true')
     
     with open(output_file, 'w') as f:
+        f.write('---\n')
         yaml.dump(config, f, Dumper=NoWrapDumper, default_flow_style=False, sort_keys=False, width=float('inf'))
     
     print(f"Generated {output_file} with subsystems: {', '.join(enabled_subsystems)}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Build ultra-minimal image with modular subsystems')
-    parser.add_argument('--enable', required=True,
+    parser = argparse.ArgumentParser(description='Build minimal installer with modular subsystems')
+    parser.add_argument('--enable',
                         help='Enable specific subsystems (space or comma-separated, or "all")')
-    parser.add_argument('--output', default='image.yaml', help='Output file (default: image.yaml)')
+    parser.add_argument('--output', default='base.yaml', help='Output file (default: base.yaml)')
     parser.add_argument('--output-dir', help='Output directory (default: current directory)')
+    parser.add_argument('--list', action='store_true', help='List available subsystems')
     
     args = parser.parse_args()
     
-    # Parse comma-separated or space-separated subsystems
-    if args.enable.lower() == 'all':
-        enabled_subsystems = list(SUBSYSTEMS.keys())
-    elif ',' in args.enable:
-        enabled_subsystems = [s.strip() for s in args.enable.split(',') if s.strip()]
+    # Handle list command
+    if args.list:
+        print("Available subsystems:")
+        for name, path in SUBSYSTEMS.items():
+            subsys_file = Path(__file__).parent / path
+            if subsys_file.exists():
+                subsys = load_subsystem(subsys_file)
+                print(f"  {name:12} - {subsys.get('description', 'No description')}")
+        return
+    
+    # Determine enabled subsystems
+    if args.enable:
+        # Handle 'all' keyword
+        if args.enable.lower() == 'all':
+            enabled_subsystems = list(SUBSYSTEMS.keys())
+        else:
+            # Parse comma-separated or space-separated subsystems
+            if ',' in args.enable:
+                enabled_subsystems = [s.strip() for s in args.enable.split(',') if s.strip()]
+            else:
+                enabled_subsystems = args.enable.split()
     else:
-        enabled_subsystems = args.enable.split()
+        print("Error: Must specify --enable or --list")
+        print(f"Available subsystems: {', '.join(SUBSYSTEMS.keys())}")
+        sys.exit(1)
     
     # Validate subsystems
     invalid_subsystems = [s for s in enabled_subsystems if s not in SUBSYSTEMS]
@@ -179,7 +159,7 @@ def main():
         sys.exit(1)
     
     if not enabled_subsystems:
-        print("Error: No subsystems enabled. Use --enable to specify subsystems.")
+        print("Error: No subsystems enabled. Use --enable or --list")
         print(f"Available subsystems: {', '.join(SUBSYSTEMS.keys())}")
         sys.exit(1)
     
@@ -190,7 +170,7 @@ def main():
     else:
         output_path = args.output
     
-    generate_image_yaml(enabled_subsystems, output_path)
+    generate_lbase_yaml(enabled_subsystems, output_path)
 
 if __name__ == '__main__':
     main()

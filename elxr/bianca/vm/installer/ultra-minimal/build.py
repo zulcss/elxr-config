@@ -32,26 +32,26 @@ SUBSYSTEMS = {
 }
 
 BASE_TEMPLATE = {
-    'name': 'elxr-ultra-minimal-installer-amd64',
-    'description': 'AMD64 ultra-minimal installer configuration.',
+    'name': 'elxr-minimal-installer-amd64',
+    'description': 'AMD64 minimal installer configuration.',
     'architecture': 'amd64',
     'version': '${oc.env:DEFAULT_ELXR_VERSION}',
     'schemaVersion': 1,
     'params': {
         'version': '${version}',
-        'source': '${oc.env:CURRENT_DIR}/elxr-ultra-minimal-installer-${version}-${architecture}.tar.gz'
+        'source': '${oc.env:CURRENT_DIR}/elxr-minimal-installer-${version}-${architecture}.tar.gz'
     },
     'stages': {
         'install': [
             {
-                'name': 'Create ultra-minimal rootfs tarball',
+                'name': 'Create minimal rootfs tarball',
                 'module': 'bootstrap.mmdebstrap',
                 'options': {
                     'suite': 'bianca',
                     'target': '${params.source}',
                     'architecture': '${architecture}',
                     'variant': 'minbase',
-                    'setup_hooks': ['sync-in overlay/ultra-minimal/ /'],
+                    'setup_hooks': ['sync-in overlay/minimal/ /'],
                     'customize_hooks': [],
                     'packages': [],
                     'dpkgopt': [],
@@ -116,7 +116,7 @@ def generate_lbase_yaml(enabled_subsystems, output_file):
     print(f"Generated {output_file} with subsystems: {', '.join(enabled_subsystems)}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Build ultra-minimal installer with modular subsystems')
+    parser = argparse.ArgumentParser(description='Build minimal installer with modular subsystems')
     parser.add_argument('--enable',
                         help='Enable specific subsystems (space or comma-separated, or "all")')
     parser.add_argument('--output', default='base.yaml', help='Output file (default: base.yaml)')

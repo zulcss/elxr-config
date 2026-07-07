@@ -1,18 +1,16 @@
 ---
-name: elxr-minimal-ostree-imx
-description: "i.MX minimal ostree configuration."
+name: elxr-imx
+description: "i.MX minimal configuration."
 architecture: arm64
 version: ${oc.env:DEFAULT_ELXR_VERSION}
 schemaVersion: 1
 params:
   version: ${version}
-  source: ${oc.env:CURRENT_DIR}/elxr-ostree-${version}-${architecture}.tar.gz
-  repository: /var/www/html/repo
-  branch: elxr/${architecture}
+  source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
   disk: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
 stages:
   install:
-    - name: "Create rootfs"
+    - name: "Creating installer."
       module: bootstrap.mmdebstrap
       options:
         suite: aria
@@ -21,43 +19,23 @@ stages:
         setup_hooks:
           - 'sync-in overlay/elxr/ /'
           - 'sync-in overlay/systemd-networkd/ /'
-          - 'sync-in overlay/grub-efi/ /'
           - 'sync-in overlay/xorg-imx/ /'
         customize_hooks:
-          - 'sync-in overlay/ostree/usr/lib /usr/lib'
+          - 'sync-in overlay/grub-efi/ /'
           - echo 'root:root' | chroot "$1" chpasswd
           - systemctl enable --root="$1" systemd-networkd
           - systemctl enable --root="$1" elxr-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
-          - mkdir -p $1/efi
           - mkdir -p $1/usr/lib/ostree-grub/EFI/BOOT/
           - export GRUB_MKIMAGE_MODULES=$(find $1/usr/lib/grub/arm64-efi/ -type f -name "*.mod" -exec basename {} .mod \;);
             chroot $1 grub-mkimage -p /EFI/debian -O arm64-efi -o /usr/lib/ostree-grub/EFI/BOOT/bootaa64.efi $GRUB_MKIMAGE_MODULES;
           - cd $1/usr/lib/modules; for d in $(ls * -d); do mkdir -p $1/usr/lib/modules/$d/dtb;
             cp -rf $1/usr/lib/linux-image-$d/freescale/imx*.dtb $1/usr/lib/modules/$d/dtb; done; cd -
         packages:
-          - ${include:manifests/packages-arm64-ostree.yaml}
+          - ${include:manifests/packages-arm64.yaml}
           - systemd-timesyncd
         mirrors:
           - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
-
-    - name: "Unpack ${params.source}"
-      module: unpack.tarball
-      options:
-        compression: tgz
-        sources:
-          - ${params.source}
-
-    - name: "Create ostree repository"
-      module: installer.ostree.init
-      options:
-        mode: archive-z2
-
-    - name: "Create an ostree branch."
-      module: installer.ostree.prep
-
-    - name: "Commit an ostree branch."
-      module: installer.ostree.commit
 
     - name: "Create raw image ${params.disk}"
       module: image.raw
@@ -102,17 +80,14 @@ stages:
             fs: ext4
             options: []
 
-    - name: "Deploy ostree ${params.branch} to ${params.disk}."
-      module: installer.ostree.deploy
-      options:
-        kernel_args:
-          - root=LABEL=ROOT
-          - rw
-          - console=tty0
+    - name: "Unpacking ${params.source}"
+      module: installer.unpack
+      options: []
 
-    - name: "Installing ostree bootloader on ${params.disk}"
-      module: installer.bootloader.ostree
+    - name: "Installing bootloader on ${params.disk}"
+      module: installer.bootloader
       options:
+        kernel_args: "root=LABEL=ROOT console=tty0"
         uefi: grub-efi
 
     - name: "Compress image ${params.disk}"

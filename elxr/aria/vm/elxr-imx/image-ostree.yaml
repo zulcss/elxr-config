@@ -1,5 +1,5 @@
 ---
-name: elxr-minimal-ostree-amd64
+name: elxr-ostree-amd64
 description: "AMD64 ostree configuration."
 architecture: amd64
 version: ${oc.env:DEFAULT_ELXR_VERSION}

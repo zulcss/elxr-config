@@ -83,7 +83,7 @@ Generate image.yaml dynamically:
 ## Example
 
 ```bash
-cd elxr-config/elxr/aria/boards/arm64/imx/ultra-minimal
+cd elxr-config/elxr/aria/boards/arm64/imx/minimal
 ./build.py --enable all --output image.yaml
 ```
 

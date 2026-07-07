@@ -71,7 +71,7 @@ Generate image.yaml dynamically:
 ## Example
 
 ```bash
-cd elxr-config/elxr/bianca/vm/ultra-minimal
+cd elxr-config/elxr/bianca/vm/minimal
 ./build.py --enable all --output image.yaml
 ```
 
