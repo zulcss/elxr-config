@@ -1,6 +1,6 @@
 # Ultra-Minimal Subsystem Installer
 
-Modular ultra-minimal installer configuration for AMD64 systems using
+Modular minimal installer configuration for AMD64 systems using
 component-based architecture.
 
 ## Overview
@@ -54,7 +54,7 @@ python3 build.py --list
 
 The build script generates a complete installer configuration that:
 
-- Creates an ultra-minimal rootfs tarball
+- Creates an minimal rootfs tarball
 - Includes only essential packages and drivers
 - Applies aggressive cleanup and optimization
 - Excludes non-essential kernel modules and firmware

@@ -1,7 +1,7 @@
 ---
-name: elxr-minimal-imx
-description: "i.MX minimal configuration."
-architecture: arm64
+name: elxr-cloud-amd64
+description: "AMD64 cloud VM configuration."
+architecture: amd64
 version: ${oc.env:DEFAULT_ELXR_VERSION}
 schemaVersion: 1
 params:
@@ -18,37 +18,31 @@ stages:
         architecture: ${architecture}
         setup_hooks:
           - 'sync-in overlay/elxr/ /'
-          - 'sync-in overlay/systemd-networkd/ /'
-          - 'sync-in overlay/xorg-imx/ /'
         customize_hooks:
-          - 'sync-in overlay/grub-efi/ /'
-          - echo 'root:root' | chroot "$1" chpasswd
-          - systemctl enable --root="$1" systemd-networkd
           - systemctl enable --root="$1" elxr-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
-          - mkdir -p $1/usr/lib/ostree-grub/EFI/BOOT/
-          - export GRUB_MKIMAGE_MODULES=$(find $1/usr/lib/grub/arm64-efi/ -type f -name "*.mod" -exec basename {} .mod \;);
-            chroot $1 grub-mkimage -p /EFI/debian -O arm64-efi -o /usr/lib/ostree-grub/EFI/BOOT/bootaa64.efi $GRUB_MKIMAGE_MODULES;
-          - cd $1/usr/lib/modules; for d in $(ls * -d); do mkdir -p $1/usr/lib/modules/$d/dtb;
-            cp -rf $1/usr/lib/linux-image-$d/freescale/imx*.dtb $1/usr/lib/modules/$d/dtb; done; cd -
+          - chroot $1 echo 'br_netfilter' > $1/etc/modules-load.d/netfilter.conf
+          - chroot $1 echo 'vm.swappiness = 0' > $1/etc/sysctl.d/disable_swappiness.conf
+          - chroot $1 echo 'net.ipv4.ip_forward = 1' > $1/etc/sysctl.d/enable_forwarding.conf
+          - chroot $1 apt remove -y --purge ifupdown
         packages:
-          - ${include:manifests/packages-arm64.yaml}
-          - systemd-timesyncd
+          - ${include:manifests/packages-cloud-minimal.yaml}
         mirrors:
           - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
+          - deb [signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable
 
     - name: "Create raw image ${params.disk}"
       module: image.raw
       options:
         name: ${params.disk}
-        size: 4G
+        size: 50G
 
     - name: "Partitioning ${params.disk}."
       module: installer.disk.parted
       options:
         slices:
           - name: EFI
-            start: 10MB
+            start: 0%
             end: 128MB
             flags: [boot, esp]
             id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
@@ -87,8 +81,8 @@ stages:
     - name: "Installing bootloader on ${params.disk}"
       module: installer.bootloader
       options:
-        kernel_args: "root=LABEL=ROOT console=tty0"
-        uefi: grub-efi
+        kernel_args: "root=LABEL=ROOT console=tty0 console=ttyS0,115200"
+        uefi_driver: ext4
 
     - name: "Compress image ${params.disk}"
       module: image.compress

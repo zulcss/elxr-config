@@ -1,12 +1,12 @@
 ---
-name: elxr-ultra-minimal-amd64
-description: "AMD64 ultra-minimal configuration."
+name: elxr-minimal-amd64
+description: "AMD64 minimal configuration."
 architecture: amd64
 version: ${oc.env:DEFAULT_ELXR_VERSION}
 schemaVersion: 1
 params:
   version: ${version}
-  source: /oem/elxr-ultra-minimal-installer-${version}-${architecture}.tar.gz
+  source: /oem/elxr-minimal-installer-${version}-${architecture}.tar.gz
   disk: /dev/vda
 stages:
   install:

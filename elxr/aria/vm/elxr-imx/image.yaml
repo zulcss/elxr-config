@@ -1,5 +1,5 @@
 ---
-name: elxr-minimal-amd64
+name: elxr-amd64
 description: "AMD64 example configuration."
 architecture: amd64
 version: ${oc.env:DEFAULT_ELXR_VERSION}
