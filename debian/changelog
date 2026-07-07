@@ -1,3 +1,9 @@
+elxr-config (1.0.30+26.04.01elxr) aria; urgency=medium
+
+  * Rename minimal to elxr-imx and ultra minimal to minimal
+
+ -- Abbas Mohammed S <AbbasMohammed.SainulAbdeen@windriver.com>  Tue, 07 Jul 2026 17:53:17 +0530
+
 elxr-config (1.0.29+26.04.01elxr) aria; urgency=medium
 
   * Updating to imx kernel for ultraminimal imx images instead of cloud kernel
