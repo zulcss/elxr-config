@@ -1,3 +1,9 @@
+elxr-config (1.0.31+26.04.01elxr) aria; urgency=medium
+
+  * esp.img copied into the efy partition using loop device mount
+
+ -- Sridhar Gopalan <Sridhar.Gopalan@windriver.com>  Tue, 21 Jul 2026 18:25:45 +0530
+
 elxr-config (1.0.30+26.04.01elxr) aria; urgency=medium
 
   * Renamed i.MX ultra-minimal to minimal
