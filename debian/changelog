@@ -1,3 +1,11 @@
+elxr-config (1.0.30+26.04.01elxr) aria; urgency=medium
+
+  * Renamed i.MX ultra-minimal to minimal
+  * Renamed AMD64 ultra-minimal to minimal
+  * Renamed AMD64 EC2 ultra-minimal to minimal
+
+ -- KIRAN KUMAR V S <kiran.kumar2@windriver.com>  Wed, 15 Jul 2026 12:41:36 +0530
+
 elxr-config (1.0.29+26.04.01elxr) aria; urgency=medium
 
   * Updating to imx kernel for ultraminimal imx images instead of cloud kernel
