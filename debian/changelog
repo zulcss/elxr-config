@@ -1,3 +1,11 @@
+elxr-config (1.0.36elxr4) bianca; urgency=medium
+
+  * Renamed i.MX ultra-minimal to minimal
+  * Renamed AMD64 EC2 ultra-minimal to minimal
+  * Renamed AMD64 ultra-minimal to minimal
+
+ -- Ashish Bunkar <ashish.bunkar@windriver.com>  Thu, 16 Jul 2026 07:06:35 -0400
+
 elxr-config (1.0.36elxr3) bianca; urgency=medium
 
   [ Ashish Bunkar ]
