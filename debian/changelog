@@ -1,3 +1,9 @@
+elxr-config (1.0.36elxr12) bianca; urgency=medium
+
+  * compress ec2 images
+
+ -- Joe Slater <joe.slater@windriver.com>  Mon, 31 Aug 2026 08:59:10 -0700
+
 elxr-config (1.0.36elxr11) bianca; urgency=medium
 
   * Configure EC2 instance connect configuration.
