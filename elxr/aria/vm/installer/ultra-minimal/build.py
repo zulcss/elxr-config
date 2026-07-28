@@ -28,23 +28,22 @@ SUBSYSTEMS = {
     'management': 'component/management.yaml',
     'network': 'component/network.yaml',
     'security': 'component/security.yaml',
-    'storage': 'component/storage.yaml'
 }
 
 BASE_TEMPLATE = {
-    'name': 'elxr-ultra-minimal-installer-amd64',
-    'description': 'AMD64 ultra-minimal installer configuration.',
+    'name': 'elxr-minimal-installer-amd64',
+    'description': 'AMD64 minimal installer configuration.',
     'architecture': 'amd64',
     'version': '${oc.env:DEFAULT_ELXR_VERSION}',
     'schemaVersion': 1,
     'params': {
         'version': '${version}',
-        'source': '${oc.env:CURRENT_DIR}/elxr-ultra-minimal-installer-${version}-${architecture}.tar.gz'
+        'source': '${oc.env:CURRENT_DIR}/elxr-minimal-installer-${version}-${architecture}.tar.gz'
     },
     'stages': {
         'install': [
             {
-                'name': 'Create ultra-minimal rootfs tarball',
+                'name': 'Creating minimal rootfs tarball',
                 'module': 'bootstrap.mmdebstrap',
                 'options': {
                     'suite': 'aria',
