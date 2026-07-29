@@ -1,3 +1,9 @@
+elxr-config (1.0.32+26.04.01elxr) aria; urgency=medium
+
+  * synchronize ultra-minimal ISO with ultra-minimal disk image for Aria
+
+ -- William Lyu <William.Lyu@windriver.com>  Tue, 28 Jul 2026 20:53:09 -0400
+
 elxr-config (1.0.31+26.04.01elxr) aria; urgency=medium
 
   * esp.img copied into the efy partition using loop device mount
