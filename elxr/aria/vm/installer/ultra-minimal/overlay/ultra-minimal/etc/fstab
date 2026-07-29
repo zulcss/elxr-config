@@ -1,4 +1,0 @@
-# Ultra-minimal fstab - only essential mounts
-LABEL=ROOT         /            ext4      defaults 0 1
-LABEL=BOOT         /boot        ext4      defaults 0 2
-LABEL=EFI          /efi         vfat      umask=077 0 1

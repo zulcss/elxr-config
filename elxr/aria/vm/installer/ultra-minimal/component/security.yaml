@@ -1,10 +1,1 @@
----
-name: security
-description: "Security components (defined in manifest)"
-packages:
-  - ca-certificates
-  - gnupg
-
-customize_hooks: []
-
-dpkgopt: []
+../../../ultra-minimal/component/security.yaml
