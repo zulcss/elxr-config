@@ -31,7 +31,7 @@ SUBSYSTEMS = {
 }
 
 BASE_TEMPLATE = {
-    'name': 'elxr-minimal-amd64',
+    'name': 'elxr-minimal-amd64a',
     'description': 'AMD64 minimal subsystem configuration for modular edge devices.',
     'architecture': 'amd64',
     'version': '${oc.env:DEFAULT_ELXR_VERSION}',
@@ -147,7 +147,7 @@ def generate_image_yaml(enabled_subsystems, output_file):
     bootstrap_stage['options']['customize_hooks'].extend(cleanup_hooks)
     
     # Add final depmod command at the end
-    bootstrap_stage['options']['customize_hooks'].append('depmod -a -b $1 $(ls $1/lib/modules/) 2>/dev/null || true')
+    #bootstrap_stage['options']['customize_hooks'].append('depmod -a -b $1 $(ls $1/lib/modules/) 2>/dev/null || true')
     
     with open(output_file, 'w') as f:
         yaml.dump(config, f, Dumper=NoWrapDumper, default_flow_style=False, sort_keys=False, width=float('inf'))
