@@ -4,14 +4,8 @@ description: "Aggressive cleanup for minimal size"
 packages: []
 
 customize_hooks:
-  - rm -rf $1/tmp/* $1/var/tmp/* $1/var/log/*
   - rm -rf $1/usr/share/doc/* $1/usr/share/man/* $1/usr/share/info/*
-  - find $1 -name '*.pyc' -delete
-  - find $1 -name '__pycache__' -type d -exec rm -rf {} +
-  - rm -rf $1/usr/include $1/usr/src
-  - rm -rf $1/usr/share/pixmaps $1/usr/share/icons $1/usr/share/sounds
   - rm -rf $1/usr/lib/x86_64-linux-gnu/gconv 2>/dev/null || true
-  - find $1 -name "*.pyo" -delete 2>/dev/null || true
   - rm -rf $1/usr/share/applications $1/usr/share/desktop-directories 2>/dev/null || true
   - rm -rf $1/usr/share/mime $1/usr/share/xml 2>/dev/null || true
   - find $1/usr/lib/python* -name "test" -type d -exec rm -rf {} + 2>/dev/null || true
@@ -28,4 +22,3 @@ customize_hooks:
 dpkgopt:
   - path-exclude=/usr/share/doc/*
   - path-exclude=/usr/share/info/*
-  - path-exclude=/usr/share/man/*
