@@ -4,10 +4,11 @@
 # Handles ALL post-apply_binaries.sh fixups in one shot:
 # 1. Copies 6.12 kernel to rootfs/boot/Image and kernel/Image
 # 2. Patches nv-update-initrd version detection
-# 3. Removes ucsi_ccg.ko from initrd modules list
+# 3. Removes missing modules from initrd modules list
 # 4. Patches flash.sh recovery ramdisk version detection
-# 5. Runs l4t_update_initrd.sh
-# 6. Restores Debian initrd for normal boot
+# 5. Patches DTB to add Ethernet PHY reset GPIO (snps,reset-gpio)
+# 6. Runs l4t_update_initrd.sh
+# 7. Restores Debian initrd for normal boot
 #
 # Usage (from Linux_for_Tegra/):
 #   sudo rootfs/usr/local/bin/elxr-fix-l4t-initrd rootfs
@@ -18,7 +19,15 @@ set -e
 ROOTFS="${1:-.}"
 NV_SCRIPT="${ROOTFS}/usr/sbin/nv-update-initrd"
 MODULES_LIST="${ROOTFS}/etc/nv-update-initrd/list.d/modules"
-KERNEL_VERSION="6.12.48+deb13-orin-arm64"
+# Auto-detect kernel version from /lib/modules
+KERNEL_VERSION=$(ls -1 "${ROOTFS}/lib/modules/" | grep -E '^6\.12\.[0-9]+\+deb[0-9]+-orin-arm64$' | sort -V | tail -1)
+
+if [ -z "${KERNEL_VERSION}" ]; then
+    echo "Error: No 6.12 kernel found in ${ROOTFS}/lib/modules/"
+    exit 1
+fi
+echo "Detected kernel: ${KERNEL_VERSION}"
+
 VMLINUZ="${ROOTFS}/boot/vmlinuz-${KERNEL_VERSION}"
 DEBIAN_INITRD="${ROOTFS}/boot/initrd.img-${KERNEL_VERSION}"
 LDK_DIR="$(dirname "${ROOTFS}")"
@@ -42,23 +51,44 @@ else
 fi
 
 echo "=== Step 2: Patch nv-update-initrd ==="
+# Fix the regex to handle +deb kernel version strings (e.g. 6.12.86+deb13-orin-arm64)
+if grep -q '\[0-9a-zA-Z\\\.\\\-\]+\[+\]\*' "${NV_SCRIPT}"; then
+    sed -i 's/\[0-9a-zA-Z\\\.\\\-\]+\[+\]\*/[0-9a-zA-Z.+-]+/' "${NV_SCRIPT}"
+    echo "  Fixed version regex for +deb kernel naming"
+else
+    echo "  Regex already fixed or not found"
+fi
+
+# Add fallback using rootfs path in case strings fails entirely
 if ! grep -q "elxr-fallback" "${NV_SCRIPT}"; then
     sed -i '/echo "${_kernel_version}"/i\
-\t# elxr-fallback: if strings failed, read version from /lib/modules/\
+\t# elxr-fallback: if strings failed, read version from rootfs /lib/modules/\
 \tif [ -z "${_kernel_version}" ]; then\
 \t\t_kernel_version=$(ls -1 /lib/modules/ 2>/dev/null | grep -v "^5\\." | sort -V | tail -1)\
 \tfi' "${NV_SCRIPT}"
     echo "  Patched version detection fallback"
 else
-    echo "  Already patched"
+    echo "  Fallback already patched"
 fi
 
 echo "=== Step 3: Fix initrd modules list ==="
-if [ -f "${MODULES_LIST}" ] && grep -q "ucsi_ccg" "${MODULES_LIST}"; then
-    sed -i '/ucsi_ccg/d' "${MODULES_LIST}"
-    echo "  Removed ucsi_ccg.ko"
+if [ -f "${MODULES_LIST}" ]; then
+    # Remove NVIDIA out-of-tree modules that do not exist in Debian 6.12 kernel
+    if grep -q "/updates/" "${MODULES_LIST}"; then
+        sed -i '/\/updates\//d' "${MODULES_LIST}"
+        echo "  Removed out-of-tree /updates/ modules (nvethernet, nvpps, r8126, r8168)"
+    else
+        echo "  No /updates/ modules to remove"
+    fi
+    # Remove ucsi_ccg if present
+    if grep -q "ucsi_ccg" "${MODULES_LIST}"; then
+        sed -i '/ucsi_ccg/d' "${MODULES_LIST}"
+        echo "  Removed ucsi_ccg.ko"
+    else
+        echo "  No ucsi_ccg to remove"
+    fi
 else
-    echo "  No ucsi_ccg to remove"
+    echo "  Warning: ${MODULES_LIST} not found"
 fi
 
 echo "=== Step 4: Patch flash.sh OTA script ==="
@@ -70,7 +100,44 @@ else
     echo "  Already patched or not found"
 fi
 
-echo "=== Step 5: Update initrd ==="
+echo "=== Step 5: Patch DTB for Ethernet PHY reset ==="
+# The mainline dwmac-tegra/stmmac driver needs 'snps,reset-gpio' on the MAC node
+# to reset the AQR113C PHY before MDIO scanning.
+# Find all -nv DTBs for AGX Orin variants that have the ethernet@6800000 node
+DTB_PATCHED=0
+for dtb_dir in "${LDK_DIR}/kernel/dtb" "${LDK_DIR}/bootloader" "${ROOTFS}/boot"; do
+    for dtb in "${dtb_dir}"/tegra234-p3737-0000+p3701-*-nv.dtb; do
+        [ -f "$dtb" ] || continue
+        # Check if already patched
+        if dtc -I dtb -O dts "$dtb" 2>/dev/null | grep -q "snps,reset-gpio"; then
+            echo "  Already patched: $(basename $dtb)"
+            DTB_PATCHED=$((DTB_PATCHED + 1))
+            continue
+        fi
+        # Decompile, patch, recompile
+        TMP_DTS="/tmp/elxr-dtb-patch-$$.dts"
+        dtc -I dtb -O dts -o "$TMP_DTS" "$dtb" 2>/dev/null
+        if grep -q "nvidia,phy-reset-gpio" "$TMP_DTS"; then
+            # Add snps,reset-gpio after nvidia,phy-reset-gpio
+            sed -i '/nvidia,phy-reset-gpio = <0xf1 0x91 0x00>;/a\
+\t\t\tsnps,reset-gpio = <0xf1 0x91 0x01>;\
+\t\t\tsnps,reset-delays-us = <0 10000 220000>;' "$TMP_DTS"
+            dtc -I dts -O dtb -o "$dtb" "$TMP_DTS" 2>/dev/null
+            echo "  Patched: $(basename $dtb)"
+            DTB_PATCHED=$((DTB_PATCHED + 1))
+        fi
+        rm -f "$TMP_DTS"
+    done
+done
+# Also copy patched DTBs to bootloader/kernel_ prefixed versions
+for dtb in "${LDK_DIR}/bootloader"/tegra234-p3737-0000+p3701-*-nv.dtb; do
+    [ -f "$dtb" ] || continue
+    kernel_dtb="${LDK_DIR}/bootloader/kernel_$(basename $dtb)"
+    cp "$dtb" "$kernel_dtb" 2>/dev/null
+done
+echo "  Total DTBs patched/verified: ${DTB_PATCHED}"
+
+echo "=== Step 6: Update initrd ==="
 rm -f /tmp/Image.tmp
 if [ -x "${LDK_DIR}/tools/l4t_update_initrd.sh" ]; then
     "${LDK_DIR}/tools/l4t_update_initrd.sh"
@@ -79,7 +146,7 @@ else
     echo "  Warning: l4t_update_initrd.sh not found, skipping"
 fi
 
-echo "=== Step 6: Restore Debian initrd for boot ==="
+echo "=== Step 7: Restore Debian initrd for boot ==="
 if [ -f "${DEBIAN_INITRD}" ]; then
     cp "${DEBIAN_INITRD}" "${ROOTFS}/boot/initrd"
     echo "  Restored ${DEBIAN_INITRD} to rootfs/boot/initrd"
