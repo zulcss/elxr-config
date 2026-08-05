@@ -20,7 +20,7 @@ ROOTFS="${1:-.}"
 NV_SCRIPT="${ROOTFS}/usr/sbin/nv-update-initrd"
 MODULES_LIST="${ROOTFS}/etc/nv-update-initrd/list.d/modules"
 # Auto-detect kernel version from /lib/modules
-KERNEL_VERSION=$(ls -1 "${ROOTFS}/lib/modules/" | grep -E '^6\.12\.[0-9]+\+deb[0-9]+-orin-arm64$' | sort -V | tail -1)
+KERNEL_VERSION=$(find "${ROOTFS}/lib/modules/" -maxdepth 1 -mindepth 1 -type d -printf '%f\n' | grep -E '^6\.12\.[0-9]+\+deb[0-9]+-orin-arm64$' | sort -V | tail -1)
 
 if [ -z "${KERNEL_VERSION}" ]; then
     echo "Error: No 6.12 kernel found in ${ROOTFS}/lib/modules/"
@@ -110,7 +110,7 @@ for dtb_dir in "${LDK_DIR}/kernel/dtb" "${LDK_DIR}/bootloader" "${ROOTFS}/boot";
         [ -f "$dtb" ] || continue
         # Check if already patched
         if dtc -I dtb -O dts "$dtb" 2>/dev/null | grep -q "snps,reset-gpio"; then
-            echo "  Already patched: $(basename $dtb)"
+            echo "  Already patched: $(basename "$dtb")"
             DTB_PATCHED=$((DTB_PATCHED + 1))
             continue
         fi
@@ -123,7 +123,7 @@ for dtb_dir in "${LDK_DIR}/kernel/dtb" "${LDK_DIR}/bootloader" "${ROOTFS}/boot";
 \t\t\tsnps,reset-gpio = <0xf1 0x91 0x01>;\
 \t\t\tsnps,reset-delays-us = <0 10000 220000>;' "$TMP_DTS"
             dtc -I dts -O dtb -o "$dtb" "$TMP_DTS" 2>/dev/null
-            echo "  Patched: $(basename $dtb)"
+            echo "  Patched: $(basename "$dtb")"
             DTB_PATCHED=$((DTB_PATCHED + 1))
         fi
         rm -f "$TMP_DTS"
@@ -132,7 +132,7 @@ done
 # Also copy patched DTBs to bootloader/kernel_ prefixed versions
 for dtb in "${LDK_DIR}/bootloader"/tegra234-p3737-0000+p3701-*-nv.dtb; do
     [ -f "$dtb" ] || continue
-    kernel_dtb="${LDK_DIR}/bootloader/kernel_$(basename $dtb)"
+    kernel_dtb="${LDK_DIR}/bootloader/kernel_$(basename "$dtb")"
     cp "$dtb" "$kernel_dtb" 2>/dev/null
 done
 echo "  Total DTBs patched/verified: ${DTB_PATCHED}"
