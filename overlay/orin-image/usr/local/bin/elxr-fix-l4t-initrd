@@ -136,7 +136,7 @@ for dtb_dir in "${LDK_DIR}/kernel/dtb" "${LDK_DIR}/bootloader" "${ROOTFS}/boot";
             # Match by property name, not literal values (phandles change per decompile).
             sed -i "/nvidia,phy-reset-gpio/a\\
 \\t\\t\\tsnps,reset-gpio = <${PHY_RST_PHANDLE} ${PHY_RST_PIN} 0x01>;\\
-\\t\\t\\tsnps,reset-delays-us = <0x00 0x2710 0x35b60>;" "$TMP_DTS"
+\\t\\t\\tsnps,reset-delays-us = <0x00 0x2710 0x1e8480>;" "$TMP_DTS"
             dtc -I dts -O dtb -o "$dtb" "$TMP_DTS"
             # Verify the patch was applied successfully after recompile
             if ! dtc -I dtb -O dts "$dtb" | grep -q "snps,reset-gpio"; then
