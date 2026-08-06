@@ -6,7 +6,7 @@
 # 2. Patches nv-update-initrd version detection
 # 3. Removes missing modules from initrd modules list
 # 4. Patches flash.sh recovery ramdisk version detection
-# 5. Patches DTB to add Ethernet PHY reset GPIO (snps,reset-gpio)
+# 5. Verifies DTB has nvidia,phy-reset-gpio (no modification needed)
 # 6. Runs l4t_update_initrd.sh
 # 7. Restores Debian initrd for normal boot
 #
@@ -100,63 +100,10 @@ else
     echo "  Already patched or not found"
 fi
 
-echo "=== Step 5: Patch DTB for Ethernet PHY reset ==="
-# Stopgap: the mainline dwmac-tegra/stmmac driver needs 'snps,reset-gpio' on the
-# MAC node to reset the AQR113C PHY before MDIO scanning.  This runtime DTB patch
-# will be removed once kernel MR !324 (orin network phy reset) lands in the DT
-# source and ships in the kernel package.
-
-# Ensure dtc is available before attempting any DTB operations
-if ! command -v dtc >/dev/null 2>&1; then
-    echo "  Error: dtc (device-tree-compiler) not found in PATH"
-    exit 1
-fi
-
-# Find all -nv DTBs for AGX Orin variants that have the ethernet@6800000 node
-DTB_PATCHED=0
-for dtb_dir in "${LDK_DIR}/kernel/dtb" "${LDK_DIR}/bootloader" "${ROOTFS}/boot"; do
-    for dtb in "${dtb_dir}"/tegra234-p3737-0000+p3701-*-nv.dtb; do
-        [ -f "$dtb" ] || continue
-        # Check if already patched
-        if dtc -I dtb -O dts "$dtb" | grep -q "snps,reset-gpio"; then
-            echo "  Already patched: $(basename "$dtb")"
-            DTB_PATCHED=$((DTB_PATCHED + 1))
-            continue
-        fi
-        # Decompile, patch, recompile
-        TMP_DTS="/tmp/elxr-dtb-patch-$$.dts"
-        dtc -I dtb -O dts -o "$TMP_DTS" "$dtb"
-        if grep -q "nvidia,phy-reset-gpio" "$TMP_DTS"; then
-            # Extract the phandle and GPIO pin from nvidia,phy-reset-gpio so we
-            # don't hardcode decompile-dependent phandle values (e.g. 0xf1).
-            PHY_RST_LINE=$(grep "nvidia,phy-reset-gpio" "$TMP_DTS")
-            PHY_RST_PHANDLE=$(echo "$PHY_RST_LINE" | grep -oP '<\K0x[0-9a-f]+' | head -1)
-            PHY_RST_PIN=$(echo "$PHY_RST_LINE" | grep -oP '<\K0x[0-9a-f]+ \K0x[0-9a-f]+' | head -1)
-            # Insert snps,reset-gpio after the nvidia,phy-reset-gpio property.
-            # Match by property name, not literal values (phandles change per decompile).
-            sed -i "/nvidia,phy-reset-gpio/a\\
-\\t\\t\\tsnps,reset-gpio = <${PHY_RST_PHANDLE} ${PHY_RST_PIN} 0x01>;\\
-\\t\\t\\tsnps,reset-delays-us = <0x00 0x2710 0x1e8480>;" "$TMP_DTS"
-            dtc -I dts -O dtb -o "$dtb" "$TMP_DTS"
-            # Verify the patch was applied successfully after recompile
-            if ! dtc -I dtb -O dts "$dtb" | grep -q "snps,reset-gpio"; then
-                echo "  Error: snps,reset-gpio not found in recompiled $(basename "$dtb")"
-                rm -f "$TMP_DTS"
-                exit 1
-            fi
-            echo "  Patched: $(basename "$dtb")"
-            DTB_PATCHED=$((DTB_PATCHED + 1))
-        fi
-        rm -f "$TMP_DTS"
-    done
-done
-# Also copy patched DTBs to bootloader/kernel_ prefixed versions
-for dtb in "${LDK_DIR}/bootloader"/tegra234-p3737-0000+p3701-*-nv.dtb; do
-    [ -f "$dtb" ] || continue
-    kernel_dtb="${LDK_DIR}/bootloader/kernel_$(basename "$dtb")"
-    cp "$dtb" "$kernel_dtb"
-done
-echo "  Total DTBs patched/verified: ${DTB_PATCHED}"
+echo "=== Step 5: Verify DTB (no modification needed) ==="
+# PHY reset is handled in the kernel driver via nvidia,phy-reset-gpio
+# (already present in NVIDIA's stock DTB).  No DTB patching required.
+echo "  DTB uses unmodified NVIDIA stock DTBs (nvidia,phy-reset-gpio present)"
 
 echo "=== Step 6: Update initrd ==="
 rm -f /tmp/Image.tmp
