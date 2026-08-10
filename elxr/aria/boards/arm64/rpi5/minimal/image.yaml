@@ -1,0 +1,121 @@
+  name: elxr-minimal-rpi5
+  description: "Raspberry Pi 5 minimal configuration."
+  architecture: arm64
+  version: 99.99.0
+  schemaVersion: 1
+  params:
+    version: ${version}
+    source: ${oc.env:CURRENT_DIR}/elxr-installer-${version}-${architecture}.tar.gz
+    disk: ${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img
+  stages:
+    install:
+      - name: "Creating installer."
+        module: bootstrap.mmdebstrap
+        options:
+          suite: aria
+          target: ${params.source}
+          architecture: ${architecture}
+          keyring:
+            - /usr/share/keyrings/raspberrypi-archive-keyring.gpg # TODO: rel path
+          setup_hooks: 
+            - 'sync-in /usr/src/elxr-config/overlay/rpi5/ /' # TODO: figurte out whats wrong with relative path (mmdebstrap issue)
+            - 'sync-in /usr/src/elxr-config/overlay/systemd-networkd/ /' # TODO: the same
+          customize_hooks:
+            - echo 'root:root' | chroot "$1" chpasswd
+            - sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' $1/etc/ssh/sshd_config # WARN: enables root password login via ssh
+            - systemctl enable --root="$1" systemd-networkd
+            - systemctl enable --root="$1" elxr-growfs
+            - systemctl enable --root="$1" ssh
+            - mkdir -p $1/boot/firmware
+            - echo "console=serial0,115200 console=tty1 root=LABEL=ROOT rootfstype=ext4 rootwait" > $1/boot/firmware/cmdline.txt
+            - |
+              cat > $1/boot/firmware/config.txt << 'PICONF'
+              [all]
+              arm_64bit=1
+              kernel=vmlinuz
+              initramfs initrd.img followkernel
+              disable_overscan=1
+              dtparam=audio=on
+              auto_initramfs=1
+              [cm5]
+              dtoverlay=dwc2,dr_mode=host
+              [all]
+              PICONF
+          packages:
+            - linux-image-rpi-2712
+            - raspi-firmware
+            - firmware-brcm80211
+            - systemd-timesyncd
+            - systemd-resolved
+            - openssh-server
+            - openssh-client
+            - ca-certificates
+            - sudo
+            - curl
+            - wget
+            - vim
+            - less
+            - procps
+            - net-tools
+            - dbus
+            - policykit-1
+            - cloud-guest-utils
+            - apparmor
+            - apparmor-utils
+            - auditd
+          mirrors:
+            - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
+            - deb [signed-by=/usr/share/keyrings/raspberrypi-archive-keyring.gpg] http://archive.raspberrypi.com/debian bookworm main
+
+      - name: "Create raw image ${params.disk}"
+        module: image.raw
+        options:
+          name: ${params.disk}
+          size: 4G
+
+      - name: "Partitioning ${params.disk}."
+        module: installer.disk.parted
+        options:
+          slices:
+            - name: BOOT
+              start: 4MB
+              end: 512MB
+              flags: []
+              id: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+            - name: ROOT
+              start: 512MB
+              end: 100%
+              flags: []
+              id: ''
+
+      - name: "Formatting ${params.disk}."
+        module: installer.disk.fs
+        options:
+          filesystems:
+            - name: BOOT
+              label: BOOT
+              fs: vfat
+              options: []
+            - name: ROOT
+              label: ROOT
+              fs: ext4
+              options: []
+
+      - name: "Unpacking ${params.source}"
+        module: installer.unpack
+        options: []
+
+      - name: "Setting up boot partition"
+        module: utils.run_shell
+        options:
+          from_root_dir: true
+          commands:
+            - "cp -r boot/firmware/* efi/"
+            - "cp boot/vmlinuz-* efi/vmlinuz"
+            - "cp boot/initrd.img-* efi/initrd.img"
+
+      - name: "Compress image ${params.disk}"
+        module: image.compress
+        options:
+          name: ${params.disk}
+          compression: zstd
