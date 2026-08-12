@@ -1,8 +1,12 @@
-elxr-config (1.0.33+26.04.01elxr) UNRELEASED; urgency=medium
+elxr-config (1.0.33+26.04.02elxr) aria; urgency=medium
 
-  * compress ec2 images
+  [ Joe Slater ]
+  * Compress ec2 images.
 
- -- joe slater <jslater@ala-jslater-lx1.corp.ad.wrs.com>  Mon, 03 Aug 2026 14:02:06 -0700
+  [ Charles Short]
+  * Fix imx8 ultra minimal booting issues.
+
+ -- Charles Short <charles.short@windriver.com>  Mon, 03 Aug 2026 14:02:06 -0700
 
 elxr-config (1.0.32+26.04.01elxr) aria; urgency=medium
 
