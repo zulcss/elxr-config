@@ -89,8 +89,8 @@ BASE_TEMPLATE = {
             },
             {
                 'name': 'Installing bootloader on ${params.disk}',
-                'module': 'installer.bootloader',
-                'options': {'kernel_args': 'root=LABEL=ROOT rw console=tty0'}
+                'module': 'installer.bootloader.grub',
+                'options': []
             },
             {
                 'name': 'Compress image ${params.disk}',
