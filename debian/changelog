@@ -1,3 +1,9 @@
+elxr-config (1.0.36elxr6) aria; urgency=medium
+
+  * Fix arm64 booting with imx.
+
+ -- Charles Short <charles.short@windriver.com>  Thu, 13 Aug 2026 10:18:29 -0400
+
 elxr-config (1.0.36elxr5) bianca; urgency=medium
 
   * elxr-fix-l4t-initrd: auto-detect kernel, add DTB Ethernet PHY patch,
