@@ -10,6 +10,7 @@ packages:
   - login
   - bash
   - coreutils
+  - elxr-archive-keyring
   - util-linux
 
 exclude_packages: []
