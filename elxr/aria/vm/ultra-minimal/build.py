@@ -90,8 +90,8 @@ BASE_TEMPLATE = {
             },
             {
                 'name': 'Installing systemd-boot bootloader',
-                'module': 'installer.bootloader',
-                'options': {'kernel_args': 'root=LABEL=ROOT rw console=ttyS0,115200n8 console=tty0'}
+                'module': 'installer.bootloader.grub',
+                'options': []
             },
             {
                 'name': 'Compress image ${params.disk}',

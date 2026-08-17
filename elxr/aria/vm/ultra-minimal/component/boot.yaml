@@ -2,13 +2,13 @@
 name: boot
 description: "Essential boot components (systemd-boot, kernel, init)"
 packages:
-  - linux-image-cloud-amd64
-  - systemd
-  - systemd-boot
+  - linux-image-amd64
+  - grub2
+  - grub-efi-amd64-bin
+  - grub-efi-amd64-signed
   - systemd-sysv
   - udev
   - dbus
 
 customize_hooks:
-  - mkdir -p $1/efi
   - mkdir -p $1/etc/systemd/system/multi-user.target.wants
