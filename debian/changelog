@@ -1,3 +1,9 @@
+elxr-config (1.0.36elxr7) bianca; urgency=medium
+
+  * Fix typo. 
+
+ -- Charles Short <charles.short@windriver.com>  Mon, 17 Aug 2026 08:51:24 -0400
+
 elxr-config (1.0.36elxr6) aria; urgency=medium
 
   * Fix arm64 booting with imx.

@@ -4,7 +4,7 @@ description: "Essential boot components (grub, kernel, init) for ARM64"
 packages:
   - linux-image-imx-arm64
   - grub-efi-arm64-bin
-  - gru-efi-arm64
+  - grub-efi-arm64
   - grub2-common
   - systemd
   - systemd-sysv
