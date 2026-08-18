@@ -5,14 +5,3 @@ packages:
   - e2fsprogs
 
 customize_hooks: []
-
-dpkgopt:
-  - 'path-exclude=/lib/modules/*/kernel/fs/xfs/*'
-  - 'path-exclude=/lib/modules/*/kernel/fs/btrfs/*'
-  - 'path-exclude=/lib/modules/*/kernel/fs/nfs/*'
-  - 'path-exclude=/lib/modules/*/kernel/fs/smb/*'
-  - 'path-exclude=/lib/modules/*/kernel/fs/f2fs/*'
-  - 'path-exclude=/lib/modules/*/kernel/fs/fuse/*'
-  - 'path-exclude=/lib/modules/*/kernel/fs/overlayfs/*'
-  - 'path-exclude=/lib/modules/*/kernel/fs/squashfs/*'
-  - 'path-exclude=/lib/modules/*/kernel/fs/isofs/*'

@@ -4,8 +4,7 @@ description: "Aggressive cleanup for minimal size on ARM64"
 packages: []
 
 customize_hooks:
-  - rm -rf $1/var/lib/apt/lists/* $1/var/cache/apt/* $1/tmp/* $1/var/tmp/* $1/var/log/*
-  - rm -rf $1/usr/share/doc/* $1/usr/share/man/* $1/usr/share/info/* $1/usr/share/linda/* $1/usr/share/lintian/*
+  - rm -rf $1/usr/share/man/* $1/usr/share/info/* $1/usr/share/linda/* $1/usr/share/lintian/*
   - find $1/usr/share/locale -mindepth 1 -maxdepth 1 ! -name 'en*' -exec rm -rf {} +
   - find $1 -name '*.pyc' -delete
   - find $1 -name '__pycache__' -type d -exec rm -rf {} +
@@ -14,22 +13,12 @@ customize_hooks:
   - find $1/lib/modules -name '*.ko' -exec strip --strip-unneeded {} \; 2>/dev/null || true
   - find $1/usr/bin $1/usr/sbin $1/bin $1/sbin -type f -executable -exec strip --strip-all {} \; 2>/dev/null || true
   - find $1/usr/lib -name '*.so.*' -exec strip --strip-unneeded {} \; 2>/dev/null || true
-  - rm -rf $1/usr/include $1/usr/src
-  - rm -rf $1/usr/share/pixmaps $1/usr/share/icons $1/usr/share/sounds $1/usr/share/bash-completion $1/usr/share/debconf
-  - rm -rf $1/var/lib/dpkg/info/*.md5sums $1/usr/share/common-licenses/*
-  - rm -rf $1/usr/share/zoneinfo/* $1/usr/lib/aarch64-linux-gnu/gconv 2>/dev/null || true
   - find $1/usr/lib -name "*.la" -delete 2>/dev/null || true
   - find $1 -name "*.pyo" -delete 2>/dev/null || true
-  - rm -rf $1/var/lib/dpkg/info/*.symbols $1/usr/share/applications $1/usr/share/desktop-directories 2>/dev/null || true
   - rm -rf $1/usr/share/mime $1/usr/share/xml 2>/dev/null || true
   - find $1/usr/lib/python* -name "test" -type d -exec rm -rf {} + 2>/dev/null || true
   - find $1/usr/lib/python* -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
-  - rm -rf $1/usr/lib/systemd/catalog $1/var/lib/systemd/catalog 2>/dev/null || true
   - truncate -s 0 $1/var/log/lastlog $1/var/log/faillog 2>/dev/null || true
-  - rm -rf $1/usr/share/ca-certificates/mozilla/* $1/usr/lib/apt/methods/ftp $1/usr/lib/apt/methods/rsh 2>/dev/null || true
   - find $1/usr/lib -name "*.so.*" -exec strip --strip-debug {} \; 2>/dev/null || true
-  - find $1/usr/share/terminfo -mindepth 1 -maxdepth 1 ! -name "l" ! -name "x" ! -name "v" ! -name "a" -exec rm -rf {} + 2>/dev/null || true
-  - rm -rf $1/usr/lib/locale/locale-archive 2>/dev/null || true
-  - rm -rf $1/usr/lib/python*/dist-packages/pip $1/usr/lib/python*/dist-packages/setuptools 2>/dev/null || true
 
 dpkgopt: []

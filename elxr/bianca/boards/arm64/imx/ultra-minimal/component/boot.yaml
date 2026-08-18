@@ -2,7 +2,7 @@
 name: boot
 description: "Essential boot components (systemd-boot, kernel, init) for ARM64"
 packages:
-  - linux-image-cloud-arm64
+  - linux-image-imx-arm64
   - systemd
   - systemd-boot
   - systemd-boot-efi
@@ -15,16 +15,3 @@ customize_hooks:
   - echo 'fs0:\EFI\BOOT\BOOTAA64.EFI' > $1/efi/startup.nsh
   - mkdir -p $1/efi/EFI/BOOT
   - cp $1/usr/lib/systemd/boot/efi/systemd-bootaa64.efi $1/efi/EFI/BOOT/BOOTAA64.EFI 2>/dev/null || true
-
-dpkgopt:
-  - 'path-exclude=/lib/modules/*/kernel/drivers/gpu/*'
-  - 'path-exclude=/lib/modules/*/kernel/drivers/media/*'
-  - 'path-exclude=/lib/modules/*/kernel/drivers/staging/*'
-  - 'path-exclude=/lib/modules/*/kernel/drivers/bluetooth/*'
-  - 'path-exclude=/lib/modules/*/kernel/drivers/usb/*'
-  - 'path-exclude=/lib/modules/*/kernel/drivers/hid/*'
-  - 'path-exclude=/lib/modules/*/kernel/drivers/hwmon/*'
-  - 'path-exclude=/lib/modules/*/kernel/drivers/watchdog/*'
-  - 'path-exclude=/lib/modules/*/kernel/drivers/thermal/*'
-  - 'path-exclude=/lib/modules/*/kernel/drivers/power/*'
-  - 'path-exclude=/lib/modules/*/kernel/sound/*'
