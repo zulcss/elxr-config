@@ -1,3 +1,9 @@
+elxr-config (1.0.36elxr8) bianca; urgency=medium
+
+  * Switch AMD64 ultra-minimal to use the standard kernel.
+
+ -- Charles Short <charles.short@windriver.com>  Tue, 18 Aug 2026 14:09:14 -0400
+
 elxr-config (1.0.36elxr7) bianca; urgency=medium
 
   * Fix typo. 

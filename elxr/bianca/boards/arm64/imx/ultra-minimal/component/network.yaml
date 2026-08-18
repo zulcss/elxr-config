@@ -4,6 +4,8 @@ description: "Minimal networking (systemd-networkd only, no wireless/bluetooth) 
 packages:
   - iproute2
   - iputils-ping
+  - net-tool
+  - wget
   - systemd-resolved
 
 customize_hooks:
