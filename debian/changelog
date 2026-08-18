@@ -1,3 +1,9 @@
+elxr-config (1.0.34+26.04.02elxr2) aria; urgency=medium
+
+  * Fix amd64 ultra minimal images for loading sata drivers.
+
+ -- Chuck Short <zulcss@gmail.com>  Tue, 18 Aug 2026 12:46:30 -0400
+
 elxr-config (1.0.34+26.04.02elxr) aria; urgency=medium
 
   * Fix amd64 aria ultra minimal images.
