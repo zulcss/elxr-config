@@ -2,7 +2,7 @@
 name: boot
 description: "Essential boot components (systemd-boot, kernel, init)"
 packages:
-  - linux-image-cloud-amd64
+  - linux-image-amd64
   - systemd
   - systemd-boot
   - systemd-sysv
