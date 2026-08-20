@@ -1,3 +1,9 @@
+elxr-config (1.0.36elxr10) bianca; urgency=medium
+
+  * Fix typo in net-tools package. 
+
+ -- Chuck Short <charles.short@windriver.com>  Thu, 20 Aug 2026 11:32:33 -0400
+
 elxr-config (1.0.36elxr9) aria; urgency=medium
 
   * Re-add elxr-archive-keyring for bootstrapping the UM images.
