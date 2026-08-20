@@ -1,3 +1,9 @@
+elxr-config (1.0.36elxr9) aria; urgency=medium
+
+  * Re-add elxr-archive-keyring for bootstrapping the UM images.
+
+ -- Chuck Short <charles.short@windriver.com>  Thu, 20 Aug 2026 09:07:28 -0400
+
 elxr-config (1.0.36elxr8) bianca; urgency=medium
 
   * Switch AMD64 ultra-minimal to use the standard kernel.
