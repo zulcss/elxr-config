@@ -1,3 +1,9 @@
+elxr-config (1.0.34+26.04.02elxr3) aria; urgency=medium
+
+  * Fix amd64 cloud iames for ultra minimal. 
+
+ -- Chuck Short <charles.short@windriver.com>  Fri, 21 Aug 2026 08:35:43 -0400
+
 elxr-config (1.0.34+26.04.02elxr2) aria; urgency=medium
 
   * Fix amd64 ultra minimal images for loading sata drivers.
