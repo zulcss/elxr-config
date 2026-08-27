@@ -1,3 +1,9 @@
+elxr-config (1.0.34+26.04.02elxr4) aria; urgency=medium
+
+  * manifests: add firmware packages for NUC13 (iwlwifi, i915, bluetooth).
+
+ -- Abbas Mohammed S <AbbasMohammed.SainulAbdeen@windriver.com>  Thu, 27 Aug 2026 11:46:41 +0530
+
 elxr-config (1.0.34+26.04.02elxr3) aria; urgency=medium
 
   * Fix amd64 cloud iames for ultra minimal. 
