@@ -1,3 +1,9 @@
+elxr-config (1.0.34+26.04.02elxr5) aria; urgency=medium
+
+  * Fix EC2 instance connect client. 
+
+ -- Chuck Short <charles.short@windriver.com>  Fri, 28 Aug 2026 09:20:32 -0400
+
 elxr-config (1.0.34+26.04.02elxr4) aria; urgency=medium
 
   * manifests: add firmware packages for NUC13 (iwlwifi, i915, bluetooth).
