@@ -26,6 +26,8 @@ stages:
           - chroot $1 echo "localhost" > $1/etc/hostname
           - chroot $1 sed -i -e 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
           - chroot $1 sed -i -e 's/^PermitRootLogin .*/PermitRootLogin without-password/' /etc/ssh/sshd_config
+          - chroot $1 sed -i -e 's:^#AuthorizedKeysCommand none:AuthorizedKeysCommand /usr/share/ec2-instance-connect/eic_run_authorized_keys %u %f:' /etc/ssh/sshd_config
+          - chroot $1 sed -i "s,^#AuthorizedKeysCommandUser .*$,AuthorizedKeysCommandUser ec2-instance-connect,g" /etc/ssh/sshd_config
           - chroot $1 ln -fs /usr/share/zoneinfo/UTC /etc/localtime
         packages:
           - ${include:manifests/packages-ec2.yaml}

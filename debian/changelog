@@ -1,3 +1,9 @@
+elxr-config (1.0.36elxr11) bianca; urgency=medium
+
+  * Configure EC2 instance connect configuration.
+
+ -- Chuck Short <charles.short@windriver.com>  Fri, 28 Aug 2026 09:02:27 -0400
+
 elxr-config (1.0.36elxr10) bianca; urgency=medium
 
   * Fix typo in net-tools package. 
