@@ -72,3 +72,9 @@ stages:
 
     - name: "Installing bootloader"
       module: installer.bootloader.grub
+
+    - name: Compress image ${params.disk}
+      module: image.compress
+      options:
+        name: ${params.disk}
+        compression: zstd
