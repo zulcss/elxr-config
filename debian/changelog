@@ -1,3 +1,10 @@
+elxr-config (1.0.34+26.04.02elxr6) aria; urgency=medium
+
+  * imx: ultra-minimal: stage device tree onto the ESP so U-Boot loads a DTB
+    with the EQOS MAC, enabling the second Ethernet port (end1).
+
+ -- KIRAN KUMAR V S <kiran.kumar2@windriver.com>  Tue, 01 Sep 2026 16:23:19 +0530
+
 elxr-config (1.0.34+26.04.02elxr5) aria; urgency=medium
 
   * Fix EC2 instance connect client. 
