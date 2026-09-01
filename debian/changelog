@@ -1,3 +1,9 @@
+elxr-config (1.0.34+26.04.02elxr9) aria; urgency=medium
+
+  * Added ultra-minimal etc/default/locale file
+
+ -- Donald Washburn <donald.washburn@windriver.com>  Thu, 03 Sep 2026 08:50:45 -0400
+
 elxr-config (1.0.34+26.04.02elxr8) aria; urgency=medium
 
   * aria passwd does not support stdin option, working arround this to expire root password.
