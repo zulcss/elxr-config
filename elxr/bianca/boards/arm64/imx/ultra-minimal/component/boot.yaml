@@ -10,3 +10,15 @@ packages:
   - systemd-sysv
   - udev
   - dbus
+
+customize_hooks:
+  - mkdir -p $1/efi
+  - cd $1/usr/lib/modules; for d in $(ls * -d); do mkdir -p $1/usr/lib/modules/$d/dtb;
+    cp -rf $1/usr/lib/linux-image-$d/freescale/imx*.dtb $1/usr/lib/modules/$d/dtb; done; cd -
+  # Stage the board DTB(s) onto the ESP so the target U-Boot can load one.
+  # This U-Boot searches efi_dtb_prefixes "/ /dtb/ /dtb/current/" on the EFI
+  # partition (mmc 1:1) for ${fdtfile}=imx8mp-evk.dtb. The /efi mountpoint is
+  # populated onto the EFI partition by installer.unpack, so placing the DTB at
+  # $1/efi/dtb/ here makes it land at /dtb/imx8mp-evk.dtb on the ESP at boot.
+  - mkdir -p $1/efi/dtb; for d in $1/usr/lib/modules/*/dtb; do
+    cp -f "$d"/imx*.dtb $1/efi/dtb/ 2>/dev/null || true; done

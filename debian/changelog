@@ -1,3 +1,10 @@
+elxr-config (1.0.36elxr13) bianca; urgency=medium
+
+  * imx: ultra-minimal: stage device tree onto the ESP so U-Boot loads a DTB
+    with the EQOS MAC, enabling the second Ethernet port (end1).
+
+ -- KIRAN KUMAR V S <kiran.kumar2@windriver.com>  Tue, 01 Sep 2026 17:20:23 +0530
+
 elxr-config (1.0.36elxr12) bianca; urgency=medium
 
   * compress ec2 images
