@@ -18,7 +18,7 @@ stages:
           - 'sync-in overlay/bianca/ /'
           - 'sync-in overlay/systemd-networkd/ /'
         customize_hooks:
-          - echo 'root:root' | chroot "$1" chpasswd
+          - echo 'root' | chroot "$1" passwd -e -s root
           - systemctl enable --root="$1" systemd-networkd
           - chroot $1 echo "localhost" > $1/etc/hostname
           - mkdir -p $1/efi

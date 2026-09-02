@@ -22,7 +22,7 @@ stages:
           - 'sync-in overlay/systemd-networkd/ /'
           - 'sync-in overlay/cloud/ /'
         customize_hooks:
-          - echo 'root:root' | chroot "$1" chpasswd
+          - echo 'root' | chroot "$1" passwd -e -s root
           - systemctl enable --root="$1" systemd-networkd
           - systemctl enable --root="$1" elxr-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
