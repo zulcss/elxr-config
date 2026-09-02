@@ -22,7 +22,7 @@ stages:
           - 'sync-in overlay/xorg-imx/ /'
         customize_hooks:
           - 'sync-in overlay/grub-efi/ /'
-          - echo 'root:root' | chroot "$1" chpasswd
+          - echo 'root' | chroot "$1" passwd -e -s root
           - systemctl enable --root="$1" systemd-networkd
           - systemctl enable --root="$1" elxr-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname

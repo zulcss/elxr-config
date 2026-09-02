@@ -5,5 +5,5 @@ packages:
   - elxr-archive-keyring
 
 customize_hooks:
-  - echo 'root:root' | chroot "$1" chpasswd
+  - echo 'root' | chroot "$1" passwd -e -s root
   - chroot $1 echo "localhost" > $1/etc/hostname
