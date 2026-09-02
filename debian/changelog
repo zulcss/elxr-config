@@ -1,3 +1,9 @@
+elxr-config (1.0.34+26.04.02elxr7) aria; urgency=medium
+
+  * default root creds must always expire to ensure they are always changed from the default.
+
+ -- Ryan Hunt <Ryan.Hunt@windriver.com>  Wed, 2 Sep 2026 03:31:41 -0700
+
 elxr-config (1.0.34+26.04.02elxr6) aria; urgency=medium
 
   * imx: ultra-minimal: stage device tree onto the ESP so U-Boot loads a DTB
