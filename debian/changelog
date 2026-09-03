@@ -1,3 +1,9 @@
+elxr-config (1.0.34+26.04.02elxr8) aria; urgency=medium
+
+  * aria passwd does not support stdin option, working arround this to expire root password.
+
+ -- Ryan Hunt <Ryan.Hunt@windriver.com>  Wed, 2 Sep 2026 11:04:41 -0700
+
 elxr-config (1.0.34+26.04.02elxr7) aria; urgency=medium
 
   * default root creds must always expire to ensure they are always changed from the default.
