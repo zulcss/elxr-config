@@ -24,7 +24,8 @@ stages:
           - 'sync-in overlay/xorg-imx/ /'
         customize_hooks:
           - 'sync-in overlay/ostree/usr/lib /usr/lib'
-          - echo 'root' | chroot "$1" passwd -e -s root
+          - echo 'root:root' | chroot "$1" chpasswd
+          - chroot "$1" passwd -e root
           - systemctl enable --root="$1" systemd-networkd
           - systemctl enable --root="$1" elxr-growfs
           - chroot $1 echo "localhost" > $1/etc/hostname
