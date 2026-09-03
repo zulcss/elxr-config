@@ -22,7 +22,8 @@ stages:
         setup_hooks:
           - 'sync-in overlay/orin/ /'
         customize_hooks:
-          - echo 'root' | chroot "$1" passwd -e -s root
+          - echo 'root:root' | chroot "$1" chpasswd
+          - chroot "$1" passwd -e root
           - systemctl enable --root="$1" systemd-networkd
           - systemctl enable --root="$1" elxr-growfs
           - rm -f $1/etc/X11/xorg.conf.d/fb.conf
