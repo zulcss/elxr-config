@@ -13,7 +13,8 @@ packages:
   - util-linux
 
 customize_hooks:
-  - echo 'root' | chroot "$1" passwd -e -s root
+  - echo 'root:root' | chroot "$1" chpasswd
+          - chroot "$1" passwd -e root
   - chroot $1 echo "localhost" > $1/etc/hostname
 
 dpkgopt: []
