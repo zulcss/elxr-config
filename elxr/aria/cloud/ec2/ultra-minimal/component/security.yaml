@@ -1,8 +1,8 @@
 ---
-# Security Component - Essential security components, minimal CA certificates
+# Security Component - Essential security components
 
 name: security
-description: Essential security components, minimal CA certificates
+description: Essential security components
 
 packages:
   - ca-certificates
@@ -12,6 +12,5 @@ exclude_packages: []
 
 customize_hooks:
   - chroot $1 apt-key add /etc/apt/trusted.gpg.d/eLxr-base.asc
-  - rm -rf $1/usr/share/ca-certificates/mozilla/* 2>/dev/null || true
 
 dpkgopt: []
