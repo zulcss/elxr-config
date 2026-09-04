@@ -1,3 +1,9 @@
+elxr-config (1.0.36elxr16) bianca; urgency=medium
+
+  * esp.img copied into the efi partition using loop device mount
+
+ -- Sridhar Gopalan <Sridhar.Gopalan@windriver.com>  Fri, 04 Sep 2026 17:30:14 +0530
+
 elxr-config (1.0.36elxr15) bianca; urgency=medium
 
   * aria passwd does not support stdin option, working arround this to expire root password.. Standardizing behavior for bianca
