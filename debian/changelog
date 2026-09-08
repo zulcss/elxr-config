@@ -1,3 +1,10 @@
+elxr-config (1.0.36elxr18) bianca; urgency=medium
+
+  * Fixed broken file system caused by security component update hook in
+    ultra minimal images.
+
+ -- Donald Washburn <donald.washburn@windriver.com>  Tue, 08 Sep 2026 09:47:51 -0400
+ 
 elxr-config (1.0.36elxr17) bianca; urgency=medium
 
   * Add locale file for ultra-minimal images
