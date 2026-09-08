@@ -1,0 +1,18 @@
+---
+name: networking
+description: "Minimal networking (systemd-networkd only, no wireless/bluetooth) for ARM64"
+packages:
+  - iproute2
+  - iputils-ping
+  - systemd-resolved
+
+customize_hooks:
+  - ln -sf /lib/systemd/system/systemd-networkd.service $1/etc/systemd/system/multi-user.target.wants/
+  - rm -rf $1/lib/firmware/{iwlwifi,rtlwifi,ath*,brcm} 2>/dev/null || true
+  - rm -rf $1/lib/modules/*/kernel/drivers/{bluetooth,wireless} 2>/dev/null || true
+
+dpkgopt:
+  - 'path-exclude=/lib/modules/*/kernel/drivers/net/wireless/*'
+  - 'path-exclude=/lib/modules/*/kernel/drivers/net/can/*'
+  - 'path-exclude=/lib/modules/*/kernel/drivers/net/usb/*'
+  - 'path-exclude=/lib/modules/*/kernel/drivers/wireless/*'

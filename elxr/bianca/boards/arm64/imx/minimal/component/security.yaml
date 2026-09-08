@@ -1,0 +1,12 @@
+---
+name: security
+description: "Essential security components, minimal CA certificates for ARM64"
+
+packages:
+  - ca-certificates
+  - gnupg
+
+customize_hooks:
+  - rm -rf $1/usr/share/ca-certificates/mozilla/* 2>/dev/null || true
+
+dpkgopt: []

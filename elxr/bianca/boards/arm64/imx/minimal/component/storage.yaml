@@ -1,0 +1,5 @@
+---
+name: storage
+description: "Core filesystems only (ext4, vfat, exclude xfs/btrfs/nfs) for ARM64"
+packages:
+  - e2fsprogs

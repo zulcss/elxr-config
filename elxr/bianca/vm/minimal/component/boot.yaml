@@ -1,0 +1,18 @@
+---
+name: boot
+description: "Essential boot components (systemd-boot, kernel, init)"
+packages:
+  - linux-image-amd64
+  - systemd
+  - systemd-boot
+  - systemd-boot-efi
+  - systemd-sysv
+  - udev
+  - dbus
+  - e2fsprogs
+
+customize_hooks:
+  - mkdir -p $1/efi
+  - mkdir -p $1/etc/systemd/system/multi-user.target.wants
+  - ln -sf /lib/systemd/system/getty@.service $1/etc/systemd/system/getty.target.wants/getty@tty1.service
+  - ln -sf /lib/systemd/system/serial-getty@.service $1/etc/systemd/system/getty.target.wants/serial-getty@ttyS0.service

@@ -1,0 +1,16 @@
+---
+name: management
+description: "Basic package management tools for customer extension on ARM64"
+
+packages:
+  - apt
+  - dpkg
+  - login
+  - bash
+  - coreutils
+  - util-linux
+
+customize_hooks:
+  - chroot $1 apt-get clean
+
+dpkgopt: []
