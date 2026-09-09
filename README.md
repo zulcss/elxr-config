@@ -1,5 +1,23 @@
 # elxr-config
 
+## Deprecation Notice
+
+Image manifests which include _ultra-minimal_ in the pathname should now
+be accessed using _minimal_.  For example the path
+
+```bash
+elxr/aria/vm/ultra-minimal/image.yaml
+```
+
+should now be
+
+```bash
+elxr/aria/vm/minimal/image.yaml
+```
+
+Currently, both paths work, but the _ultra-minimal_ one will be removed
+in a future release.
+
 ## Introduction
 
 This project provides stock configuration manifests for building Linux images
