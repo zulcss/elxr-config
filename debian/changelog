@@ -1,3 +1,12 @@
+elxr-config (1.0.34+26.04.02elxr11) aria; urgency=medium
+
+  * manifests: add wpasupplicant for WiFi association and bluez for the
+    Bluetooth stack; drop firmware-linux (redundant AMD GPU firmware not
+    present on the target). Keep firmware-iwlwifi (WiFi + Bluetooth) and
+    firmware-misc-nonfree (i915 GPU).
+
+ -- Abbas Mohammed S <AbbasMohammed.SainulAbdeen@windriver.com>  Thu, 10 Sep 2026 16:50:59 +0530
+
 elxr-config (1.0.34+26.04.02elxr10) aria; urgency=medium
 
   * Fixed broken file system caused by security component update hook in
