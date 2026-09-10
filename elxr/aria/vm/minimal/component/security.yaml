@@ -1,0 +1,9 @@
+---
+# Security Component - Essential security components, minimal CA certificates
+
+name: security
+description: Essential security components, minimal CA certificates
+
+packages:
+  - ca-certificates
+  - gnupg

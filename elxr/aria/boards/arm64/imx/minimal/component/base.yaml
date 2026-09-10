@@ -1,0 +1,9 @@
+---
+name: base
+description: "Essential base system for ARM64 IMX boards"
+packages: []
+
+customize_hooks:
+  - echo 'root:root' | chroot "$1" chpasswd
+  - chroot "$1" passwd -e root
+  - chroot $1 echo "localhost" > $1/etc/hostname

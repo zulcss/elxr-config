@@ -1,0 +1,26 @@
+---
+name: base
+description: "Essential base system for ARM64 IMX boards"
+packages: []
+
+customize_hooks:
+  - echo 'root:root' | chroot "$1" chpasswd
+  - chroot "$1" passwd -e root
+  - chroot $1 echo "localhost" > $1/etc/hostname
+  - systemctl enable --root="$1" systemd-networkd
+  - systemctl enable --root="$1" getty@tty1
+
+dpkgopt:
+  - 'path-exclude=/usr/share/doc/*'
+  - 'path-exclude=/usr/share/info/*'
+  - 'path-exclude=/usr/share/linda/*'
+  - 'path-exclude=/usr/share/lintian/overrides/*'
+  - 'path-exclude=/usr/share/locale/*'
+  - 'path-exclude=/usr/share/man/*'
+  - 'path-exclude=/var/cache/apt/*'
+  - 'path-exclude=/var/lib/apt/lists/*'
+  - 'path-include=/usr/share/doc/*/copyright'
+  - 'path-include=/usr/share/locale/en*'
+  - 'path-include=/usr/share/dpkg/cputable'
+  - 'path-include=/usr/share/dpkg/tupletable'
+  - 'path-include=/usr/share/dpkg/archtable'
