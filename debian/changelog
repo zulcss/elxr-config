@@ -1,3 +1,11 @@
+elxr-config (1.0.36elxr19) bianca; urgency=medium
+
+  * manifests: add firmware-iwlwifi and firmware-misc-nonfree, plus
+    wpasupplicant and bluez, to the OSTree image so WiFi and Bluetooth
+    work on the target
+
+ -- Abbas Mohammed S <AbbasMohammed.SainulAbdeen@windriver.com>  Thu, 10 Sep 2026 17:37:43 +0530
+
 elxr-config (1.0.36elxr18) bianca; urgency=medium
 
   * Fixed broken file system caused by security component update hook in
