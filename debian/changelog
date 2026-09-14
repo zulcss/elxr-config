@@ -1,3 +1,15 @@
+elxr-config (1.0.36elxr20) bianca; urgency=medium
+
+  * ultra-minimal installer: preserve loadable kernel modules. The cleanup
+    deleted every *.ko.xz/*.ko.zst, wiping the module set and leaving a
+    0-byte modules.dep. Replace with a decompress -> strip-debug ->
+    recompress cycle using "xz --check=crc32", since the kernel's in-kernel
+    XZ decoder rejects the default CRC64 and fails module loads with
+    "decompression failed with status 6". Also fix the malformed final
+    depmod so the dependency index is regenerated per installed kernel.
+
+ -- Deepak Hosamane <deepak.hosamane@windriver.com>  Mon, 14 Sep 2026 09:43:40 +0530
+
 elxr-config (1.0.36elxr19) bianca; urgency=medium
 
   * manifests: add firmware-iwlwifi and firmware-misc-nonfree, plus
