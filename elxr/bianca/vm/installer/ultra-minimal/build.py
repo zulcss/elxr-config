@@ -107,7 +107,10 @@ def generate_lbase_yaml(enabled_subsystems, output_file):
     bootstrap_stage['options']['customize_hooks'].extend(cleanup_hooks)
     
     # Add final depmod command at the end
-    bootstrap_stage['options']['customize_hooks'].append('depmod -a -b $1 $(ls $1/lib/modules/) 2>/dev/null || true')
+    # Iterate each installed kernel version and regenerate its dependency index
+    bootstrap_stage['options']['customize_hooks'].append(
+        'for d in "$1"/lib/modules/*/; do [ -d "$d/kernel" ] && depmod -b "$1" "$(basename "$d")"; done'
+    )
     
     with open(output_file, 'w') as f:
         f.write('---\n')
