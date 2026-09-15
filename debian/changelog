@@ -1,3 +1,9 @@
+elxr-config (1.0.34+26.04.02elxr12) aria; urgency=high
+
+  * Adding package quota to add project and quota features for ext4
+
+ -- Ashish Bunkar <ashish.bunkar@windriver.com>  Tue, 15 Sep 2026 09:17:40 -0400
+
 elxr-config (1.0.34+26.04.02elxr11) aria; urgency=medium
 
   * manifests: add wpasupplicant for WiFi association and bluez for the
