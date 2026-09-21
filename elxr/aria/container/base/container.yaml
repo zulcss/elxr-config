@@ -22,7 +22,9 @@ stages:
         packages:
           - ${include:packages/packages-container.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
+          - deb http://mirror.elxr.dev/elxr aria main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
+          - deb http://mirror.elxr.dev/elxr aria-updates main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
+          - deb http://mirror.elxr.dev/elxr aria-security main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
     - name: "Building container"
       module: container.build
       options:

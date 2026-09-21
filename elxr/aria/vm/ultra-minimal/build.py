@@ -55,7 +55,7 @@ BASE_TEMPLATE = {
                     'customize_hooks': [],
                     'packages': [],
                     'dpkgopt': [],
-                    'mirrors': ['deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib']
+                    'mirrors': ['deb http://mirror.elxr.dev/elxr aria main main-debian-community non-free-firmware non-free-firmware-debian-community contrib']
                 }
             },
             {

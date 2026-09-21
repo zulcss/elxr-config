@@ -28,7 +28,9 @@ stages:
         packages:
           - ${include:manifests/packages-cloud-minimal.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
+          - deb http://mirror.elxr.dev/elxr aria main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
+          - deb http://mirror.elxr.dev/elxr aria-updates main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
+          - deb http://mirror.elxr.dev/elxr aria-security main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
           - deb [signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable
 
     - name: "Create raw image ${params.disk}"

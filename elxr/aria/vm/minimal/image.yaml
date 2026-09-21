@@ -28,7 +28,9 @@ stages:
         packages:
           - ${include:manifests/packages-elxr.yaml}
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
+          - deb http://mirror.elxr.dev/elxr aria main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
+          - deb http://mirror.elxr.dev/elxr aria-updates main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
+          - deb http://mirror.elxr.dev/elxr aria-security main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
 
     - name: "Create raw image ${params.disk}"
       module: image.raw
