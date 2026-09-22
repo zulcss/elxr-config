@@ -1,3 +1,11 @@
+elxr-config (1.0.34+26.04.02elxr13) aria; urgency=medium
+
+  * Update aria components: add distribution config for aria-updates and
+    aria-security; add main-debian-community and non-free-firmware-debian-community
+    components on the aria, aria-updates and aria-security distributions.
+
+ -- jeyagomathi <jeyagomathi.sankaralingam@windriver.com>  Mon, 21 Sep 2026 18:45:38 +0530
+
 elxr-config (1.0.34+26.04.02elxr12) aria; urgency=high
 
   * Adding package quota to add project and quota features for ext4
