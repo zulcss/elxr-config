@@ -2,6 +2,10 @@
 systemd-boot
 dracut
 linux-image-amd64
+firmware-iwlwifi
+firmware-misc-nonfree
+wpasupplicant
+bluez
 ca-certificates
 vim
 sudo
