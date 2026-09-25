@@ -10,12 +10,12 @@ packages:
   - login
   - bash
   - coreutils
+  - elxr-archive-keyring
   - util-linux
 
 exclude_packages: []
 
 customize_hooks:
   - chroot $1 apt-get clean
-  - rm -rf $1/usr/lib/apt/methods/ftp $1/usr/lib/apt/methods/rsh 2>/dev/null || true
 
 dpkgopt: []

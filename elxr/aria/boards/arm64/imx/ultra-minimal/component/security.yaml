@@ -7,6 +7,7 @@ packages:
   - gnupg
 
 customize_hooks:
+  - chroot $1 apt-key add /etc/apt/trusted.gpg.d/eLxr-base.asc 2>/dev/null || true
   - rm -rf $1/usr/share/ca-certificates/mozilla/* 2>/dev/null || true
 
 dpkgopt: []

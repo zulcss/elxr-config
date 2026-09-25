@@ -1,8 +1,7 @@
 ---
 name: base
 description: "Essential base system for VM"
-packages:
-  - elxr-archive-keyring
+packages: []
 
 customize_hooks:
   - echo "localhost" > $1/etc/hostname
