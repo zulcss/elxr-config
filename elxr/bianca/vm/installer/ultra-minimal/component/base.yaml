@@ -2,6 +2,7 @@
 name: base
 description: "Essential base system configuration for installer"
 packages:
+  - elxr-archive-keyring
   - linux-image-amd64
   - systemd
   - systemd-sysv

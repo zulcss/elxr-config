@@ -31,8 +31,8 @@ SUBSYSTEMS = {
 }
 
 BASE_TEMPLATE = {
-    'name': 'elxr-ec2-ultra-minimal',
-    'description': 'AMD64 ec2 ultra-minimal subsystem configuration for modular edge devices.',
+    'name': 'elxr-ec2-minimal',
+    'description': 'AMD64 ec2 minimal subsystem configuration for modular edge devices.',
     'architecture': 'amd64',
     'version': '${oc.env:DEFAULT_ELXR_VERSION}',
     'schemaVersion': 1,
@@ -44,7 +44,7 @@ BASE_TEMPLATE = {
     'stages': {
         'install': [
             {
-                'name': 'Creating ultra-minimal rootfs',
+                'name': 'Creating minimal rootfs',
                 'module': 'bootstrap.mmdebstrap',
                 'options': {
                     'suite': 'bianca',
@@ -152,7 +152,7 @@ def generate_image_yaml(enabled_subsystems, output_file):
     print(f"Generated {output_file} with subsystems: {', '.join(enabled_subsystems)}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Build ultra-minimal image with modular subsystems')
+    parser = argparse.ArgumentParser(description='Build minimal image with modular subsystems')
     parser.add_argument('--enable', required=True,
                         help='Enable specific subsystems (space or comma-separated, or "all")')
     parser.add_argument('--output', default='image.yaml', help='Output file (default: image.yaml)')

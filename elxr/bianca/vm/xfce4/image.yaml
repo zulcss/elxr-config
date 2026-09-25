@@ -30,6 +30,8 @@ stages:
           - ${include:manifests/packages-xfce4.yaml}
         mirrors:
           - deb http://mirror.elxr.dev/elxr bianca main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
+          - deb http://mirror.elxr.dev/elxr bianca-updates main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
+          - deb http://mirror.elxr.dev/elxr bianca-security main main-debian-community non-free-firmware non-free-firmware-debian-community contrib
 
     - name: Unpack tarball
       module: unpack.tarball

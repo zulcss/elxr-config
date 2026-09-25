@@ -12,7 +12,7 @@ stages:
     - name: "Creating installer."
       module: bootstrap.mmdebstrap
       options:
-        suite: aria
+        suite: bianca
         target: ${params.source}
         architecture: ${architecture}
         setup_hooks:
@@ -32,11 +32,13 @@ stages:
           - cd $1/usr/lib/modules; for d in $(ls * -d); do mkdir -p $1/usr/lib/modules/$d/dtb;
             cp -rf $1/usr/lib/linux-image-$d/freescale/imx*.dtb $1/usr/lib/modules/$d/dtb; done; cd -
         packages:
-          - ${include:manifests/packages-arm64.yaml}
+          - ${include:manifests/packages-arm64-bianca.yaml}
           - ${include:manifests/packages-stig.yaml}
           - systemd-timesyncd
         mirrors:
-          - deb http://mirror.elxr.dev/elxr aria main non-free-firmware contrib
+          - deb http://mirror.elxr.dev/elxr bianca main-debian-community main non-free-firmware contrib non-free-firmware-debian-community
+          - deb http://mirror.elxr.dev/elxr bianca-updates main-debian-community main non-free-firmware contrib non-free-firmware-debian-community
+          - deb http://mirror.elxr.dev/elxr bianca-security main-debian-community main non-free-firmware contrib non-free-firmware-debian-community
 
     - name: "Create raw image ${params.disk}"
       module: image.raw

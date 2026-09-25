@@ -4,16 +4,18 @@ description: "Boot components with aggressive kernel module cleanup"
 packages:
   - systemd-boot
   - systemd-boot-efi
+  - uefi-ext4
 
 customize_hooks:
   - mkdir -p $1/efi
   - rm -rf $1/lib/firmware/{amdgpu,radeon,nvidia,usb} 2>/dev/null || true
   - find $1/lib/firmware -name "*.bin" ! -name "*intel*" ! -name "*amd*" -delete 2>/dev/null || true
-  - find $1/lib/modules -name "*.ko.xz" -exec rm -f {} + 2>/dev/null || true
-  - find $1/lib/modules -name "*.ko.zst" -exec rm -f {} + 2>/dev/null || true
-  - depmod -a -b $1 $(ls $1/lib/modules/) 2>/dev/null || true
   - rm -rf $1/lib/modules/*/kernel/drivers/{gpu,media,staging,usb,hid,input,i2c,spi,mmc,platform,power,thermal,watchdog,hwmon,leds,regulator,infiniband,iio,comedi,mtd,video,target,misc,isdn,thunderbolt,atm,edac,message,crypto,ufs,nvdimm,soundwire,dma,w1,xen,hv,accessibility,pcmcia,firewire,vfio,mfd,nfc,android,vhost,firmware,memstick,cpufreq,ptp,parport,gpio,bus,ssb,hwtracing,uio,pinctrl,virt,bcma,extcon,cxl,gnss,powercap,dax,soc,slimbus,base,pps,pwm,dca,devfreq} 2>/dev/null || true
   - rm -rf $1/lib/modules/*/kernel/sound 2>/dev/null || true
+  - depmod -a -b $1 $(ls $1/lib/modules/) 2>/dev/null || true
+  - find $1/lib/modules -name "*.ko.xz" -exec xz -d {} \; 2>/dev/null || true
+  - find $1/lib/modules -name "*.ko" -exec strip --strip-debug {} \; 2>/dev/null || true
+  - find $1/lib/modules -name "*.ko" -exec xz --check=crc32 {} \; 2>/dev/null || true
 
 dpkgopt:
   - path-exclude=/lib/modules/*/kernel/drivers/gpu/*

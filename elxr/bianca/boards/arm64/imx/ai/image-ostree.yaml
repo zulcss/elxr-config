@@ -41,7 +41,9 @@ stages:
           - ${include:manifests/packages-ai.yaml}
           - systemd-timesyncd
         mirrors:
-          - deb http://mirror.elxr.dev/elxr bianca mmain-debian-community ain non-free-firmware contrib
+          - deb http://mirror.elxr.dev/elxr bianca main-debian-community main non-free-firmware contrib non-free-firmware-debian-community
+          - deb http://mirror.elxr.dev/elxr bianca-updates main-debian-community main non-free-firmware contrib non-free-firmware-debian-community 
+          - deb http://mirror.elxr.dev/elxr bianca-security main-debian-community main non-free-firmware contrib non-free-firmware-debian-community
 
     - name: "Unpack ${params.source}"
       module: unpack.tarball

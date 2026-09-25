@@ -10,7 +10,6 @@ packages:
 
 exclude_packages: []
 
-customize_hooks:
-  - chroot $1 apt-key add /etc/apt/trusted.gpg.d/eLxr-base.asc 2>/dev/null || true
+customize_hooks: []
 
 dpkgopt: []

@@ -31,20 +31,20 @@ SUBSYSTEMS = {
 }
 
 BASE_TEMPLATE = {
-    'name': 'elxr-ultra-minimal-amd64',
-    'description': 'AMD64 ultra-minimal subsystem configuration for modular edge devices.',
+    'name': 'elxr-minimal-amd64',
+    'description': 'AMD64 minimal subsystem configuration for modular edge devices.',
     'architecture': 'amd64',
     'version': '${oc.env:DEFAULT_ELXR_VERSION}',
     'schemaVersion': 1,
     'params': {
         'version': '${version}',
-        'source': '${oc.env:CURRENT_DIR}/elxr-ultra-minimal-${version}-${architecture}.tar.gz',
+        'source': '${oc.env:CURRENT_DIR}/elxr-minimal-${version}-${architecture}.tar.gz',
         'disk': '${oc.env:CURRENT_DIR}/${name}-${version}-${architecture}.img'
     },
     'stages': {
         'install': [
             {
-                'name': 'Creating ultra-minimal rootfs',
+                'name': 'Creating minimal rootfs',
                 'module': 'bootstrap.mmdebstrap',
                 'options': {
                     'suite': 'bianca',
@@ -146,16 +146,13 @@ def generate_image_yaml(enabled_subsystems, output_file):
     bootstrap_stage['options']['customize_hooks'].extend(regular_hooks)
     bootstrap_stage['options']['customize_hooks'].extend(cleanup_hooks)
     
-    # Add final depmod command at the end
-    bootstrap_stage['options']['customize_hooks'].append('depmod -a -b $1 $(ls $1/lib/modules/) 2>/dev/null || true')
-    
     with open(output_file, 'w') as f:
         yaml.dump(config, f, Dumper=NoWrapDumper, default_flow_style=False, sort_keys=False, width=float('inf'))
     
     print(f"Generated {output_file} with subsystems: {', '.join(enabled_subsystems)}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Build ultra-minimal image with modular subsystems')
+    parser = argparse.ArgumentParser(description='Build minimal image with modular subsystems')
     parser.add_argument('--enable', required=True,
                         help='Enable specific subsystems (space or comma-separated, or "all")')
     parser.add_argument('--output', default='image.yaml', help='Output file (default: image.yaml)')

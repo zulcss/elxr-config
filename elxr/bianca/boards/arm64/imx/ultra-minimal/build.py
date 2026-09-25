@@ -27,8 +27,8 @@ SUBSYSTEMS = {
 }
 
 BASE_TEMPLATE = {
-    'name': 'elxr-ultra-minimal-imx',
-    'description': 'i.MX ultra-minimal configuration.',
+    'name': 'elxr-minimal-imx',
+    'description': 'i.MX minimal configuration.',
     'architecture': 'arm64',
     'version': '${oc.env:DEFAULT_ELXR_VERSION}',
     'schemaVersion': 1,
@@ -40,7 +40,7 @@ BASE_TEMPLATE = {
     'stages': {
         'install': [
             {
-                'name': 'Creating ultra-minimal rootfs',
+                'name': 'Creating minimal rootfs',
                 'module': 'bootstrap.mmdebstrap',
                 'options': {
                     'suite': 'bianca',
@@ -89,8 +89,8 @@ BASE_TEMPLATE = {
             },
             {
                 'name': 'Installing bootloader on ${params.disk}',
-                'module': 'installer.bootloader',
-                'options': {'kernel_args': 'root=LABEL=ROOT rw console=tty0'}
+                'module': 'installer.bootloader.grub',
+                'options': []
             },
             {
                 'name': 'Compress image ${params.disk}',
@@ -136,7 +136,7 @@ def generate_image_yaml(enabled_subsystems, output_file):
     print(f"Generated {output_file} with subsystems: {', '.join(enabled_subsystems)}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Build ultra-minimal ARM64 i.MX image with modular subsystems')
+    parser = argparse.ArgumentParser(description='Build minimal ARM64 i.MX image with modular subsystems')
     parser.add_argument('--enable', required=True,
                         help='Enable specific subsystems (space or comma-separated, or "all")')
     parser.add_argument('--output', default='image.yaml', help='Output file (default: image.yaml)')
