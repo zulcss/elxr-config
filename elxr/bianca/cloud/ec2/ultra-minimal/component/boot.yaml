@@ -19,8 +19,6 @@ packages:
 
 customize_hooks:
   - mkdir -p $1/efi
-  # Create /etc/os-release for AWS detection (overwrite existing)
-  - printf 'NAME="eLxr"\nID=elxr\nID_LIKE=debian\nVERSION="${version}"\nVERSION_ID="${version}"\nPRETTY_NAME="eLxr ${version}"\nHOME_URL="https://elxr.dev"\n' > $1/usr/lib/os-release
   # Create GRUB directory and default config for AWS
   - mkdir -p $1/boot/grub $1/etc/default
   - printf 'GRUB_DEFAULT=0\nGRUB_TIMEOUT=5\nGRUB_DISTRIBUTOR="eLxr"\nGRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0,115200n8 console=tty0 earlyprintk=ttyS0,115200 consoleblank=0 rw"\nGRUB_CMDLINE_LINUX="net.ifnames=0 rw"\nGRUB_TERMINAL="console serial"\nGRUB_SERIAL_COMMAND="serial --speed=115200"\n' > $1/etc/default/grub
