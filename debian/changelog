@@ -1,3 +1,9 @@
+elxr-config (1.0.36elxr21) bianca; urgency=medium
+
+  * ec2 ultra-minimal: stop overwriting os-release so base-files provides the complete file.
+
+ -- Deepak Hosamane <Deepak.Hosamane@windriver.com>  Wed, 30 Sep 2026 21:45:40 +0530
+
 elxr-config (1.0.36elxr20) bianca; urgency=medium
 
   * ultra-minimal installer: preserve loadable kernel modules. The cleanup
